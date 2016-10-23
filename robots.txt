@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://loopica.com/sysdata/sitemaps/index.xml

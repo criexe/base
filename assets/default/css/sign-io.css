@@ -1,0 +1,70 @@
+.sign-io {
+  height: 100%;
+  text-align: left; }
+  .sign-io .btn.btn-sign-io {
+    padding: 10px 15px;
+    margin-bottom: 15px; }
+  .sign-io .panel-sign-io {
+    border: none;
+    border-radius: 4px; }
+    .sign-io .panel-sign-io .panel-heading {
+      background: #67B031;
+      font-size: 16px;
+      padding: 15px;
+      color: #fff; }
+    .sign-io .panel-sign-io .panel-body {
+      padding: 0;
+      background: #fff;
+      border-radius: 4px;
+      border: solid 1px #e0e0e0; }
+      .sign-io .panel-sign-io .panel-body .radius-top {
+        border-top-left-radius: 4px !important;
+        border-top-right-radius: 4px !important; }
+      .sign-io .panel-sign-io .panel-body .radius-bottom {
+        border-bottom-left-radius: 4px !important;
+        border-bottom-right-radius: 4px !important; }
+      .sign-io .panel-sign-io .panel-body .input-group {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-bottom: solid 1px #eee; }
+        .sign-io .panel-sign-io .panel-body .input-group:last-child {
+          border: none; }
+        .sign-io .panel-sign-io .panel-body .input-group label {
+          padding: 0;
+          margin: 0;
+          width: 100%;
+          display: block; }
+          .sign-io .panel-sign-io .panel-body .input-group label:hover .fa {
+            left: -50px; }
+        .sign-io .panel-sign-io .panel-body .input-group .form-control {
+          border: none;
+          border-radius: 0;
+          height: auto;
+          width: 100%;
+          padding: 25px 20px;
+          outline: none !important;
+          -webkit-box-shadow: none !important;
+          -moz-box-shadow: none !important;
+          box-shadow: none !important;
+          position: relative;
+          z-index: 2; }
+        .sign-io .panel-sign-io .panel-body .input-group .fa {
+          background: transparent;
+          border: none;
+          padding-left: 20px;
+          color: #777;
+          transition: .3s;
+          position: absolute;
+          z-index: 1;
+          left: 0;
+          top: 28px; }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 600s ease-in-out 0s; }
+
+/*# sourceMappingURL=sign-io.css.map */

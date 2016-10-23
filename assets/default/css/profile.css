@@ -1,0 +1,146 @@
+.profile {
+  margin-top: 50px; }
+  .profile .cover {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    font-family: "Helvetica Neue", "Open Sans", Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    letter-spacing: 1px;
+    background: #666;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px; }
+    .profile .cover:hover .cover-bg {
+      -webkit-filter: blur(0);
+      filter: blur(0); }
+    .profile .cover:hover .cover-content {
+      -webkit-filter: blur(50px);
+      filter: blur(50px);
+      opacity: 0; }
+    .profile .cover .cover-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      background-position: center center;
+      -webkit-background-size: cover;
+      background-size: cover;
+      -webkit-filter: blur(50px);
+      filter: blur(50px);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-perspective: 1000;
+      perspective: 1000;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-transform: rotate(0);
+      -moz-transform: rotate(0);
+      transform: rotate(0);
+      -webkit-transform: translateZ(0) scale(1, 1);
+      transition: all 1.5s ease;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px; }
+    .profile .cover .cover-content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      transition: all 1.5s ease; }
+    .profile .cover .user-name {
+      font-size: 28px;
+      color: #fff;
+      opacity: .9;
+      text-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      margin: 0 auto;
+      font-weight: lighter; }
+    .profile .cover .user-username {
+      font-size: 14px;
+      color: #fff;
+      opacity: .8;
+      text-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      margin: 0 auto;
+      font-weight: lighter; }
+    .profile .cover .profile-area {
+      text-align: center;
+      margin: 0 auto; }
+    .profile .cover .profile-image {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px auto;
+      background: #fff;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px;
+      -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); }
+    .profile .cover .profile-image img {
+      width: 100%;
+      height: 100%;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px; }
+    .profile .cover .profile-image .verified-icon {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      z-index: 5;
+      font-size: 40px;
+      color: RGBA(106, 181, 45, 0.8);
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.2); }
+  .profile .char-panel .characters-box .char-row {
+    padding: 20px;
+    border-bottom: solid 1px #eee;
+    width: 100%;
+    position: relative; }
+    .profile .char-panel .characters-box .char-row button {
+      position: absolute;
+      right: 10px;
+      top: 16px;
+      transition: 0s;
+      opacity: 0; }
+    .profile .char-panel .characters-box .char-row:hover button {
+      opacity: 1; }
+    .profile .char-panel .characters-box .char-row:last-child {
+      border-bottom: none; }
+    .profile .char-panel .characters-box .char-row .char {
+      font-weight: normal;
+      color: #666; }
+    .profile .char-panel .characters-box .char-row .badge {
+      float: right;
+      background: none;
+      color: #ae0000;
+      font-weight: normal; }
+  .profile .char-panel .panel-footer {
+    padding: 0;
+    position: relative; }
+    .profile .char-panel .panel-footer input.input-user-char {
+      border: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+      background: transparent;
+      height: auto;
+      padding: 15px 20px; }
+    .profile .char-panel .panel-footer .btn-char-submit {
+      position: absolute;
+      right: 40%;
+      top: 11px;
+      opacity: 0;
+      transition: .5s; }
+    .profile .char-panel .panel-footer:hover .btn-char-submit {
+      opacity: 1;
+      right: 11px; }
+
+/*# sourceMappingURL=profile.css.map */
