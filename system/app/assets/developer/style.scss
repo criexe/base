@@ -1,0 +1,61 @@
+.input-field{
+
+    label {
+        color: #eee;
+    }
+
+    input[type="text"]:focus + label,
+    textarea.materialize-textarea:focus + label{
+        color: #d35400;
+    }
+
+    textarea.materialize-textarea:focus, input[type="text"]:focus {
+        border-bottom: 1px solid #d35400;
+        box-shadow: 0 1px 0 0 #d35400;
+    }
+
+    input[type="text"].valid {
+        border-bottom: 1px solid #7FBA00;
+        box-shadow: 0 1px 0 0 #7FBA00;
+    }
+
+    input[type="text"].invalid {
+        border-bottom: 1px solid #ae0000;
+        box-shadow: 0 1px 0 0 #ae0000;
+    }
+
+    .prefix.active {
+        color: #d35400;
+    }
+}
+
+
+.chips{
+
+    input{
+
+        color:#ccc !important;
+    }
+}
+
+.types{
+
+    th.type-name{
+        padding-right:30px;
+    }
+}
+
+.timer{
+
+    .card-files{
+
+        .collection{
+            margin-bottom:0;
+        }
+    }
+
+    .timer-logs{
+        max-height:300px;
+        overflow: auto;
+    }
+}

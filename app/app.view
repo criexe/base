@@ -1,0 +1,8 @@
+<div class="section">
+    <div class="container">
+        <a class="modal-trigger" href="#user_settings_modal">Settings</a>
+    </div>
+</div>
+
+
+<?= user::modal('settings') ?>

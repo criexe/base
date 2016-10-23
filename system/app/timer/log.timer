@@ -1,0 +1,6 @@
+<?php
+
+timer::task(_WEEK, function(){
+
+    sys::delete(LOGS_PATH . DS . 'timer.log');
+});

@@ -1,0 +1,7 @@
+<?php
+
+timer::task(_HOUR, function(){
+
+    sitemap::generate();
+    timer::log('Sitemap Created !');
+});

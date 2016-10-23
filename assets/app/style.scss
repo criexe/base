@@ -1,0 +1,31 @@
+.reaction-buttons{
+
+    a{
+        display: inline-block;
+        padding:0 10px;
+
+        position:relative;
+        transition: .5s;
+
+        top:0;
+
+        &:hover{
+            top:-10px;
+
+            img{
+                transform:rotate(360deg);
+            }
+        }
+
+        img{
+            transition: .5s;
+            display:block;
+        }
+
+        span{
+            display: block;
+            padding-top:10px;
+            color:#666;
+        }
+    }
+}

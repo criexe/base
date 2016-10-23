@@ -7,71 +7,100 @@
  */
 
 
-$route            = router::parse();
-$controller_name  = $route[0];
-$controller_class = 'controller_' . $controller_name;
-$method_name      = isset($route[1]) ? $route[1] : sys::get_config('router')['defaults']['method'];
-$method_name      = trim($method_name, '_');
-
-define('CONTROLLER', $controller_name);
-
-// Request Log
-$request_log = json_encode([
-
-    'info' => $_SERVER,
-    'data' => [
-
-        'post' => $_POST,
-        'get'  => $_GET
-    ],
-    'time' => time()
-
-]);
-
-load::model('user:traffic')->insert([
-
-    'user_id'  => user::id(),
-    'ip'       => $_SERVER['REMOTE_ADDR'],
-    'location' => $_SERVER['REQUEST_URI'],
-    'info'     => json_encode($_SERVER),
-    'data'     => json_encode([
-
-        'get'  => $_GET,
-        'post' => $_POST
-    ]),
-    'created_at' => time()
-]);
-
-// Load Controller
-$controller_file        = CONTROLLERS_PATH . '/' . $controller_name . '.php';
-$plugin_controller_file = PLUGINS_PATH . '/' . $controller_name . '/controller.php';
-
-if(file_exists($controller_file))
+try
 {
-    require_once($controller_file);
+
+    $route            = router::parse();
+    $controller_name  = $route[0];
+    $controller_class = 'controller_' . $controller_name;
+    $method_name      = isset($route[1]) ? $route[1] : sys::get_config('router')['defaults']['method'];
+    $method_name      = trim($method_name, '_');
+
+    define('CONTROLLER' , $controller_name);
+    define('METHOD'     , $method_name);
+
+    // Get Item
+    $_item = url::path() != null ? item::get(['where' => "`url` = '" . url::path() . "'"]) : false;
+
+    if($_item)
+    {
+        $controller_name  = 'item';
+        $controller_class = 'controller_item';
+        $method_name      = 'load';
+    }
+
+
+    // Get Controller File From Software Files
+    $all_controllers   = cx::$files['controller'];
+    $found_controllers = preg_grep("/" . $controller_name . "\.controller(?:\.php)?$/si", $all_controllers);
+    $found_controllers = array_values($found_controllers);
+
+    if(count($found_controllers) > 0)
+    {
+        cx::$info = [
+
+            'controller' => $controller_name,
+            'method'     => $method_name,
+        ];
+
+        $controller_file = $found_controllers[0];
+        require_once($controller_file);
+    }
+    else
+    {
+        logger::add('Controller is not exist : ' . $controller_name);
+        error::show_404();
+    }
+
+    // Load Item
+    if($_item)
+    {
+        cx::data('item.data', $_item);
+
+        $item_controller = new controller_item();
+        $item_controller->load(url::path(), $_item);
+    }
+
+    // Load Controller
+    else
+    {
+        $load = new $controller_class();
+
+        // $load->$method_name();
+
+        $_params = array();
+
+        if(method_exists($load, $method_name))
+        {
+            call_user_func_array([$load, $method_name], router::others());
+        }
+        else
+        {
+            error::show_404();
+        }
+    }
+
+
+    //    // Add Traffic Log
+    //    item::insert([
+    //
+    //        'user'     => user::id(),
+    //        'url'      => 'traffic/' . time() . '.' . rand(10000000000, 99999999999),
+    //        'title'    => $_SERVER['REQUEST_URI'],
+    //        'content'  => 'Traffic - ' . date('F j, Y, g:i a'),
+    //        'status'   => 'passive',
+    //
+    //        'location' => $_SERVER['REQUEST_URI'],
+    //        'info'     => $_SERVER,
+    //        'datas'     => [
+    //
+    //            'get'  => $_GET,
+    //            'post' => $_POST
+    //        ]
+    //    ]);
+
 }
-else if(file_exists($plugin_controller_file))
-{
-    require_once($plugin_controller_file);
-}
-else
+catch(Exception $e)
 {
     error::show_404();
 }
-
-$load = new $controller_class();
-
-// $load->$method_name();
-
-$_params = array();
-
-if(method_exists($load, $method_name))
-{
-    call_user_func_array([$load, $method_name], router::others());
-}
-else
-{
-    error::show_404();
-}
-
-?>

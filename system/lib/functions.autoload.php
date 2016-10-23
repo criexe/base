@@ -9,10 +9,17 @@
 // Library Classes
 function autoload_lib($class_name = null)
 {
-    $class_path = SYSTEM_LIB_PATH . '/class.' . $class_name . '.php';
-    if(is_readable($class_path))
+    $classes = cx::$files['class']; // All Class Files
+    $found   = preg_grep("/$class_name\.class(?:\.php)?$/si", $classes); // example.class.php
+    $found   = array_values($found);
+
+    if(count($found) > 0)
     {
-        require_once($class_path);
+        // File Path
+        $class_path = $found[0];
+
+        // Include Class File
+        if(is_readable($class_path)) require_once($class_path);
     }
 }
 

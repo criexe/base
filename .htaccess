@@ -23,8 +23,8 @@ ErrorDocument 500 /error_pages/500.php
 #  Header set Content-type "text/javascript"
 #</FilesMatch>
 
-AddType    application/x-httpd-php .php .html .htm .css .js .cx
-AddHandler application/x-httpd-php .php .html .htm .css .js .cx
+AddType    application/x-httpd-php .php .html .htm .cx
+AddHandler application/x-httpd-php .php .html .htm .cx
 
 <ifModule mod_gzip.c>
 mod_gzip_on Yes

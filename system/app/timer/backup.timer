@@ -1,0 +1,6 @@
+<?php
+
+timer::task('day', function(){
+
+    db::export();
+});

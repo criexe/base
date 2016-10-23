@@ -1,0 +1,1 @@
+<?= json::encode(cx::data('item.data'), ['pretty' => true]) ?>

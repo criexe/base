@@ -1,23 +1,20 @@
-function set_store($this, key, value)
+function set_store(key, value)
 {
-    if(value != "")
-    {
-        if(typeof(Storage) !== "undefined" & $this.value != "")
-        {
-            localStorage.setItem(key, $this.value);
-        }
-    }
-    else
+    if(typeof(Storage) !== "undefined")
     {
         localStorage.setItem(key, value);
     }
 }
 
-function get_store($this, key)
+function get_store(key)
 {
     if(typeof(Storage) !== "undefined")
     {
-        $this.value = localStorage.getItem(key);
+        return localStorage.getItem(key);
+    }
+    else
+    {
+        return false;
     }
 }
 
@@ -58,7 +55,7 @@ $.fn.decrease = function(count)
 function set_ckeditor($name, $config)
 {
     var $config = typeof $config !== 'undefined' ?  $config : {};
-    var editor = CKEDITOR.replace($name, $config);
+    var editor  = CKEDITOR.replace($name, $config);
 
     editor.on('change', function( evt ) {
         $("[name='" + $name + "']").val(evt.editor.getData());

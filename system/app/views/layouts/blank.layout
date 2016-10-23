@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <?= cx::head() ?>
+</head>
+<body>
+
+    <?= layout::content() ?>
+    <?= cx::footer() ?>
+
+</body>
+</html>

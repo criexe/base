@@ -1,0 +1,19 @@
+.clear{
+
+    &:after{
+        content:'';
+        display:table;
+        clear:both;
+    }
+}
+
+.settings-form{
+
+    h4{
+
+        i.material-icons{
+
+            margin-right:10px;
+        }
+    }
+}
