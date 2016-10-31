@@ -13,6 +13,8 @@ class controller_item extends controller
             if($url == null) error::show_404();
 
             cx::title($data['title']);
+            cx::description($data['description']);
+            cx::keywords($data['keywords']);
 
             $cx_type   = cx::type($data['type']);
             $cx_layout = $cx_type['layout'];

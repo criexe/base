@@ -29,4 +29,4 @@
     </script>
 <?php endif; ?>
 
-<?= ( ! (CONTROLLER == 'admin' || CONTROLLER == 'developer')) ? cx::option('app.tracking_code') : null ?>
+<?= ( (defined('CONTROLLER')) && ! (CONTROLLER == 'admin' || CONTROLLER == 'developer')) ? cx::option('app.tracking_code') : null ?>

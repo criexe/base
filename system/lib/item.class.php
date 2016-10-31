@@ -664,12 +664,12 @@ class item
      */
     public static function delete(array $params = [])
     {
-        sys::array_key_default_value($params, 'limit', 1);
+        sys::array_key_default_value($params, 'limit', 10);
 
         $update_data           = [];
         $update_data['status'] = 'trash';
 
-        $update = db::update(self::$name, $update_data, $params);
+        $update = item::update($update_data, $params);
 
         return $update;
     }

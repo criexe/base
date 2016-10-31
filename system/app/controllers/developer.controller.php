@@ -9,6 +9,8 @@ class controller_developer extends controller
     {
         try
         {
+            hook::listen('install', 'before');
+
             // Create System Folders
             sys::write(['file' => SYSDATA_PATH . DS . 'backups' . DS . 'index.html']);
             sys::write(['file' => SYSDATA_PATH . DS . 'cache'   . DS . 'index.html']);
@@ -29,6 +31,10 @@ class controller_developer extends controller
             $user['authority'] = 'developer';
 
             item::insert($user);
+
+            cache::clear();
+
+            hook::listen('install', 'after');
 
             echo 'Success';
         }
