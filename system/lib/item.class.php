@@ -99,6 +99,7 @@ class item
                 }
             }
 
+            hook::listen("item[{$data['type']}].insert", 'success', $item_id);
             return $item_id;
         }
         catch(Exception $e)
