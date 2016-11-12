@@ -32,7 +32,13 @@ class controller_item extends controller
 
             echo cx::render($view_file, ['data' => $data], $render);
 
+            // Views
+            $views = $data['views'];
+            if($views == null || ! is_numeric($views)) $new_views = 0;
+            else $new_views = $views + 1;
             cx::counter("item.views.{$data['id']}", 1);
+
+            item::update(['views' => $new_views], ['where' => "`id` = {$data['id']}"]);
         }
         catch(Exception $e)
         {
