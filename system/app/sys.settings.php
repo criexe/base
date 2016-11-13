@@ -23,9 +23,9 @@ cx::type([
 
 cx::type([
 
-    'alias'   => 'traffic',
-    'name'    => 'Traffic',
-    'columns' => ['location', 'info', 'datas']
+    'alias'   => 'tag',
+    'name'    => 'Tag',
+    'sitemap' => true
 ]);
 
 ?>

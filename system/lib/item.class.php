@@ -381,6 +381,27 @@ class item
             $data['description'] = utils::limit_text($data['description'], 150);
         }
 
+        // JSON to Array
+        if(json::valid($data['parents']))
+        {
+            $new_parents     = [];
+            $data['parents'] = json::decode($data['parents']);
+
+            foreach($data['parents'] as $ps) $new_parents[$ps] = self::get(['where' => "`id` = $ps"]);
+            $data['parents'] = $new_parents;
+        }
+
+        // Default Views
+        if($data['views'] == null) $data['views'] = 1;
+
+        // Tags
+        $data['tags'] = [];
+        $tags_arr     = explode(',', $data['keywords']);
+        foreach($tags_arr as $keyword)
+        {
+            $data['tags'][trim($keyword)] = URL . '/tag/' . filter::slugify($keyword);
+        }
+
         $columns = $data;
 
         if(array_key_exists('data', $data) && json::valid($data['data']))
@@ -698,6 +719,69 @@ class item
         cache::create($cache_id, $rdata);
 
         return $rdata;
+    }
+
+
+    public static function tag()
+    {
+        return new class {
+
+            function get($parent_id = null)
+            {
+                $params         = [];
+                $params['type'] = 'tag';
+
+                if($parent_id != null) $params['where'] = "(`parents` LIKE '%\"$parent_id\"%') OR (`parents` LIKE '%\'$parent_id\'%')";
+                $get = item::get_all($params);
+                return $get;
+            }
+
+            function get_by_name($tag_name = null)
+            {
+                $params          = [];
+                $params['type']  = 'tag';
+                $params['where'] = "`title` = '$tag_name'";
+
+                return item::get($params);
+            }
+
+            function insert($parent_id = null, $tag = null)
+            {
+                try
+                {
+                    if($parent_id == null || $tag == null) throw_exception('Empty params.');
+
+                    $get = $this->get_by_name($tag);
+
+                    if($get)
+                    {
+                        if(in_array($parent_id, $get['parents'])) return true;
+
+                        $parents   = $get['parents'] == null ? [] : $get['parents'];
+                        $parents[] = $parent_id;
+
+                        $udata = ['parents' => $parents];
+                        item::update($udata, ['where' => "`id` = {$get['id']}", 'limit' => 1]);
+                        return true;
+                    }
+                    else
+                    {
+                        $insert_data            = [];
+                        $insert_data['type']    = 'tag';
+                        $insert_data['parents'] = [$parent_id];
+                        $insert_data['title']   = $tag;
+                        $insert_data['url']     = 'url/' . filter::slugify($tag);
+
+                        item::insert($insert_data) or throw_exception('Error.');
+                        return true;
+                    }
+                }
+                catch(Exception $e)
+                {
+                    return false;
+                }
+            }
+        };
     }
 
 

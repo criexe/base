@@ -74,7 +74,7 @@ class db
     {
         if($query == null) return false;
 
-        //        logger::add($query, 'db');
+//        logger::add($query, 'db');
 
         return mysqli_query(self::$conn, $query);
     }
@@ -594,7 +594,7 @@ class db
     {
         if($column_name == $new_column_name)
 
-            $table_name = sys::get_config('database')['prefix'] . $table_name;
+        $table_name = sys::get_config('database')['prefix'] . $table_name;
 
         $new_column_name = $new_column_name ? $new_column_name : $column_name;
         return self::query("ALTER TABLE $table_name CHANGE $column_name $new_column_name $type;");
