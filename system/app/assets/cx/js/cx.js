@@ -222,39 +222,36 @@ var cx = {
 
         editor : function ($name, $type){
 
-            $type = typeof $type   !== 'undefined' ?  $type : 'basic';
+            $type = typeof $type !== 'undefined' ?  $type : 'basic';
 
-            $(function(){
+            var $basic_config = URL + "/system/app/assets/cx/plugins/ckeditor/config.js";
+            var $full_config  = URL + "/system/app/assets/cx/plugins/ckeditor/full_config.js";
+            var $css_file     = URL + "/system/app/assets/cx/css/wysiwyg.content.css";
 
-                var $basic_config = URL + "/system/app/assets/cx/plugins/ckeditor/config.js";
-                var $full_config  = URL + "/system/app/assets/cx/plugins/ckeditor/full_config.js";
-                var $css_file     = URL + "/system/app/assets/cx/css/wysiwyg.content.css";
+            var $config;
 
-                var $config;
+            if($type == "basic")
+            {
+                $config = {
 
-                if($type == "basic")
-                {
-                    $config = {
+                    customConfig : $basic_config,
+                    contentsCss  : $css_file
+                };
+            }
+            else
+            {
+                $config = {
 
-                        customConfig : $basic_config,
-                        contentsCss  : $css_file
-                    };
-                }
-                else
-                {
-                    $config = {
+                    customConfig : $full_config,
+                    contentsCss  : $css_file
+                };
+            }
 
-                        customConfig : $full_config,
-                        contentsCss  : $css_file
-                    };
-                }
+            var editor  = CKEDITOR.replace($name, $config);
 
-                var editor  = CKEDITOR.replace($name, $config);
+            editor.on('change', function( evt ){
 
-                editor.on('change', function( evt ){
-
-                    $("[name='" + $name + "']").val(evt.editor.getData());
-                });
+                $("[name='" + $name + "']").val(evt.editor.getData());
             });
         },
 

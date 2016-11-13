@@ -341,6 +341,12 @@ class item
         if( ! is_array($data)) return false;
 
         $type = $data['type'];
+        $id   = $data['id'];
+
+        $cache_id      = "item.$id.prepare";
+        $cache_content = cache::get($cache_id);
+
+        if($cache_content) return $cache_content;
 
         $data['created_at'] = [
 
@@ -465,6 +471,7 @@ class item
         if( ! array_key_exists('name', $data)) $data['name'] = $data['title'];
 
         unset($columns['data']);
+        cache::create($cache_id, $columns);
         return $columns;
     }
 
