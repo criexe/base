@@ -25,6 +25,7 @@ cx::type([
 
     'alias'   => 'tag',
     'name'    => 'Tag',
+    'layout'  => 'app',
     'sitemap' => true
 ]);
 

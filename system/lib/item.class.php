@@ -42,6 +42,12 @@ class item
                 $data['url'] = $data['type'] . '/' . filter::slugify($data['title']);
             }
 
+            if(array_key_exists('keywords', $data) && $data['keywords'] != null)
+            {
+                $_keywords = str_replace("\n", ', ',  $data['keywords']);
+            }
+            else $_keywords = null;
+
             foreach($data as $k => $v)
             {
                 if(is_array($v)) $v = $v;
@@ -103,6 +109,10 @@ class item
             $hook_data['item_id'] = $item_id;
             $hook_data['data']    = $data;
 
+            // Adding Tags
+            $_tags = explode(',', $_keywords);
+            foreach($_tags as $t) self::tag()->insert($item_id, $t);
+
             hook::listen("item.insert", 'success', $hook_data);
             return $item_id;
         }
@@ -162,6 +172,16 @@ class item
                         $item_data[$k] = str_replace(['"",', ',""', "'',", ",''"], null, $item_data[$k]);
                     }
                 }
+
+                if(array_key_exists('keywords', $data) && $data['keywords'] != null)
+                {
+                    $_keywords = str_replace("\n", ', ',  $data['keywords']);
+                }
+                else $_keywords = null;
+
+                // Adding Tags
+                $_tags = explode(',', $_keywords);
+                foreach($_tags as $t) self::tag()->insert($get['id'], $t);
 
                 // Update Item Data
                 $update_item = db::update(self::$name, $item_data, $update_params);
@@ -388,7 +408,7 @@ class item
             $data['parents'] = json::decode($data['parents']);
 
             foreach($data['parents'] as $ps) $new_parents[$ps] = self::get(['where' => "`id` = $ps"]);
-            $data['parents'] = $new_parents;
+            $data['parents.data'] = $new_parents;
         }
 
         // Default Views
@@ -726,10 +746,11 @@ class item
     {
         return new class {
 
-            function get($parent_id = null)
+            function get($parent_id = null, $limit = null)
             {
-                $params         = [];
-                $params['type'] = 'tag';
+                $params          = [];
+                $params['type']  = 'tag';
+                $params['limit'] = $limit;
 
                 if($parent_id != null) $params['where'] = "(`parents` LIKE '%\"$parent_id\"%') OR (`parents` LIKE '%\'$parent_id\'%')";
                 $get = item::get_all($params);
@@ -758,6 +779,7 @@ class item
                         if(in_array($parent_id, $get['parents'])) return true;
 
                         $parents   = $get['parents'] == null ? [] : $get['parents'];
+                        if(($key   = array_search($parent_id, $parents)) !== false) unset($parents[$key]);
                         $parents[] = $parent_id;
 
                         $udata = ['parents' => $parents];
@@ -770,7 +792,7 @@ class item
                         $insert_data['type']    = 'tag';
                         $insert_data['parents'] = [$parent_id];
                         $insert_data['title']   = $tag;
-                        $insert_data['url']     = 'url/' . filter::slugify($tag);
+                        $insert_data['url']     = 'tag/' . filter::slugify($tag);
 
                         item::insert($insert_data) or throw_exception('Error.');
                         return true;
