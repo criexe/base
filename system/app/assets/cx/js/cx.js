@@ -78,6 +78,48 @@ var cx = {
                     if(data.location != null && data.location != false) cx.location(data.location, 1000);
                 }
             });
+
+
+            // Social Share
+            cx.event.click("[data-share]", function(e){
+
+                e.preventDefault();
+
+                var $social = $(this).attr("data-share");
+                var $this   = $(this);
+
+                if ($(this).attr("href") == "#")
+                {
+                    $url = window.location.href;
+                }
+                else
+                {
+                    $url = $(this).attr("href");
+                }
+
+                if ($social == "twitter")
+                {
+                    var $via = $this.attr("data-via");
+                    window.open("https://twitter.com/share?url=" + $url + "&text=&via=" + $via, "Twitter", 'width=600,height=500,scrollbars=no');
+                }
+                else if ($social == "facebook")
+                {
+                    window.open("http://www.facebook.com/share.php?u=" + $url, "Facebook", 'width=600,height=500,scrollbars=no');
+                }
+                else if ($social == "google-plus")
+                {
+                    window.open("https://plusone.google.com/_/+1/confirm?hl=en&url=" + $url, "Google Plus", 'width=600,height=500,scrollbars=no');
+                }
+                else if($social == "whatsapp")
+                {
+                    window.open("whatsapp://send?text=" + $url, "Whatsapp", 'width=600,height=500,scrollbars=no');
+                }
+                else if($social == "linkedin")
+                {
+                    window.open("https://www.linkedin.com/cws/share?url=" + $url, "Linkedin", 'width=600,height=500,scrollbars=no');
+                }
+
+            });
         }
     },
 
