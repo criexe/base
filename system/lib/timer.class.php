@@ -118,10 +118,11 @@ class timer
     }
 
 
-    public static function cmd_string($python = 'python3.5')
+    public static function cmd_string()
     {
         $timer_path  = ROOT_PATH . DS . 'timer.cx';
         $python_file = ROOT_PATH . DS . 'timer.py';
+        $node_file   = ROOT_PATH . DS . 'timer.js';
         $os         = sys::os();
 
         switch($os)
@@ -130,7 +131,7 @@ class timer
             case 'macos' :
             default      :
 
-                $command = "nohup $python $python_file \"nohup php $timer_path &\" &";
+                $command = "chmod 755 $node_file; nohup node $node_file \"nohup php $timer_path &\" &";
                 break;
 
             // TODO : Windows

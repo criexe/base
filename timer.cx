@@ -2,7 +2,8 @@
 
 
 // Default Domain
-$_SERVER['HTTP_HOST'] = 'timer.dev';
+$_SERVER['HTTP_HOST']   = 'timer.dev';
+$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
 
 // Show Errors

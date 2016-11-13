@@ -76,7 +76,6 @@ date_default_timezone_set('Europe/Istanbul');
 
 try
 {
-    require_once SYSTEM_LIB_PATH . DS . 'config.class.php';
     require_once SYSTEM_LIB_PATH . DS . 'cx.class.php';
     require_once SYSTEM_LIB_PATH . DS . 'sys.class.php';
     require_once SYSTEM_LIB_PATH . DS . 'session.class.php';

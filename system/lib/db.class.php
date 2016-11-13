@@ -161,17 +161,9 @@ class db
 
         $sql_query = implode(' ', $sql);
 
-        // Get Cache
-        $cache_data = self::get_cache($table_name, $params, $sql_query);
-
-        // Return Cache
-        if($cache_data) return $cache_data;
-
         $query = self::query($sql_query);
 
         $result = self::fetch_assoc($query);
-
-        self::create_cache($table_name, $params, $sql_query, $result);
 
         return $result;
     }
@@ -217,19 +209,11 @@ class db
 
         $sql_query = implode(' ', $sql);
 
-        // Get Cache
-        $cache_data = self::get_cache($table_name, $params, $sql_query);
-
-        // Return Cache
-        if($cache_data) return $cache_data;
-
         $r = [];
         $q = self::query($sql_query);
 
         while($ql = self::fetch_assoc($q))
             $r[] = $ql;
-
-        self::create_cache($table_name, $params, $sql_query, $r);
 
         return $r;
     }
@@ -267,19 +251,11 @@ class db
 
         $sql_query = implode(' ', $sql);
 
-        // Get Cache
-        $cache_data = self::get_cache($table_name, $params, $sql_query);
-
-        // Return Cache
-        if($cache_data) return $cache_data;
-
         $r = [];
         $q = self::query($sql_query);
 
         while($ql = self::fetch_assoc($q))
             $r[] = $ql;
-
-        self::create_cache($table_name, $params, $sql_query, $r);
 
         return $r;
     }
@@ -311,15 +287,8 @@ class db
 
         $sql_query = implode(' ', $sql);
 
-        // Get Cache
-        $cache_data = self::get_cache($table_name, $params, $sql_query);
-
-        // Return Cache
-        if($cache_data) return $cache_data;
-
         $num = self::fetch_array(self::query($sql_query));
 
-        self::create_cache($table_name, $params, $sql_query, $num[0]);
         return $num[0];
     }
 
@@ -368,7 +337,6 @@ class db
 
         if($insert)
         {
-            self::clear_cache();
             return self::insert_id();
         }
         else
@@ -435,7 +403,6 @@ class db
 
         if($update)
         {
-            self::clear_cache($table_name);
             return self::affected_rows();
         }
         else
@@ -473,7 +440,6 @@ class db
         {
             hook::listen("$table_name:db.delete", 'after', $params);
 
-            self::clear_cache($table_name);
             return true;
         }
         else
@@ -627,123 +593,6 @@ class db
 
         return $info;
     }
-
-
-
-    /**
-     * @param null $table_name
-     * @param null $params
-     *
-     * @return bool|string
-     */
-    public static function cache_id($table_name = null, $params = null)
-    {
-        if($table_name == null || $params == null) return false;
-
-        $id = $table_name . '__' . filter::slugify(json_encode($params), [], '_');
-        return $id;
-    }
-
-
-
-    /**
-     * @param $table_name
-     * @param $sql_params
-     * @param $query
-     * @param $data
-     */
-    public static function create_cache($table_name, $sql_params, $query, $data)
-    {
-        $path = CACHE_PATH . DS . 'db';
-
-        $file_name = self::cache_id($table_name, $sql_params) . '.cache';
-
-        $file_data = [
-
-            'keys' => [
-
-                'table'  => $table_name,
-                'query'  => $query,
-                'params' => $sql_params,
-            ],
-
-            'value' => [
-
-                'created_at' => time(),
-                'data'       => $data
-            ]
-        ];
-
-        sys::write([
-
-            'file' => $path . DS . $file_name,
-            'data' => json_encode($file_data),
-            'mode' => 'w'
-        ]);
-
-        // logger::add('[DB] Cache is stored : ' . $file_name, 'cache');
-    }
-
-
-
-    /**
-     * @param $table_name
-     * @param $sql_params
-     * @param $query
-     *
-     * @return bool
-     */
-    public static function get_cache($table_name, $sql_params, $query)
-    {
-        if(sys::get_config('cache')['active'] == false) return false;
-
-        $cache_file = $path = CACHE_PATH . DS . 'db' . DS . self::cache_id($table_name, $sql_params) . '.cache';
-
-        if(!file_exists($cache_file)) return false;
-
-        $file_content = file_get_contents($cache_file);
-
-        $file_data = json_decode($file_content, true);
-        $keys      = $file_data['keys'];
-
-        if( ! ($keys['table'] === $table_name && $keys['query'] === $query && $keys['params'] === $sql_params) )
-        {
-            return false;
-        }
-        else
-        {
-            // logger::add('[DB] Loaded From Cache : ' . $cache_file, 'cache');
-            return $file_data['value']['data'];
-        }
-    }
-
-
-
-    /**
-     * @param null $table_name
-     */
-    public static function clear_cache($table_name = null)
-    {
-        $path  = CACHE_PATH . DS . 'db';
-
-        if($table_name != null)
-        {
-            $files = glob($path . DS . $table_name . '__*.cache');
-        }
-        else
-        {
-            $files = glob($path . DS . '*.cache');
-        }
-
-        if($files && is_array($files))
-        {
-            foreach($files as $file)
-            {
-                @unlink($file);
-            }
-        }
-    }
-
 
 
     public static function dump()
