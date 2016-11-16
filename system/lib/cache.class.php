@@ -116,15 +116,22 @@ class cache
 
     public static function delete($cache_id = null)
     {
-        if($cache_id == null) return false;
+        try
+        {
+            if($cache_id == null) return false;
 
-        $file_name = self::create_file_name([
+            $file_name = self::create_file_name([
 
-            'id' => $cache_id,
-            'ext' => 'cache'
-        ]);
+                'id' => $cache_id,
+                'ext' => 'cache'
+            ]);
 
-        return sys::delete(CACHE_PATH . DS . $file_name);
+            return sys::delete(CACHE_PATH . DS . $file_name);
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
     }
 
 

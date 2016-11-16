@@ -1,5 +1,7 @@
 <?php
 
+set_time_limit(0);
+ini_set('memory_limit', '-1');
 
 // Default Domain
 $_SERVER['HTTP_HOST']   = 'timer.dev';
@@ -11,17 +13,11 @@ ini_set('display_errors', 'on');
 error_reporting(E_ALL);
 
 
+
 // Settings
 require_once 'settings.cx';
 if(!defined('cx')) die('Load Settings...');
 
-
-// Update Last Runtime Data
-timer::data('last_runtime', time());
-
-
-// Clear Temp
-timer::clear_temp();
 
 
 // Get All Timer Files
@@ -29,21 +25,42 @@ $files = timer::files();
 foreach($files as $file) require_once ROOT_PATH . DS . $file;
 
 
-// Tasks
-$tasks = timer::tasks();
-foreach($tasks as $time => $funcs)
-{
-    // Check Counter
-    if($time <= timer::counter($time))
-    {
-        foreach($funcs as $func) $func();
-        timer::counter($time, 0);
-    }
-    else
-    {
-        timer::counter($time, 1);
-    }
-}
 
-cx::counter('timer', 1);
-cx::save();
+$tasks = timer::tasks();
+
+
+
+echo 'Timer Started !';
+
+
+
+while(true)
+{
+    echo time() . "\n";
+
+    // Update Last Runtime Data
+    timer::data('last_runtime', time());
+
+
+    // Clear Temp
+    timer::clear_temp();
+
+
+    // Tasks
+    foreach($tasks as $time => $funcs)
+    {
+        // Check Counter
+        if($time <= timer::counter($time))
+        {
+            foreach($funcs as $func) $func();
+            timer::counter($time, 0);
+        }
+        else
+        {
+            timer::counter($time, 1);
+        }
+    }
+
+//    cx::counter('timer', 1);
+//    cx::save();
+}

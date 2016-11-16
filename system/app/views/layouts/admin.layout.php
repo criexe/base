@@ -70,6 +70,8 @@ $types = cx::type();
         </nav>
 
         <?= layout::content() ?>
+
+        <a href="<?=URL?>" target="_blank" class="btn-floating cx-fixed btn-large waves-effect waves-light red modal-trigger"><i class="material-icons">home</i></a>
     </div>
 
     <script src="<?=SYS_ASSETS?>/admin/script.js"></script>

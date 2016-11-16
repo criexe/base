@@ -133,8 +133,9 @@ class item
     {
         try
         {
-            sys::array_key_default_value($data, 'updated_at', time());
-            sys::array_key_default_value($data, 'ip'        , $_SERVER['REMOTE_ADDR']);
+            sys::array_key_default_value($data, 'updated_at'    , time());
+            sys::array_key_default_value($data, 'ip'            , $_SERVER['REMOTE_ADDR']);
+            sys::array_key_default_value($data, 'disable.cache' , true);
 
             $columns = self::columns();
             $get_all = item::get_all($params);
@@ -336,7 +337,7 @@ class item
      *
      * @return array|bool
      */
-    public static function prepare($data = [])
+    public static function prepare($data = [], $disable_cache = false)
     {
         if( ! is_array($data)) return false;
 
@@ -346,7 +347,7 @@ class item
         $cache_id      = "item.$id.prepare";
         $cache_content = cache::get($cache_id);
 
-        if($cache_content) return $cache_content;
+//        if($cache_content && $disable_cache === false) return $cache_content;
 
         $data['created_at'] = [
 
@@ -471,7 +472,7 @@ class item
         if( ! array_key_exists('name', $data)) $data['name'] = $data['title'];
 
         unset($columns['data']);
-        cache::create($cache_id, $columns);
+//        cache::create($cache_id, $columns);
         return $columns;
     }
 
@@ -644,6 +645,7 @@ class item
     public static function get($params = [], $only_active = false)
     {
         sys::array_key_default_value($params, 'only_active', $only_active);
+        sys::array_key_default_value($params, 'cache.disable', false);
 
         $params['limit'] = 1;
 
@@ -653,7 +655,7 @@ class item
 
         if(count($result) <= 0) return false;
 
-        $result = self::prepare($result);
+        $result = self::prepare($result, $params['cache.disable']);
 
         return $result;
     }
@@ -666,12 +668,13 @@ class item
     public static function get_all($params = [], $only_active = false)
     {
         sys::array_key_default_value($params, 'only_active', $only_active);
+        sys::array_key_default_value($params, 'cache.disable', false);
 
         $sql    = self::select_string($params);
         $query  = db::query($sql);
         $result = [];
 
-        while($ql = db::fetch_assoc($query)) $result[] = self::prepare($ql);
+        while($ql = db::fetch_assoc($query)) $result[] = self::prepare($ql, $params['cache.disable']);
 
         if(count($result) <= 0) return false;
         return $result;

@@ -117,6 +117,7 @@ class controller_admin extends controller
             $form_content         = cx::render($cx_type['form'], $data, ['ext' => 'form']);
             $data['form_content'] = $form_content;
 
+            cx::title('Editing : ' . $item_data['title']);
             layout::set('admin');
             $this->render('admin/edit', $data);
         }

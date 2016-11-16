@@ -349,6 +349,7 @@ class cx
 
     public static function counter($alias = null, $data = null)
     {
+        return true;
         $current_data = item::get(['type' => 'counter']);
 
         if(!$current_data)
@@ -400,6 +401,7 @@ class cx
                 $uparams          = [];
                 $uparams['type']  = 'counter';
                 $uparams['where'] = "`type` = 'counter'";
+                $uparams['limit'] = 1;
 
                 if(item::update(self::$counter, $uparams)) cache::clear('cx.counter*');
             }

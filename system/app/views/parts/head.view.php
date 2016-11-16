@@ -11,6 +11,12 @@
     <meta property="og:description" content="<?=cx::data('item.data')['description']?>" />
     <meta property="og:image"       content="<?=html::image_link(cx::data('item.data')['image_url'], 880)?>" />
     <meta property="fb:app_id"      content="<?=cx::option('facebook.app_id')?>" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@kizlaronline" />
+    <meta name="twitter:title" content="<?=cx::data('item.data')['title']?>" />
+    <meta name="twitter:description" content="<?=cx::data('item.data')['description']?>" />
+    <meta name="twitter:image" content="<?=html::image_link(cx::data('item.data')['image_url'], 880)?>" />
     <?php endif; ?>
 
     <meta charset="utf-8">
