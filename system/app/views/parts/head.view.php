@@ -4,6 +4,9 @@
     <meta name="keywords"    content="<?= cx::keywords()    ?>">
     <meta name="author"      content="<?= cx::author()      ?>">
 
+    <meta name="robots" content="index, follow">
+    <link type="application/rss+xml" href="<?=URL?>/rss" title="<?=cx::option('app.name')?>"/>
+
     <?php if(cx::data('item.data') != null): ?>
 <meta property="og:type"        content="article" />
     <meta property="og:url"         content="<?=cx::data('item.data')['full_url']?>" />
@@ -25,7 +28,9 @@
     <script src="<?= SYS_ASSETS ?>/cx/plugins/jquery.js"></script>
     <script src="<?= SYS_ASSETS ?>/cx/plugins/jquery.form.js"></script>
     <script src="<?= SYS_ASSETS ?>/cx/plugins/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/ckeditor/ckeditor.js"></script>
+    <script src="<?= SYS_ASSETS ?>/cx/plugins/ckeditor/ckeditor.js"></script>
+    <script src="<?= SYS_ASSETS ?>/cx/plugins/isotope.min.js"></script>
+    <script src="<?= SYS_ASSETS ?>/cx/plugins/imagesloaded.js"></script>
     <script src="<?= SYS_ASSETS ?>/cx/js/cx.js"></script>
 
     <script>

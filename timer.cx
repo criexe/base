@@ -34,9 +34,9 @@ echo 'Timer Started !';
 
 
 
-while(true)
-{
-    echo time() . "\n";
+//while(true)
+//{
+//    echo time() . "\n";
 
     // Update Last Runtime Data
     timer::data('last_runtime', time());
@@ -61,6 +61,8 @@ while(true)
         }
     }
 
+//    sleep(1);
+
 //    cx::counter('timer', 1);
 //    cx::save();
-}
+//}

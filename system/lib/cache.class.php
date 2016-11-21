@@ -59,8 +59,8 @@ class cache
      */
     public static function create_file_name($params = [])
     {
-//        return user::id() . '_' .  $params['id'] . '.' . $params['ext'];
-        return $params['id'] . '.' . $params['ext'];
+        if(user::logged_in()) return 'u' . user::id() . '.' . $params['id'] . '.' . $params['ext'];
+        else                  return $params['id'] . '.' . $params['ext'];
     }
 
 

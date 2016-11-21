@@ -395,6 +395,11 @@ class item
 
         if($data['url'] != null) $data['full_url'] = URL . '/' . $data['url'];
 
+        if($data['title'] != null)
+        {
+            $data['title'] = str_replace('&amp;', '&', $data['title']);
+        }
+
         if(json::valid($data['category'])) $data['category'] = json::decode($data['category']);
 
         $data['content'] = htmlspecialchars_decode($data['content']);

@@ -7,8 +7,9 @@ cx::type([
     'name'    => 'User',
     'columns' => ['username', 'password', 'email', 'permissions', 'authority'],
     'form'    => 'user',
-    'layout'  => 'user',
-    'sitemap' => true
+    'layout'  => 'app',
+    'sitemap' => true,
+    'rss'     => true
 ]);
 
 
