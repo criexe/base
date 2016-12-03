@@ -180,12 +180,7 @@ var cx = {
 
         images_loaded : function($sel, $func){
 
-            var $js_path = URL + "/system/app/assets/cx/plugins/imagesloaded.js";
-
-            cx.include.js($js_path, function(){
-
-                $($sel).imagesLoaded($func);
-            });
+            $($sel).imagesLoaded($func);
         }
     },
 
@@ -528,14 +523,9 @@ var cx = {
 
         column_grid : function($sel, $column_data_sel){
 
-            var $js_path = URL + "/system/app/assets/cx/plugins/isotope.min.js";
+            cx.event.images_loaded($sel, function(){
 
-            cx.include.js($js_path, function(){
-
-                cx.event.images_loaded($sel, function(){
-
-                    $($sel).isotope({itemSelector : $column_data_sel});
-                });
+                $($sel).isotope({itemSelector : $column_data_sel});
             });
         }
     }

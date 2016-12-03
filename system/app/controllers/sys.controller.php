@@ -184,4 +184,54 @@ class controller_sys extends controller
     }
 
 
+    function rss()
+    {
+        try
+        {
+            $type      = input::get('type');
+            $_title    = cx::option('app.name');
+            $all_types = cx::type();
+
+            $iparams          = [];
+            $iparams['limit'] = 100;
+
+            if($type)
+            {
+                $iparams['type'] = $type;
+
+                $_title = $_title . ' - ' . $all_types[$type]['title'];
+            }
+            else
+            {
+                $rss_types = [];
+                $_where    = [];
+
+                foreach($all_types as $item_type)
+                {
+                    sys::array_key_default_value($item_type, 'rss', false);
+
+                    if($item_type['rss'] === true)
+                    {
+                        $rss_types[] = $item_type['alias'];
+                    }
+                }
+
+                foreach($rss_types as $rtype) $_where[] = "`type` = '$rtype'";
+                $_where = implode(' OR ', $_where);
+
+                $iparams['where'] = $_where;
+            }
+
+            header('Content-Type: application/rss+xml; charset=utf-8');
+
+            $latest = item::latest($iparams);
+            $rss    = cx::render('system/app/views/sys/rss', ['items' => $latest, 'title' => $_title]);
+            echo $rss;
+        }
+        catch(Exception $e)
+        {
+            sys::location();
+        }
+    }
+
 }
