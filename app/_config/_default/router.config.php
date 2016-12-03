@@ -18,7 +18,7 @@ return [
         '#^register$#i' => 'user/register_form',
         '#^logout$#i'   => 'user/logout',
 
-        '#^hashtag/(\w+)#' => 'hashtag/index/$1'
+        '#^rss$#' => 'sys/rss$1'
     ]
 
 ];
