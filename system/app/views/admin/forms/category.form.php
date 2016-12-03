@@ -39,15 +39,8 @@
 
             <div class="card">
                 <div class="card-content clear">
-                    <div class="section">
-                        <div class="switch center">
-                            <label>
-                                Passive
-                                <input name="db[status]" type="checkbox" value="active" <?= $data['status'] == 'active' ? 'checked' : null ?>>
-                                <span class="lever"></span>
-                                Active
-                            </label>
-                        </div>
+                    <div class="input-field">
+                        <?= form::status('db[status]', $data['status']) ?>
                     </div>
                 </div>
             </div>

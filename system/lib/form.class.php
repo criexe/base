@@ -218,6 +218,23 @@ class form
     }
 
 
+    public static function status($name = null, $value = null)
+    {
+        $params          = [];
+        $params['name']  = $name;
+        $params['value'] = $value;
+
+        $params['options'] = [
+
+            'waiting' => 'Waiting',
+            'passive' => 'Passive',
+            'active'  => 'Active'
+        ];
+
+        return self::select($params);
+    }
+
+
 
 }
 ?>

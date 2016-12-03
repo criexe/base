@@ -31,13 +31,6 @@
 
 <?= ( (defined('CONTROLLER')) && ! (CONTROLLER == 'admin' || CONTROLLER == 'developer')) ? cx::option('app.tracking_code') : null ?>
 
-
-<link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/css/style.css">
-<link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/plugins/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/plugins/animate.css">
-<link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/plugins/materialize/css/materialize.min.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 <?php if(cx::data('item.data') && (user::authority() === 'developer' || user::authority() === 'admin')): ?>
     <a href="<?=_ADMIN?>/edit/<?=cx::data('item.data')['id']?>" class="btn-floating cx-fixed btn-large waves-effect waves-light red modal-trigger"><i class="material-icons">settings</i></a>
 <?php endif; ?>

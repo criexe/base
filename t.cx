@@ -1,0 +1,15 @@
+<?php
+
+set_time_limit(0);
+ini_set('memory_limit', '-1');
+
+
+echo 'Timer Started !';
+
+
+do
+{
+    shell_exec("php timer.cx");
+    echo "\n" . time();
+}
+while(true);

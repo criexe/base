@@ -200,6 +200,15 @@ class cx
     }
 
 
+    public static function body()
+    {
+        $render               = [];
+        $render['is_content'] = false;
+
+        return self::render('system/app/views/parts/body', null, $render);
+    }
+
+
     public static function footer()
     {
         $render               = [];

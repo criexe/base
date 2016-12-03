@@ -8,6 +8,7 @@ $types = cx::type();
     <?= html::css('/system/app/assets/admin/style.css') ?>
 </head>
 <body class="grey lighten-4">
+<?=cx::body()?>
 
     <div class="panel grey-text text-darken-4">
 

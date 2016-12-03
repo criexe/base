@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/system/app/assets/developer/style.css">
 </head>
 <body class="grey darken-4">
+<?=cx::body()?>
 
     <div class="developer grey-text ligten-4">
 

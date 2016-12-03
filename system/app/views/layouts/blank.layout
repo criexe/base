@@ -4,6 +4,7 @@
     <?= cx::head() ?>
 </head>
 <body>
+    <?=cx::body()?>
 
     <?= layout::content() ?>
     <?= cx::footer() ?>

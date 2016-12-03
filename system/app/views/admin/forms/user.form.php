@@ -140,29 +140,10 @@ $all_types = cx::type();
 
             <div class="card">
                 <div class="card-content clear">
-                    <div class="section">
-                        <div class="switch center">
-                            <label>
-                                Passive
-                                <input name="db[status]" type="checkbox" value="active" <?= $data['status'] == 'active' ? 'checked' : null ?>>
-                                <span class="lever"></span>
-                                Active
-                            </label>
-                        </div>
+                    <div class="input-field">
+                        <?= form::status('db[status]', $data['status']) ?>
                     </div>
-                    <div class="divider"></div>
-                    <div class="section">
-                        <div class="switch center">
-                            <label>
-                                Unlock
-                                <input name="db[locked]" type="checkbox" value="locked" <?= $data['locked'] == 'locked' ? 'checked' : null ?>>
-                                <span class="lever"></span>
-                                Lock
-                            </label>
-                        </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="section">
+                    <div class="input-field">
                         <input type="date" name="db[released_at]" class="datepicker" placeholder="Release Date" value="">
                     </div>
                 </div>

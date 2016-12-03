@@ -33,9 +33,9 @@ class cookie
 
             if(!array_key_exists('expire', $params)) $params['expire']     = time() + 360000;
             if(!array_key_exists('path', $params)) $params['path']         = '/';
-            if(!array_key_exists('domain', $params)) $params['domain']     = null;
+            if(!array_key_exists('domain', $params)) $params['domain']     = '.' . $_SERVER["HTTP_HOST"];
             if(!array_key_exists('secure', $params)) $params['secure']     = false;
-            if(!array_key_exists('httponly', $params)) $params['httponly'] = false;
+            if(!array_key_exists('httponly', $params)) $params['httponly'] = true;
 
             setcookie($key, $value, $params['expire'], $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }

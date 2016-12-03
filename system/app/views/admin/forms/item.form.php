@@ -43,26 +43,8 @@
 
             <div class="card">
                 <div class="card-content clear">
-                    <div class="section">
-                        <div class="switch center">
-                            <label>
-                                Passive
-                                <input name="db[status]" type="checkbox" value="active" <?= $data['status'] == 'active' ? 'checked' : null ?>>
-                                <span class="lever"></span>
-                                Active
-                            </label>
-                        </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="section">
-                        <div class="switch center">
-                            <label>
-                                Unlock
-                                <input name="db[locked]" type="checkbox" value="locked" <?= $data['locked'] == 'locked' ? 'checked' : null ?>>
-                                <span class="lever"></span>
-                                Lock
-                            </label>
-                        </div>
+                    <div class="input-field">
+                        <?= form::status('db[status]', $data['status']) ?>
                     </div>
                 </div>
             </div>
@@ -71,7 +53,7 @@
                 <div class="card-content">
                     <div class="row">
                         <div class="input-field col l12">
-                            <input type="text" id="id_user" value="<?= $data['user']['name'] ? $data['user']['name'] : 'Unknown' ?>" disabled>
+                            <input type="text" id="id_user" value="<?= array_key_exists('name', $data['user']) ? $data['user']['name'] : 'Unknown' ?>" disabled>
                             <label for="id_user">User</label>
                         </div>
                         <div class="input-field col l12">

@@ -15,7 +15,7 @@
     <title><?=cx::title()?></title>
 </head>
 <body class="item-layout grey lighten-5">
-
+    <?=cx::body()?>
     <?=layout::content()?>
 
 </body>

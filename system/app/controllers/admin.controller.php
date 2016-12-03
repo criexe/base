@@ -101,7 +101,7 @@ class controller_admin extends controller
             // Get Item
             $item_params          = [];
             $item_params['where'] = "`id` = $id";
-            $item_data            = item::get($item_params);
+            $item_data            = item::get($item_params, true);
 
             $type    = $item_data['type'];
             $cx_type = cx::type($type);

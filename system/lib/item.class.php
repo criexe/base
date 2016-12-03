@@ -138,7 +138,7 @@ class item
             sys::array_key_default_value($data, 'disable.cache' , true);
 
             $columns = self::columns();
-            $get_all = item::get_all($params);
+            $get_all = item::get_all($params, true);
 
             if($get_all == false) $get_all = [];
 
@@ -489,6 +489,7 @@ class item
         sys::array_key_default_value($params, 'meta', []);
         sys::array_key_default_value($params, 'type', null);
         sys::array_key_default_value($params, 'only_active', false);
+        sys::array_key_default_value($params, 'show.all', false);
 
         $columns       = self::columns();
         $sql_columns   = [];
@@ -536,9 +537,9 @@ class item
                 $params['where'] = str_replace("`$cn`", "`$cn`.`meta_value`", $params['where']);
         }
 
-        $where[] = "\t( `$name`.`id` IS NOT NULL ) AND ( `$name`.`status` <> 'trash' ) AND ( `$name`.`released_at` IS NULL OR `$name`.`released_at` < $time )";
+        $where[] = "\t( `$name`.`id` IS NOT NULL ) AND ( `$name`.`released_at` IS NULL OR `$name`.`released_at` < $time )";
 
-        if($params['only_active'] == true) $where[] = "\t( `$name`.`status` = 'active' )";
+        if($params['show.all']    != true) $where[] = "\t( `$name`.`status` = 'active' )";
         if($params['type']        != null) $where[] = "\t( `$name`.`type` = '{$params['type']}' )";
         if($params['where']       != null) $where[] = "\t( {$params['where']} )";
         $where = implode(" AND \n", $where);
@@ -642,9 +643,9 @@ class item
      *
      * @return array|bool|null
      */
-    public static function get($params = [], $only_active = false)
+    public static function get($params = [], $show_all = false)
     {
-        sys::array_key_default_value($params, 'only_active', $only_active);
+        sys::array_key_default_value($params, 'show.all', $show_all);
         sys::array_key_default_value($params, 'cache.disable', false);
 
         $params['limit'] = 1;
@@ -665,9 +666,9 @@ class item
      *
      * @return array|bool
      */
-    public static function get_all($params = [], $only_active = false)
+    public static function get_all($params = [], $show_all = false)
     {
-        sys::array_key_default_value($params, 'only_active', $only_active);
+        sys::array_key_default_value($params, 'show.all', $show_all);
         sys::array_key_default_value($params, 'cache.disable', false);
 
         $sql    = self::select_string($params);
@@ -685,9 +686,9 @@ class item
      *
      * @return array|bool
      */
-    public static function latest($params = [], $only_active = true)
+    public static function latest($params = [], $show_all = false)
     {
-        sys::array_key_default_value($params, 'only_active', $only_active);
+        sys::array_key_default_value($params, 'show.all', $show_all);
 
         return self::get_all($params);
     }
@@ -701,7 +702,7 @@ class item
     {
         sys::specify_params($params, ['db', 'design']);
 
-        $datas = self::get_all($params['db']);
+        $datas = self::get_all($params['db'], true);
 
         $render           = [];
         $render['layout'] = false;
