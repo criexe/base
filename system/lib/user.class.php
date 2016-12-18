@@ -38,8 +38,10 @@ class user
             if($check_username) throw_exception('This username is already using.');
             if($check_email)    throw_exception('This email is already using.');
 
-            $register_data['type']  = 'user';
-//            $register_data['title'] = 'user';
+            $register_data['type'] = 'user';
+
+            sys::array_key_default_value($register_data, 'title' , $register_data['name']);
+
             unset($register_data['name']);
 
             $insert = item::insert($register_data);

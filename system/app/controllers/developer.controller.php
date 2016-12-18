@@ -22,15 +22,14 @@ class controller_developer extends controller
             $user = [];
             $user['title'] = 'Super Admin';
             $user['about'] = null;
-            $user['url']   = 'super-admin';
-            $user['type']  = 'user';
+            $user['url']   = 'user/super-admin';
 
             $user['username']  = 'admin';
             $user['password']  = 'admin';
             $user['email']     = 'admin@criexe.com';
             $user['authority'] = 'developer';
 
-            item::insert($user);
+            user::register($user);
 
             cache::clear();
 
