@@ -23,6 +23,7 @@ class error
 
     public static function show_404()
     {
+        header("HTTP/1.0 404 Not Found");
         cx::counter('error.404', 1);
         self::load_page('404.php');
     }

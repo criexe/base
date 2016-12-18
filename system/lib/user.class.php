@@ -27,7 +27,7 @@ class user
         try
         {
             if(
-                $register_data['name']     == false ||
+                $register_data['title']    == false ||
                 $register_data['username'] == false ||
                 $register_data['email']    == false ||
                 $register_data['password'] == false ) throw_exception('Fill out the form.');
@@ -39,7 +39,7 @@ class user
             if($check_email)    throw_exception('This email is already using.');
 
             $register_data['type']  = 'user';
-            $register_data['title'] = 'user';
+//            $register_data['title'] = 'user';
             unset($register_data['name']);
 
             $insert = item::insert($register_data);

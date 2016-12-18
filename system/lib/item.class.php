@@ -395,11 +395,6 @@ class item
 
         if($data['url'] != null) $data['full_url'] = URL . '/' . $data['url'];
 
-        if($data['title'] != null)
-        {
-            $data['title'] = str_replace('&amp;', '&', $data['title']);
-        }
-
         if(json::valid($data['category'])) $data['category'] = json::decode($data['category']);
 
         $data['content'] = htmlspecialchars_decode($data['content']);
@@ -542,7 +537,7 @@ class item
                 $params['where'] = str_replace("`$cn`", "`$cn`.`meta_value`", $params['where']);
         }
 
-        $where[] = "\t( `$name`.`id` IS NOT NULL ) AND ( `$name`.`released_at` IS NULL OR `$name`.`released_at` < $time )";
+        $where[] = "\t( `$name`.`id` IS NOT NULL ) AND ( `$name`.`released_at` IS NULL OR `$name`.`released_at` < $time ) AND (`$name`.`status` <> 'trash')";
 
         if($params['show.all']    != true) $where[] = "\t( `$name`.`status` = 'active' )";
         if($params['type']        != null) $where[] = "\t( `$name`.`type` = '{$params['type']}' )";
@@ -763,5 +758,47 @@ class item
         return new tag();
     }
 
+
+    public static function next($type = null, $ref_id = null)
+    {
+        try
+        {
+            if($type == null)   throw_exception('No type.');
+            if($ref_id == null) throw_exception('No reference ID.');
+
+            $params          = [];
+            $params['type']  = $type;
+            $params['where'] = "`id` > $ref_id";
+
+            $next_item = item::get($params);
+            if($next_item) return $next_item;
+            else           return false;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
+    }
+
+    public static function prev($type = null, $ref_id = null)
+    {
+        try
+        {
+            if($type == null)   throw_exception('No type.');
+            if($ref_id == null) throw_exception('No reference ID.');
+
+            $params          = [];
+            $params['type']  = $type;
+            $params['where'] = "`id` < $ref_id";
+
+            $prev_item = item::get($params);
+            if($prev_item) return $prev_item;
+            else           return false;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
+    }
 
 }

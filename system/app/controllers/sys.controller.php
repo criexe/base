@@ -68,7 +68,7 @@ class controller_sys extends controller
             $pass  = user::create_password($pass);
 
             $reg_data = [];
-            $reg_data['name']     = $user;
+            $reg_data['title']    = $name;
             $reg_data['username'] = $user;
             $reg_data['email']    = $email;
             $reg_data['password'] = $pass;
