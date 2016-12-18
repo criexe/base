@@ -29,21 +29,23 @@ class lang
             }
         }
 
-        if(self::exist($lang))
+        // Include Files
+
+        $datas      = [];
+        $lang_files = self::files();
+
+        foreach($lang_files as $file)
         {
-            $datas = include(self::file_name($lang));
-
-            cookie::set('language', $lang);
-
-            self::$lang_data = $datas;
-            self::$curr_lang = $lang;
-
-            return $datas;
+            $file_arr = include($file);
+            $datas    = array_merge($datas, $file_arr);
         }
-        else
-        {
-            return false;
-        }
+
+        cookie::set('language', $lang);
+
+        self::$lang_data = $datas;
+        self::$curr_lang = $lang;
+
+        return $datas;
     }
 
 
@@ -78,7 +80,7 @@ class lang
     {
         if($lang == null) return false;
 
-        if(file_exists(self::file_name($lang)))
+        if(count(self::files($lang)) > 0)
         {
             return true;
         }
@@ -91,7 +93,17 @@ class lang
 
     public static function file_name($lang = null)
     {
-        return LANGUAGES_PATH . DS . $lang . '.php';
+        return LANGUAGES_PATH . DS . $lang . '.lang';
+    }
+
+
+    public static function files($lang = null)
+    {
+        if($lang == null) $lang = self::current();
+
+        $lang_files = cx::$files['lang'];
+        $found      = preg_grep("%" . $lang . "\.lang(?:\.php)?$%si", $lang_files);
+        return $found;
     }
 
 

@@ -5,8 +5,11 @@ class controller_app extends controller
 
     function index()
     {
-        print_r( cx::option() );
+        echo lang::get('language');
+
+        print_r(lang::get_data());
     }
+
 
     function modal()
     {
