@@ -801,4 +801,9 @@ class item
         }
     }
 
+    public static function error()
+    {
+        return db::error();
+    }
+
 }

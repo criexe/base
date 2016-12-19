@@ -12,6 +12,14 @@ class controller_developer extends controller
             hook::listen('install', 'before');
 
             db::query('
+            SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+            SET time_zone = "+00:00";
+            
+            /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+            /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+            /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+            /*!40101 SET NAMES utf8mb4 */;
+            
             CREATE TABLE `items` (
               `id` int(11) NOT NULL,
               `created_at` bigint(11) DEFAULT NULL,
@@ -36,15 +44,29 @@ class controller_developer extends controller
               `image` varchar(255) DEFAULT NULL,
               `video` varchar(255) DEFAULT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-            ');
-
-            db::query('
+            
             CREATE TABLE `item_meta` (
               `id` int(11) NOT NULL,
               `item_id` bigint(20) NOT NULL,
               `meta_key` varchar(255) NOT NULL,
               `meta_value` longtext NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            
+            ALTER TABLE `items`
+              ADD PRIMARY KEY (`id`);
+            
+            ALTER TABLE `item_meta`
+              ADD PRIMARY KEY (`id`);
+            
+            ALTER TABLE `items`
+              MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+            
+            ALTER TABLE `item_meta`
+              MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=576;
+            /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+            /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+            /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
             ');
 
             // Create System Folders
@@ -65,10 +87,9 @@ class controller_developer extends controller
             $user['email']     = 'admin@criexe.com';
             $user['authority'] = 'developer';
 
-            user::register($user);
+            if(user::register($user)['status'] == true) echo 'User Added.'; else echo 'User Error.';
 
             cache::clear();
-
             hook::listen('install', 'after');
 
             echo 'Success';

@@ -38,7 +38,7 @@ class user
             if($check_username) throw_exception('This username is already using.');
             if($check_email)    throw_exception('This email is already using.');
 
-            $register_data['type']  = 'user';
+            $register_data['type'] = 'user';
             //            $register_data['title'] = 'user';
             unset($register_data['name']);
 
