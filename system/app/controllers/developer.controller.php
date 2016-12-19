@@ -11,6 +11,42 @@ class controller_developer extends controller
         {
             hook::listen('install', 'before');
 
+            db::query('
+            CREATE TABLE `items` (
+              `id` int(11) NOT NULL,
+              `created_at` bigint(11) DEFAULT NULL,
+              `released_at` bigint(20) DEFAULT NULL,
+              `updated_at` bigint(11) DEFAULT NULL,
+              `user` text,
+              `parent` int(11) DEFAULT NULL,
+              `type` varchar(100) DEFAULT NULL,
+              `title` longtext,
+              `content` longtext,
+              `url` longtext,
+              `category` longtext,
+              `status` varchar(100) DEFAULT NULL,
+              `locked` varchar(100) DEFAULT NULL,
+              `data` longtext,
+              `layout` varchar(100) DEFAULT NULL,
+              `ip` varchar(20) DEFAULT NULL,
+              `views` bigint(20) DEFAULT NULL,
+              `keywords` longtext,
+              `description` longtext,
+              `visitor_ip` longtext,
+              `image` varchar(255) DEFAULT NULL,
+              `video` varchar(255) DEFAULT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ');
+
+            db::query('
+            CREATE TABLE `item_meta` (
+              `id` int(11) NOT NULL,
+              `item_id` bigint(20) NOT NULL,
+              `meta_key` varchar(255) NOT NULL,
+              `meta_value` longtext NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ');
+
             // Create System Folders
             sys::write(['file' => SYSDATA_PATH . DS . 'backups' . DS . 'index.html']);
             sys::write(['file' => SYSDATA_PATH . DS . 'cache'   . DS . 'index.html']);
