@@ -120,6 +120,9 @@ var cx = {
                 }
 
             });
+
+            // Scrollbar
+            $("[data-cx-scrollbar], [data-scrollbar], [cx-scrollbar]").perfectScrollbar();
         }
     },
 

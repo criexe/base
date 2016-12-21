@@ -30,7 +30,8 @@
     <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/imagesloaded.js"></script>
     <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/isotope.min.js"></script>
-    <script src="<?= SYS_ASSETS ?>/cx/js/cx.js"></script>
+
+    <script src="<?= SYS_ASSETS ?>/cx/js/cx.js?v1"></script>
 
     <script>
         var URL      = "<?= URL ?>";

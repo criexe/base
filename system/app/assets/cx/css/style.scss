@@ -10,6 +10,11 @@ html, body{ height:100% }
     }
 }
 
+[data-cx-scrollbar], [data-scrollbar], [cx-scrollbar]{
+    overflow: hidden;
+    position: relative;
+}
+
 .modal{
 
     &[data-image-upload-modal]{
