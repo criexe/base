@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/css/style.css?v1">
+<link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/css/style.css?v5">
 <link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/plugins/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/plugins/animate.css">
 <link rel="stylesheet" href="<?= SYS_ASSETS ?>/cx/plugins/materialize/css/materialize.min.css">

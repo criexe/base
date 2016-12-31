@@ -4,9 +4,9 @@
 
     <div class="orange darken-4">
         <div class="modal-content center">
-            <h4 class="white-text clearfix">
+            <div class="white-text clearfix fsz-h4">
                 <span><?=user::name()?></span>
-            </h4>
+            </div>
         </div>
     </div>
     <div class="divider"></div>

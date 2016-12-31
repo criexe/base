@@ -33,7 +33,7 @@
     <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/imagesloaded.js"></script>
     <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/isotope.min.js"></script>
 
-    <script src="<?= SYS_ASSETS ?>/cx/js/cx.js?v1"></script>
+    <script src="<?= SYS_ASSETS ?>/cx/js/cx.js?v4"></script>
 
     <script>
         var URL      = "<?= URL ?>";

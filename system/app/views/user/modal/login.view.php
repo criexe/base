@@ -1,10 +1,10 @@
 <div class="modal <?=$class?>" id="<?=$id?>">
     <div class="green">
         <div class="modal-content">
-            <h4 class="white-text clearfix">
+            <div class="white-text clearfix fsz-h4">
                 <i class="material-icons">lock_open</i>
                 <span>Login</span>
-            </h4>
+            </div>
         </div>
     </div>
     <div class="modal-content">

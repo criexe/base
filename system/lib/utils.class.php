@@ -52,6 +52,27 @@ class utils
         return $buffer;
     }
 
+
+    public static function images_add_alt_tags($content = null)
+    {
+        $title = cx::title();
+
+        preg_match_all('/<img (.*?)\/>/', $content, $images);
+
+        if(!is_null($images))
+        {
+            foreach($images[1] as $index => $value)
+            {
+                if(!preg_match('/alt=/', $value))
+                {
+                    $new_img = str_replace('<img', '<img alt="' . $title . '"', $images[0][$index]);
+                    $content = str_replace($images[0][$index], $new_img, $content);
+                }
+            }
+        }
+        return $content;
+    }
+
 }
 
 

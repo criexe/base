@@ -89,6 +89,10 @@ class cx
                     // Emoji
                     $content = emoji::to_image($content);
 
+                    // Image - Add Alt Tags
+                    $content = utils::images_add_alt_tags($content);
+
+
                     if($params['is_content'] === true) cx::data('layout_content', $content);
                     if( ! $is_view_array) ob_end_clean();
 
@@ -432,6 +436,22 @@ class cx
 
         // Save
         $save['counter']();
+    }
+
+
+    public static function date($format = null, $time = null)
+    {
+        $lang = strtolower(lang::current());
+        $date = date($format, $time);
+        $old  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        $new  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        if($lang == 'tr' || $lang == 'tr_tr')
+        {
+            $new = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+        }
+
+        return str_replace($old, $new, $date);
     }
 
 }

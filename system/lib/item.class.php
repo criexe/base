@@ -353,7 +353,7 @@ class item
 
             'time'   => $data['created_at'],
             'format' => sys::get_config('application')['date_pattern'],
-            'date'   => date(sys::get_config('application')['date_pattern'], $data['created_at'])
+            'date'   => cx::date(sys::get_config('application')['date_pattern'], $data['created_at'])
         ];
 
         if($data['updated_at'] != null)
