@@ -4,6 +4,26 @@
 class controller_developer extends controller
 {
 
+    function __construct()
+    {
+        $installed = cx::option('app.installed');
+        if($installed)
+        {
+            if(user::authority() !== 'developer')
+            {
+                sys::location();
+                exit;
+            }
+        }
+        else
+        {
+            if(METHOD !== 'install')
+            {
+                sys::location();
+                exit;
+            }
+        }
+    }
 
     function install()
     {
