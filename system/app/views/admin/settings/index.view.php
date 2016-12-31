@@ -92,6 +92,19 @@
                             </div>
                         </div>
 
+                        <div id="twitter-settings" class="section scrollspy">
+                            <h4 class="header light orange-text text-darken-4">Twitter Settings</h4>
+                            <div class="row section">
+                                <div class="input-field col l12">
+                                    <input type="text" name="option[twitter.username]" value="<?=cx::option('twitter.username')?>" class="validate">
+                                    <label>Username</label>
+                                </div>
+                                <div class="input-field col l12">
+                                    <button type="submit" class="btn green waves-effect">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div id="facebook-settings" class="section scrollspy">
                             <h4 class="header light orange-text text-darken-4">CDN Settings</h4>
                             <div class="section">
@@ -141,6 +154,7 @@
                             <li><a href="#general-settings">General</a></li>
                             <li><a href="#mail-settings">Mail</a></li>
                             <li><a href="#facebook-settings">Facebook</a></li>
+                            <li><a href="#twitter-settings">Twitter</a></li>
                             <li><a href="#facebook-settings">CDN</a></li>
                         </ul>
                     </div>
