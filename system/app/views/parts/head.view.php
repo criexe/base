@@ -6,6 +6,8 @@
 
     <meta name="robots" content="index, follow">
 
+    <link rel="canonical" href="<?=cx::canonical()?>" />
+
     <?php if(cx::data('item.data') != null): ?>
 <meta property="og:type"        content="article" />
     <meta property="og:url"         content="<?=cx::data('item.data')['full_url']?>" />
@@ -31,7 +33,7 @@
     <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/imagesloaded.js"></script>
     <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/isotope.min.js"></script>
 
-    <script src="<?= SYS_ASSETS ?>/cx/js/cx.js?v1"></script>
+    <script src="<?= SYS_ASSETS ?>/cx/js/cx.js?v4"></script>
 
     <script>
         var URL      = "<?= URL ?>";
