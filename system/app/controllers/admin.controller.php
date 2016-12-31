@@ -17,8 +17,12 @@ class controller_admin extends controller
     {
         cx::title('Control Panel');
 
+        $data = [
+            'types' => cx::type()
+        ];
+
         layout::set('admin');
-        $this->render('admin/index');
+        $this->render('admin/index', $data);
     }
 
 
