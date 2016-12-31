@@ -71,7 +71,7 @@ AddHandler application/x-httpd-php .php .html .htm .cx
     ModPagespeedEnableFilters sprite_images
     ModPagespeedEnableFilters extend_cache
     ModPagespeedEnableFilters extend_cache_pdfs
-    ModPagespeedEnableFilters remove_quotes
+#    ModPagespeedEnableFilters remove_quotes
     ModPagespeedEnableFilters responsive_images,resize_images
     ModPagespeedEnableFilters responsive_images_zoom
     ModPagespeedEnableFilters local_storage_cache
@@ -85,4 +85,8 @@ AddHandler application/x-httpd-php .php .html .htm .cx
     ModPagespeedDomainRewriteHyperlinks on
     ModPagespeedEnableFilters combine_javascript
     ModPagespeedCombineAcrossPaths on
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-XSS-Protection "1; mode=block"
 </IfModule>

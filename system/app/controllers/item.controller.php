@@ -15,6 +15,7 @@ class controller_item extends controller
             cx::title($data['title']);
             cx::description($data['description']);
             cx::keywords($data['keywords']);
+            cx::canonical($data['full_url']);
 
             $cx_type   = cx::type($data['type']);
             $cx_layout = $cx_type['layout'];

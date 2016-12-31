@@ -6,6 +6,8 @@
 
     <meta name="robots" content="index, follow">
 
+    <link rel="canonical" href="<?=cx::canonical()?>" />
+
     <?php if(cx::data('item.data') != null): ?>
 <meta property="og:type"        content="article" />
     <meta property="og:url"         content="<?=cx::data('item.data')['full_url']?>" />

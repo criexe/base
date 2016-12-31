@@ -1,6 +1,6 @@
 <?php
 
-timer::task('day', function(){
+timer::task(_DAY, function(){
 
     db::export();
-});
+}); 

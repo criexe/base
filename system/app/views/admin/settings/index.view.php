@@ -13,6 +13,10 @@
                                     <label>Site Name</label>
                                 </div>
                                 <div class="input-field col l6">
+                                    <input type="text" name="option[app.home_title]" value="<?=cx::option('app.home_title')?>" class="validate" placeholder="Criexe">
+                                    <label>Home Title</label>
+                                </div>
+                                <div class="input-field col l12">
                                     <input type="text" name="option[app.url]" value="<?=cx::option('app.url')?>" class="validate" placeholder="http://...">
                                     <label>Site URL</label>
                                 </div>

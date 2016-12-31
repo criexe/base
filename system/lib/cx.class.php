@@ -218,7 +218,7 @@ class cx
     }
 
 
-    public static function title($title = null)
+    public static function title($title = null, $app_name = true)
     {
         if($title == null)
         {
@@ -226,6 +226,7 @@ class cx
         }
         else
         {
+            if($app_name == true) $title = $title . ' - ' . cx::option('app.name');
             return self::data('html.title', $title);
         }
     }
@@ -281,6 +282,19 @@ class cx
         else
         {
             return self::data('html.author', $author);
+        }
+    }
+
+
+    public static function canonical($uri = null)
+    {
+        if($uri == null)
+        {
+            return self::data('html.canonical') ? self::data('html.canonical') : url::get();
+        }
+        else
+        {
+            return self::data('html.canonical', $uri);
         }
     }
 
