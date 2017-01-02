@@ -41,6 +41,7 @@ class url
     public static function path()
     {
         $path = trim(trim(input::get( sys::get_config('application')['url_var'] ), '/'));
+        $path = preg_replace('/(.*?)\.amp$/i', '$1', $path);
         return $path;
     }
 

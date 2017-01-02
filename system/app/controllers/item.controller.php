@@ -20,6 +20,17 @@ class controller_item extends controller
             $cx_type   = cx::type($data['type']);
             $cx_layout = $cx_type['layout'];
 
+            if($cx_type['amp'] == true) cx::data('amp.active', true);
+            if(cx::data('amp.is') == true) $cx_layout = 'amp';
+
+            if($data['type'] == 'redirect' && $data['moved_to'] != null)
+            {
+                ob_start();
+                header("HTTP/1.1 301 Moved Permanently");
+                sys::location('/' . $data['moved_to']);
+                exit;
+            }
+
             $render = [];
 
             if      ($data['layout'] != null) $render['layout'] = $data['layout'];

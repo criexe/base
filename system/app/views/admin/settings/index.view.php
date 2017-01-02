@@ -29,15 +29,28 @@
                                     <label>Site Keywords</label>
                                 </div>
                                 <div class="input-field col l12">
-                                    <textarea name="option[app.tracking_code]" class="materialize-textarea validate"><?=cx::option('app.tracking_code')?></textarea>
-                                    <label>Tracking Code</label>
-                                </div>
-                                <div class="input-field col l12">
                                     <select name="option[app.ssl]">
                                         <option value="passive">Passive</option>
                                         <option value="active">Active</option>
                                     </select>
                                     <label>SSL</label>
+                                </div>
+                                <div class="input-field col l12">
+                                    <button type="submit" class="btn green waves-effect">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tracking-settings" class="section scrollspy">
+                            <h4 class="header light orange-text text-darken-4">Tracking Settings</h4>
+                            <div class="row section">
+                                <div class="input-field col l12">
+                                    <input type="text" name="option[google.analytics.id]" value="<?=cx::option('google.analytics.id')?>" class="validate" placeholder="UA-XXXXX-Y">
+                                    <label>Google Analytics ID</label>
+                                </div>
+                                <div class="input-field col l12">
+                                    <textarea name="option[app.tracking_code]" class="materialize-textarea validate"><?=cx::option('app.tracking_code')?></textarea>
+                                    <label>Tracking Code</label>
                                 </div>
                                 <div class="input-field col l12">
                                     <button type="submit" class="btn green waves-effect">Save</button>
@@ -152,6 +165,7 @@
                     <div class="col hide-on-small-only m3 l2">
                         <ul class="section table-of-contents">
                             <li><a href="#general-settings">General</a></li>
+                            <li><a href="#tracking-settings">Tracking</a></li>
                             <li><a href="#mail-settings">Mail</a></li>
                             <li><a href="#facebook-settings">Facebook</a></li>
                             <li><a href="#twitter-settings">Twitter</a></li>

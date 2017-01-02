@@ -120,7 +120,7 @@ class timer
 
     public static function cmd_string()
     {
-        $timer_path  = ROOT_PATH . DS . 'timer.cx';
+        $timer_path  = ROOT_PATH . DS . 't.cx';
         $os         = sys::os();
 
         switch($os)

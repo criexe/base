@@ -235,6 +235,12 @@ class form
     }
 
 
+    public static function admin()
+    {
+        return true;
+    }
+
+
 
 }
 ?>

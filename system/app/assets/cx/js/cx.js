@@ -181,6 +181,16 @@ var cx = {
             $(document).on("keyup", $sel, $func);
         },
 
+        blur : function($sel, $func){
+
+            $(document).on("blur", $sel, $func);
+        },
+
+        on : function($on, $sel, $func){
+
+            $(document).on($on, $sel, $func);
+        },
+
         images_loaded : function($sel, $func){
 
             var $js_path = URL + "/system/app/assets/cx/plugins/imagesloaded.js";
@@ -488,22 +498,9 @@ var cx = {
             s = s.replace(RegExp('(^' + opt.delimiter + '|' + opt.delimiter + '$)', 'g'), '');
 
             return opt.lowercase ? s.toLowerCase() : s;
-        },
-
-        convert_to_url : function(prefix, from, to){
-
-            if(prefix == undefined) prefix = ""
-            if(from   == undefined) from   = "[name='db[title]']"
-            if(to     == undefined) to     = "[name='db[url]']"
-
-            cx.event.keyup(from, function(e){
-
-                var from_val = $(from).val();
-                var to_val   = prefix + cx.util.slugify(from_val);
-
-                $(to).val(to_val);
-            });
         }
+
+
     },
 
 

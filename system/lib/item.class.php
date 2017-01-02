@@ -143,6 +143,7 @@ class item
             if($get_all == false) $get_all = [];
 
             $update_counter = 0;
+            $moved_url_data = false;
 
             // Items Loop
             foreach($get_all as $get)
@@ -174,6 +175,17 @@ class item
                     }
                 }
 
+                if(array_key_exists('url', $data) && $data['url'] != $get['url'] && $data['url'] != null)
+                {
+                    $moved_url_data = [
+
+                        'type'     => 'redirect',
+                        'title'    =>  $get['url'],
+                        'url'      =>  $get['url'],
+                        'moved_to' =>  $data['url']
+                    ];
+                }
+
                 if(array_key_exists('keywords', $data) && $data['keywords'] != null)
                 {
                     $_keywords = str_replace("\n", ', ',  $data['keywords']);
@@ -196,7 +208,25 @@ class item
                 $update_counter++;
             }
 
-            if($update_counter > 0) return true; else return false;
+            if($update_counter > 0)
+            {
+                if($moved_url_data !== false)
+                {
+                    item::delete([
+
+                        'type'  => 'redirect',
+                        'where' => "`moved_to` = '{$moved_url_data['url']}' AND `url` = '{$moved_url_data['moved_to']}'",
+                        'limit' => 1
+                    ]);
+
+                    item::insert($moved_url_data);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         catch(Exception $e)
         {

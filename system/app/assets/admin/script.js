@@ -96,3 +96,35 @@ cx.ajax.submit("#settings_form", {
         cx.alert.toast(data.message);
     }
 });
+
+
+if($("[name='db[url]']").val() == "")
+{
+    cx.event.keyup("[name='db[title]']", function(e){
+
+        var from_val = $("[name='db[title]']").val();
+        var to_val   = cx.util.slugify(from_val);
+
+        $("[name='db[url]']").val(to_val);
+        $("[name='db[url]']").trigger("change");
+    });
+}
+
+cx.event.on("change blur", "[name='db[url]']", function(e){
+
+    $url_input = $(this);
+
+    cx.ajax.post(URL + "/helper/check_url", {url : $url_input.val()}, function(data){
+
+        if(data == "true")
+        {
+            $url_input.removeClass("valid").addClass("invalid");
+            $("[type='submit']").attr("disabled", "disabled");
+        }
+        else
+        {
+            $url_input.removeClass("invalid").addClass("valid");
+            $("[type='submit']").removeAttr("disabled");
+        }
+    });
+});

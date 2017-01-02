@@ -1,6 +1,6 @@
 <div class="input-field col l12">
     <select name="db[category][]" <?=$multiple?>>
-        <option value="" disabled selected>Categories</option>
+        <option value="" disabled selected>Select a category.</option>
         <?php
         foreach($categories as $cat)
         {
@@ -9,4 +9,5 @@
         }
         ?>
     </select>
+    <label>Category</label>
 </div>

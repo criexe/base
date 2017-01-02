@@ -82,6 +82,11 @@ class utils
         return mb_strtoupper($firstChar, $encoding) . $then;
     }
 
+    public static function ucwords($str)
+    {
+        return mb_convert_case($str, MB_CASE_TITLE, "UTF-8");
+    }
+
 }
 
 

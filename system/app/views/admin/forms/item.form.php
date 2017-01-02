@@ -35,25 +35,20 @@
         <div class="col l3 m12 s12">
 
             <div class="card">
-                <div class="card-content center">
-                    <button class="btn green waves-effect waves-light" type="submit">Save</button>
-                    <button class="btn red darken-3 waves-effect waves-light" type="reset">Reset</button>
+                <div class="card-content grey lighten-5">
+                    <button class="btn green waves-effect" type="submit">Save</button>
+                    <a href="<?=$data['full_url']?>" class="btn orange waves-effect">Preview</a>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-content clear">
-                    <div class="input-field">
-                        <?= form::status('db[status]', $data['status']) ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
+                <div class="divider"></div>
                 <div class="card-content">
-                    <div class="row">
+                    <div class="row mgb-0 mgt-0">
+                        <div class="input-field col l12">
+                            <?= form::status('db[status]', $data['status']) ?>
+                            <label>Status</label>
+                        </div>
                         <div class="input-field col l12">
                             <input type="text" id="id_user" value="<?= array_key_exists('name', $data['user']) ? $data['user']['name'] : 'Unknown' ?>" disabled>
+                            <input type="hidden" name="db[user]" value="<?= array_key_exists('id', $data['user']) ? $data['user']['id'] : null ?>">
                             <label for="id_user">User</label>
                         </div>
                         <div class="input-field col l12">
@@ -64,15 +59,13 @@
                         <?= form::category($item_type, $data['category']) ?>
 
                         <div class="input-field col l12">
-                            <textarea name="db[keywords]" id="id_keywords" class="materialize-textarea validate"><?= $data['keywords'] ?></textarea>
+                            <textarea name="db[keywords]" id="id_keywords" class="materialize-textarea validate" placeholder="tag1, tag2, tag3, tag4, ..."><?= $data['keywords'] ?></textarea>
                             <label for="id_keywords">Keywords</label>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-content">
+                <div class="divider"></div>
+                <div class="card-content grey lighten-5">
                     <img id="db_image_preview" src="<?=$data['image_url']?>">
                     <?= form::image('db[image]', $data['image'], ['preview' => '#db_image_preview']) ?>
                 </div>

@@ -78,6 +78,13 @@ class router
         $_paths      = trim(trim(input::get( sys::get_config('application')['url_var'] ), '/'));
         $lang_config = sys::get_config('language');
 
+        // Check AMP
+        if(preg_match('/.*?\.amp$/i', $_paths))
+        {
+            cx::data('amp.is', true);
+            $_paths = preg_replace('/(.*?)\.amp$/i', '$1', $_paths);
+        }
+
         // Query Strings Control
         if(stristr($_paths, '#'))
         {

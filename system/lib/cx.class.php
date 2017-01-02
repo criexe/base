@@ -153,7 +153,7 @@ class cx
         // Add New Type
         if(is_array($param))
         {
-            sys::specify_params($param, ['alias', 'title', 'name', 'columns', 'layout']);
+            sys::specify_params($param, ['alias', 'title', 'name', 'columns', 'layout', 'amp']);
             sys::array_key_default_value($param, 'form', 'forms/item');
 
             if($param['title'] == null && $param['name'] != null) $param['title'] = $param['name'];

@@ -1,0 +1,73 @@
+<?php
+
+class amp
+{
+
+    public static function link($link)
+    {
+        return "$link.amp";
+    }
+
+    public static function content_filter($content)
+    {
+        $content = utils::images_add_alt_tags($content);
+        $content = self::images_add_width_tags($content);
+        $content = self::images_add_height_tags($content);
+
+        $content = preg_replace('/<img(.*?)\/>/si', '<img$1>', $content);
+        $content = preg_replace('/<img(.*?)>/si', '<amp-img$1 layout="responsive"></amp-img>', $content);
+
+        return $content;
+    }
+
+    public static function images_add_height_tags($content = null, $height = '300')
+    {
+        $img_height = $height;
+        preg_match_all('/<img (.*?)\/>/', $content, $images);
+
+        if(!is_null($images))
+        {
+            foreach($images[1] as $index => $value)
+            {
+                if(!preg_match('/height=/', $value))
+                {
+                    if(preg_match('/src=["\'](.*?)["\']/si', $images[0][$index], $matches))
+                    {
+                        $src = $matches[1];
+                        list($img_width, $img_height) = getimagesize($src);
+                    }
+
+                    $new_img = str_replace('<img', '<img height="' . $img_height . '"', $images[0][$index]);
+                    $content = str_replace($images[0][$index], $new_img, $content);
+                }
+            }
+        }
+        return $content;
+    }
+
+    public static function images_add_width_tags($content = null, $width = '600')
+    {
+        $img_width = $width;
+        preg_match_all('/<img (.*?)\/>/', $content, $images);
+
+        if(!is_null($images))
+        {
+            foreach($images[1] as $index => $value)
+            {
+                if(!preg_match('/width=/', $value))
+                {
+                    if(preg_match('/src=["\'](.*?)["\']/si', $images[0][$index], $matches))
+                    {
+                        $src = $matches[1];
+                        list($img_width, $img_height) = getimagesize($src);
+                    }
+
+                    $new_img = str_replace('<img', '<img width="' . $img_width . '"', $images[0][$index]);
+                    $content = str_replace($images[0][$index], $new_img, $content);
+                }
+            }
+        }
+        return $content;
+    }
+
+}

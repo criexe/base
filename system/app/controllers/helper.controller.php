@@ -63,6 +63,15 @@ class controller_helper
         }
     }
 
+
+    function check_url()
+    {
+        $url = input::post('url');
+
+        if(item::get(['where' => "`url` = '$url'"])) die('true');
+        else die('false');
+    }
+
 }
 
 ?>
