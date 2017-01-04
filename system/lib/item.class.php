@@ -520,6 +520,7 @@ class item
         sys::array_key_default_value($params, 'type', null);
         sys::array_key_default_value($params, 'only_active', false);
         sys::array_key_default_value($params, 'show.all', false);
+        sys::array_key_default_value($params, 'page', false);
 
         $columns       = self::columns();
         $sql_columns   = [];
@@ -574,11 +575,19 @@ class item
         if($params['where']       != null) $where[] = "\t( {$params['where']} )";
         $where = implode(" AND \n", $where);
 
-
         // SQL String
         $sql = "SELECT \n\n$sql_columns \n\nFROM `$name` \n\n$joins \n\nWHERE \n\n$where \n\nORDER BY {$params['order_by']}";
 
-        if($params['limit'] != false) $sql .= "\n\nLIMIT {$params['limit']}";
+        $limit_start = 0;
+        $limit_end   = $params['limit'];
+
+        if($params['page'] != false)
+        {
+            $page_no = input::get($params['page']);
+            $limit_start = $page_no * $params['limit'];
+        }
+
+        if($params['limit'] != false) $sql .= "\n\nLIMIT $limit_start, $limit_end";
 
         return $sql;
     }
