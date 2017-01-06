@@ -248,6 +248,7 @@ class sys
                 }
                 else if(is_dir($path) && is_readable($path))
                 {
+                    if(basename($path) == 'assets') continue;
                     $all_data = self::scan_dir($path, $all_data);
                 }
             }

@@ -13,21 +13,13 @@ $hooks  = [];
 
 // Dırectory Seperator
 define('DS', DIRECTORY_SEPARATOR);
-
 define('APP_PATH', ROOT_PATH . DS . 'app');
-
 define('SYSTEM_PATH', ROOT_PATH . DS . 'system');
-
 define('VALIDATIONS_PATH', APP_PATH . DS . '_config' . DS . '_validations');
-
 define('CACHE_PATH', ROOT_PATH . DS . 'sysdata' .  DS . 'cache');
-
 define('PAGES_PATH', ROOT_PATH . DS . 'pages');
-
 define('LOGS_PATH', ROOT_PATH . DS . 'sysdata' . DS . 'logs');
-
 define('BACKUPS_PATH', ROOT_PATH . DS . 'sysdata' . DS . 'backups');
-
 define('LIBRARIES_PATH', APP_PATH . DS . 'libraries');
 
 // System
