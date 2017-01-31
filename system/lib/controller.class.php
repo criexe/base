@@ -31,7 +31,7 @@ class controller
     public function render ($name = null, $data = null)
     {
         $layout  = layout::get();
-        $content = cx::render($name, $data);
+        $content = _render($name, $data);
 
         cx::data('layout_content', $content);
 

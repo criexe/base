@@ -1,10 +1,10 @@
 <?php
 
 
-class mail
+class mailer
 {
 
-    public static function send($to = null, $subject = null, $content = null, $layout = false)
+    public function send($to = null, $subject = null, $content = null, $layout = false)
     {
         try
         {

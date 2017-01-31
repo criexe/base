@@ -17,7 +17,7 @@ class model
 
     public function __construct()
     {
-        $this->prefix = sys::get_config('database')['prefix'];
+        $this->prefix = _config('database.pattern');
     }
 
 

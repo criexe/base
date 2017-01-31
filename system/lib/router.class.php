@@ -25,7 +25,7 @@ class router
         {
             self::$paths = $url_paths;
         }
-        self::$default = sys::get_config('router')['defaults'];
+        self::$default = _config('router.default');
     }
 
 
@@ -75,8 +75,7 @@ class router
 
     public static function get_paths ()
     {
-        $_paths      = trim(trim(input::get( sys::get_config('application')['url_var'] ), '/'));
-        $lang_config = sys::get_config('language');
+        $_paths      = trim(trim(input::get( _config('sys.url.var') ), '/'));
 
         // Check AMP
         if(preg_match('/.*?\.amp$/i', $_paths))
@@ -98,7 +97,7 @@ class router
         }
 
         // Language
-        if($lang_config['show_in_url'])
+        if(_config('language.url'))
         {
             $e = explode('/', $_paths);
 
@@ -123,7 +122,7 @@ class router
         $pattern     = [];
         $replacement = [];
 
-        $router = sys::get_config('router')['router'];
+        $router = _config('router');
 
         foreach($router as $k => $v)
         {

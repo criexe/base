@@ -30,7 +30,7 @@ class url
         $qstring  = [];
         $qstring  = $_SERVER['QUERY_STRING'];
         parse_str($qstring, $qstring);
-        $urlvar   = sys::get_config('application')['url_var'];
+        $urlvar   = _config('sys.url.var');
 
         unset($qstring[$urlvar]);
 
@@ -40,7 +40,7 @@ class url
 
     public static function path()
     {
-        $path = trim(trim(input::get( sys::get_config('application')['url_var'] ), '/'));
+        $path = trim(trim(input::get( _config('sys.url.var') ), '/'));
         $path = preg_replace('/(.*?)\.amp$/i', '$1', $path);
         return $path;
     }
@@ -48,7 +48,8 @@ class url
 
     public static function get()
     {
-        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        @ $scheme = array_key_exists('REQUEST_SCHEME', $_SERVER) ? $_SERVER['REQUEST_SCHEME'] : 'http';
+        return $scheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
 
 }

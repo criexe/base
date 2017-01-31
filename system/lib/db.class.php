@@ -132,7 +132,7 @@ class db
      */
     public static function add_prefix($table_name = null)
     {
-        return sys::get_config('database')['prefix'] . $table_name;
+        return _config('database.prefix') . $table_name;
     }
 
 
@@ -492,7 +492,7 @@ class db
     {
         if($table_name == null) return false;
 
-        $table_name = sys::get_config('database')['prefix'] . $table_name;
+        $table_name = _config('database.prefix') . $table_name;
 
         if($columns != null)
         {
@@ -526,7 +526,7 @@ class db
 
     public static function rename_table($table_name = null, $new_name = null)
     {
-        $table_name = sys::get_config('database')['prefix'] . $table_name;
+        $table_name = _config('database.prefix') . $table_name;
 
         return self::query("ALTER TABLE $table_name RENAME TO $new_name;");
     }
@@ -534,7 +534,7 @@ class db
 
     public static function add_column($table_name = null, $column_name = null, $type = null)
     {
-        $table_name = sys::get_config('database')['prefix'] . $table_name;
+        $table_name = _config('database.prefix') . $table_name;
 
         return self::query("ALTER TABLE $table_name ADD $column_name $type;");
     }
@@ -542,7 +542,7 @@ class db
 
     public static function delete_column($table_name = null, $column_name = null)
     {
-        $table_name = sys::get_config('database')['prefix'] . $table_name;
+        $table_name = _config('database.prefix') . $table_name;
 
         return self::query("ALTER TABLE $table_name DROP COLUMN $column_name;");
     }
@@ -550,7 +550,7 @@ class db
 
     public static function delete_table($table_name = null)
     {
-        $table_name = sys::get_config('database')['prefix'] . $table_name;
+        $table_name = _config('database.prefix') . $table_name;
 
         return self::query("DROP TABLE IF EXISTS $table_name;");
     }
@@ -560,7 +560,7 @@ class db
     {
         if($column_name == $new_column_name)
 
-        $table_name = sys::get_config('database')['prefix'] . $table_name;
+        $table_name = _config('database.prefix') . $table_name;
 
         $new_column_name = $new_column_name ? $new_column_name : $column_name;
         return self::query("ALTER TABLE $table_name CHANGE $column_name $new_column_name $type;");
@@ -571,7 +571,7 @@ class db
     {
         if($string == null) return null;
 
-        $columns      = self::get_columns(sys::get_config('database')['prefix'] . $table_name);
+        $columns      = self::get_columns(_config('database.prefix') . $table_name);
         $where_column = [];
 
         foreach($columns as $column) $where_column[] = "`$column` LIKE '%$string%'";

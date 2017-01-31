@@ -10,16 +10,25 @@ define('ROOT_PATH', dirname(__FILE__));
 $config = [];
 $router = [];
 $hooks  = [];
+$files  = [];
 
 // Dırectory Seperator
 define('DS', DIRECTORY_SEPARATOR);
+
 define('APP_PATH', ROOT_PATH . DS . 'app');
+
 define('SYSTEM_PATH', ROOT_PATH . DS . 'system');
+
 define('VALIDATIONS_PATH', APP_PATH . DS . '_config' . DS . '_validations');
+
 define('CACHE_PATH', ROOT_PATH . DS . 'sysdata' .  DS . 'cache');
+
 define('PAGES_PATH', ROOT_PATH . DS . 'pages');
+
 define('LOGS_PATH', ROOT_PATH . DS . 'sysdata' . DS . 'logs');
+
 define('BACKUPS_PATH', ROOT_PATH . DS . 'sysdata' . DS . 'backups');
+
 define('LIBRARIES_PATH', APP_PATH . DS . 'libraries');
 
 // System
@@ -77,23 +86,6 @@ try
     require_once SYSTEM_LIB_PATH . DS . 'session.class.php';
 
 
-    // Detect Config Path
-    $config_folder = $_SERVER['HTTP_HOST'];
-    if(strpos($config_folder, ':') !== false) $config_folder = explode(':', $config_folder)[0];
-
-    $config_dir = APP_PATH . '/_config/' . $config_folder;
-
-    if(is_dir($config_dir))
-    {
-        define('CONFIG_PATH', $config_dir);
-    }
-    else
-    {
-        define('CONFIG_PATH', APP_PATH . '/_config/_default');
-    }
-    unset($config_dir);
-
-
 
     // Autoload Functions
     require SYSTEM_LIB_PATH . DS . 'functions.autoload.php';
@@ -101,14 +93,19 @@ try
 
     // Includes
     require SYSTEM_LIB_PATH . DS . 'functions.system.php';
+    require SYSTEM_INCLUDES_PATH . DS . 'functions.cx';
 
 
     // Set All Files
-    cx::$files = sys::get_software_files();
+    $files = sys::get_software_files();
+
+
+    // Config
+    foreach($files['config'] as $cFile) include ROOT_PATH . "/$cFile";
 
 
     // Display Errors
-    if(sys::get_config('errors')['active'] === true)
+    if(_config('error') == true)
     {
         ini_set('display_errors', 'on');
         error_reporting(E_ALL);
@@ -118,11 +115,6 @@ try
         ini_set('display_errors', 'off');
         error_reporting(0);
     }
-
-
-    // PHP Log File
-    ini_set('log_errors', 1);
-    ini_set('error_log', LOGS_PATH . '/php/error.log');
 
 
     // Session Start
@@ -138,24 +130,25 @@ try
     define('CURRENT_LANGUAGE', lang::current());
 
     // URL - Links
-    define('URL'           , sys::get_config('application')['url']);
+    define('URL'           , _config('app.url'));
     define('ADMIN_URL'     , URL . _ADMIN);
     define('SYS_URL'       , URL . '/sys');
     define('DEVELOPER_URL' , URL . '/developer');
-    define('CONTENTS'      , sys::get_config('application')['url'] . '/contents');
-    define('ASSETS'        , sys::get_config('application')['url'] . '/assets');
-    define('ASSETS_SYS'    , sys::get_config('application')['url'] . '/assets/sys');
-    define('SYS_ASSETS'    , sys::get_config('application')['url'] . '/system/app/assets');
-
-
-    require_once CONFIG_PATH . DS . 'settings.config.php';
+    define('CONTENTS'      , _config('app.url') . '/contents');
+    define('ASSETS'        , _config('app.url') . '/assets');
+    define('ASSETS_SYS'    , _config('app.url') . '/assets/sys');
+    define('SYS_ASSETS'    , _config('app.url') . '/system/app/assets');
 
 
     // Database Connection
-    $db_config = sys::get_config('database');
+    $db_config = _config('database');
 
-    if($db_config['active'] === true)
+    if($db_config != false)
     {
+        sys::array_key_default_value($db_config, 'port',     null);
+        sys::array_key_default_value($db_config, 'charset', 'UTF8');
+        sys::array_key_default_value($db_config, 'prefix',  'cx_');
+
         db::$user    = $db_config['user'];
         db::$pass    = $db_config['pass'];
         db::$name    = $db_config['name'];
@@ -183,7 +176,7 @@ try
 
 
     // Include Settings
-    foreach(cx::$files['settings'] as $sFile) include ROOT_PATH . "/$sFile";
+    foreach($files['settings'] as $sFile) include ROOT_PATH . "/$sFile";
 
 
     // User

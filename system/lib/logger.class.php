@@ -25,7 +25,7 @@ class logger
         }
         else
         {
-            $date = date(sys::get_config('application')['date_pattern']);
+            $date = _date(_config('date.pattern'));
             $insert_data = "[{$date}] {$data}";
         }
 

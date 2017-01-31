@@ -101,7 +101,7 @@ class cookie
     {
         if($str != null)
         {
-            return sys::get_config('prefix')['cookie'] . $str;
+            return _config('cookie.prefix') . $str;
         }
         else
         {

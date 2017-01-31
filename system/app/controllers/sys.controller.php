@@ -193,7 +193,7 @@ class controller_sys extends controller
             $all_types = cx::type();
 
             $iparams          = [];
-            $iparams['limit'] = 100;
+            $iparams['limit'] = 1000;
 
             if($type)
             {

@@ -1,0 +1,165 @@
+<?php
+
+/**
+ * @param null $alias
+ * @param null $value
+ *
+ * @return array|bool
+ */
+function _config($alias = null, $value = null, $host = null)
+{
+    try
+    {
+        global $config;
+
+        if($host == null) $host = $_SERVER['HTTP_HOST'];
+
+        if($alias == null && $value == null)
+        {
+            return $config;
+        }
+        else if($alias != null && $value == null)
+        {
+            if(!array_key_exists($alias, $config[$host])) return false;
+            return $config[$host][$alias];
+        }
+        else if($alias != null && $value != null)
+        {
+            $config[$host][$alias] = $value;
+            return $config;
+        }
+        else
+        {
+            return $config;
+        }
+    }
+    catch(Exception $e)
+    {
+        return false;
+    }
+}
+
+
+/**
+ * @param null  $name
+ * @param null  $datas
+ * @param array $params
+ *
+ * @return bool|string
+ */
+function _render($name = null, $datas = null, array $params = [])
+{
+    global $files;
+
+    try
+    {
+        $emoji = new emoji();
+
+        if($name == null)
+        {
+            throw_exception('View file name can\'t empty.');
+        }
+        else
+        {
+            sys::array_key_default_value($params, 'ext'        , 'view');
+            sys::array_key_default_value($params, 'layout'     ,  false);
+            sys::array_key_default_value($params, 'is_content' ,  true);
+
+            // View content is a string
+            // Ex : ['VIEW CONTENT']
+            $is_view_array = is_array($name) && count($name) == 1;
+
+            if( ! $is_view_array)
+            {
+                $all_views = $files[$params['ext']];
+                $found     = preg_grep("%" . $name . "\." . $params['ext'] . "(?:\.php)?$%si", $all_views);
+                $found     = array_values($found);
+            }
+            else
+            {
+                // count($found) > 0
+                $found = [true, true];
+
+            }
+
+            if(count($found) > 0)
+            {
+                // Data Variables
+                if($datas != null)
+                    foreach($datas as $k => $v)
+                        $$k = $v;
+
+                if( ! $is_view_array)
+                {
+                    $view_file = $found[0];
+
+                    ob_start();
+                    include $view_file;
+                    $content = ob_get_contents();
+                }
+                else
+                {
+                    $content = $name[0];
+                }
+
+                // Emoji
+                $content = $emoji->to_image($content);
+
+                // Image - Add Alt Tags
+                $content = utils::images_add_alt_tags($content);
+
+
+                if($params['is_content'] === true) cx::data('layout_content', $content);
+                if( ! $is_view_array) ob_end_clean();
+
+                if(!array_key_exists('layout', $params) || $params['layout'] == false)
+                {
+                    return $content;
+                }
+                else
+                {
+                    ob_start();
+                    $layout_file = sys::find_layout($params['layout']);
+                    include $layout_file;
+
+                    $layout_content = ob_get_contents();
+                    ob_end_clean();
+
+                    return $layout_content;
+                }
+            }
+        }
+    }
+    catch(Exception $e)
+    {
+        logger::add('view(): ' . $e->getMessage(), 'render');
+        return false;
+    }
+}
+
+
+function _date($format = null, $time = null)
+{
+    $lang = strtolower(lang::current());
+    $date = date($format, $time);
+    $old  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    $new  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    if($lang == 'tr' || $lang == 'tr_tr')
+    {
+        $new = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+    }
+
+    return str_replace($old, $new, $date);
+}
+
+
+function _pagination($params = [])
+{
+    if(!is_array($params)) return false;
+    sys::specify_params($params, ['total', 'active', 'limit', 'var']);
+
+    $params['total_page'] = ceil($params['total'] / $params['limit']);
+
+    return _render('system/app/views/sys/pagination', $params);
+}

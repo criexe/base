@@ -101,7 +101,8 @@ class item
                     $mail_subject = "New {$cx_type['title']}";
                     $mail_content = "Added New {$cx_type['title']}.";
 
-                    mail::send('mustafa@aydemir.im', $mail_subject, $mail_content, 'mail');
+                    $mail = new mailer();
+                    $mail->send('mustafa@aydemir.im', $mail_subject, $mail_content, 'mail');
                 }
             }
 
@@ -382,8 +383,8 @@ class item
         $data['created_at'] = [
 
             'time'   => $data['created_at'],
-            'format' => sys::get_config('application')['date_pattern'],
-            'date'   => cx::date(sys::get_config('application')['date_pattern'], $data['created_at'])
+            'format' => _config('date.pattern'),
+            'date'   => _date(_config('date.pattern'), $data['created_at'])
         ];
 
         if($data['updated_at'] != null)
@@ -391,8 +392,8 @@ class item
             $data['updated_at'] = [
 
                 'time'   => $data['updated_at'],
-                'format' => sys::get_config('application')['date_pattern'],
-                'date'   => date(sys::get_config('application')['date_pattern'], $data['updated_at'])
+                'format' => _config('date.pattern'),
+                'date'   => _date(_config('date.pattern'), $data['updated_at'])
             ];
         }
 
@@ -746,7 +747,7 @@ class item
         $render           = [];
         $render['layout'] = false;
 
-        return cx::render('item/list', [
+        return _render('item/list', [
 
             'datas'  => $datas,
             'params' => $params
@@ -768,6 +769,12 @@ class item
         $update = item::update($update_data, $params);
 
         return $update;
+    }
+
+
+    public static function count($params)
+    {
+        return db::count_rows(self::$name, $params);
     }
 
 

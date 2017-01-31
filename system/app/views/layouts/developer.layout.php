@@ -37,7 +37,7 @@
 
                         <ul class="right hide-on-med-and-down">
                             <li><a href="#" class="dropdown-button" data-activates="item-dropdown">Item</a></li>
-                            <li><a href="#" class="dropdown-button" data-activates="ide-dropdown">IDE</a></li>
+                            <li><a href="#" class="dropdown-button" data-activates="seo-dropdown">SEO</a></li>
                             <li><a href="#" class="dropdown-button" data-activates="sysdata-dropdown">System</a></li>
                         </ul>
                     </div>

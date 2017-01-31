@@ -38,12 +38,14 @@ class timer
 
     public static function files()
     {
+        global $files;
+
         $cache_id   = 'timer_files';
         $cache_data = cache::get($cache_id);
 
         if($cache_data) return $cache_data;
 
-        $all_timer = cx::$files[self::$file_ext];
+        $all_timer = $files[self::$file_ext];
         $found     = preg_grep("%\." . self::$file_ext . "(?:\.php)?$%si", $all_timer);
         $found     = array_values($found);
 

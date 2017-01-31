@@ -37,88 +37,7 @@ class cx
 
     public static function render($name = null, $datas = null, array $params = [])
     {
-        try
-        {
-            if($name == null)
-            {
-                throw_exception('View file name can\'t empty.');
-            }
-            else
-            {
-                sys::array_key_default_value($params, 'ext'        , 'view');
-                sys::array_key_default_value($params, 'layout'     ,  false);
-                sys::array_key_default_value($params, 'is_content' ,  true);
-
-                // View content is a string
-                // Ex : ['VIEW CONTENT']
-                $is_view_array = is_array($name) && count($name) == 1;
-
-                if( ! $is_view_array)
-                {
-                    $all_views = self::$files[$params['ext']];
-                    $found     = preg_grep("%" . $name . "\." . $params['ext'] . "(?:\.php)?$%si", $all_views);
-                    $found     = array_values($found);
-                }
-                else
-                {
-                    // count($found) > 0
-                    $found = [true, true];
-
-                }
-
-                if(count($found) > 0)
-                {
-                    // Data Variables
-                    if($datas != null)
-                        foreach($datas as $k => $v)
-                            $$k = $v;
-
-                    if( ! $is_view_array)
-                    {
-                        $view_file = $found[0];
-
-                        ob_start();
-                        include $view_file;
-                        $content = ob_get_contents();
-                    }
-                    else
-                    {
-                        $content = $name[0];
-                    }
-
-                    // Emoji
-                    $content = emoji::to_image($content);
-
-                    // Image - Add Alt Tags
-                    $content = utils::images_add_alt_tags($content);
-
-
-                    if($params['is_content'] === true) cx::data('layout_content', $content);
-                    if( ! $is_view_array) ob_end_clean();
-
-                    if(!array_key_exists('layout', $params) || $params['layout'] == false)
-                    {
-                        return $content;
-                    }
-                    else
-                    {
-                        ob_start();
-                        $layout_file = sys::find_layout($params['layout']);
-                        include $layout_file;
-
-                        $layout_content = ob_get_contents();
-                        ob_end_clean();
-
-                        return $layout_content;
-                    }
-                }
-            }
-        }
-        catch(Exception $e)
-        {
-            logger::add('view(): ' . $e->getMessage(), 'render');
-            return false;
-        }
+        return _render($name, $datas, $params);
     }
 
 
@@ -200,7 +119,7 @@ class cx
         $render               = [];
         $render['is_content'] = false;
 
-        return self::render('system/app/views/parts/head', null, $render);
+        return _render('system/app/views/parts/head', null, $render);
     }
 
 
@@ -209,7 +128,7 @@ class cx
         $render               = [];
         $render['is_content'] = false;
 
-        return self::render('system/app/views/parts/body', null, $render);
+        return _render('system/app/views/parts/body', null, $render);
     }
 
 
@@ -218,7 +137,7 @@ class cx
         $render               = [];
         $render['is_content'] = false;
 
-        return self::render('system/app/views/parts/footer', null, $render);
+        return _render('system/app/views/parts/footer', null, $render);
     }
 
 
@@ -277,7 +196,7 @@ class cx
             if($author == null)
             {
                 $author     = [];
-                $developers = sys::get_config('application')['developers'];
+                $developers = _config('developers');
                 foreach($developers as $name => $email) $author[] = $name;
                 $author = implode(', ', $author);
             }
@@ -301,26 +220,6 @@ class cx
             return self::data('html.canonical', $uri);
         }
     }
-
-
-    // TODO : Config sistemi buraya geçirilecek
-    public static function config($alias = null, $data = null)
-    {
-        if($alias == null) return false;
-
-        // Get
-        if($data == null)
-        {
-
-        }
-
-        // Set
-        else
-        {
-
-        }
-    }
-
 
 
     public static function option($alias = null, $data = null)
@@ -418,6 +317,7 @@ class cx
 
     public static function save()
     {
+        return true;
         $save = [];
 
         // Counter

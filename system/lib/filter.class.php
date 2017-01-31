@@ -236,13 +236,13 @@ class filter
                 }
                 else
                 {
-                    $content = str_replace($link, '<a target="_blank" href="' . sys::get_config('application')['url']. '/location?url=' . urlencode($link) . '" title="' . $link . '">' . $link . '</a>', $content);
+                    $content = str_replace($link, '<a target="_blank" href="' . _config('app.url') . '/location?url=' . urlencode($link) . '" title="' . $link . '">' . $link . '</a>', $content);
 
                 }
             }
             else
             {
-                $content = str_replace($link, '<a target="_blank" href="' . sys::get_config('application')['url']. '/location?url=' . urlencode($link) . '" title="' . $link . '">' . $link . '</a>', $content);
+                $content = str_replace($link, '<a target="_blank" href="' . _config('app.url') . '/location?url=' . urlencode($link) . '" title="' . $link . '">' . $link . '</a>', $content);
             }
 
             //$content = preg_replace($uri_pattern, '<a target="_blank" href="' . sys::get_config('application')['url']. '/location?url=$1" title="$1">$1</a>', $content);

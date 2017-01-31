@@ -74,51 +74,6 @@ class html
     }
 
 
-    public static function render($name = null, $datas = null)
-    {
-        try
-        {
-            if($name == null)
-            {
-                throw_exception('View file name can\'t empty.');
-            }
-            else
-            {
-                $nameArr = explode(':', $name);
-
-                if(count($nameArr) != 2) return false;
-
-                $view_file = PLUGINS_PATH . DS . $nameArr[0] . DS . 'views' . DS . $nameArr[1] . '.php';
-
-                if(!file_exists($view_file))
-                {
-                    throw_exception("View not found : $name - $view_file");
-                }
-                else
-                {
-                    // Data Variables
-                    if($datas != null)
-                        foreach($datas as $k => $v)
-                            $$k = $v;
-
-                    ob_start();
-                    include $view_file;
-                    $contents = ob_get_contents();
-                    ob_end_clean();
-
-                    return $contents;
-                }
-            }
-        }
-        catch(Exception $e)
-        {
-            echo $e->getMessage();
-            logger::add('view(): ' . $e->getMessage(), 'render');
-            return false;
-        }
-    }
-
-
     public static function alert($msg = null, $type = 'success')
     {
         return '<div class="alert alert-' . $type . '">' . $msg . '</div>';
@@ -166,7 +121,7 @@ class html
         {
             if( ! extension_loaded('imagick'))
             {
-                return '<img src="' . CONTENTS . '/' . $path . '"' . self::create_params($params) . '>';
+                return '<img src="' . _config('image.url') . '/' . $path . '"' . self::create_params($params) . '>';
             }
 
             $resized_img = image::scale($path, $width, $height, $resize_larger);
@@ -188,8 +143,9 @@ class html
         }
     }
 
-    public static function image_link($path, $width = 0, $height = 0, $params = [], $resize_larger = true)
+    public static function image_link($path = null, $width = 0, $height = 0, $params = [], $resize_larger = true)
     {
+        if($path == null) return null;
         return self::image($path, $width, $height, $params, $resize_larger, true);
     }
 

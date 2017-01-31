@@ -309,7 +309,7 @@ class user
         $data['id']    = $modal_id;
         $data['class'] = $modal_class;
 
-        $modal_content = cx::render($modal_file, $data);
+        $modal_content = _render($modal_file, $data);
         $modal_content = utils::compress_html($modal_content);
 
         return $modal_content;

@@ -175,7 +175,7 @@ class form
         $data['categories'] = $type_categories;
         $data['data']       = $categories_data;
 
-        return cx::render('system/app/views/item/input/category', $data);
+        return _render('system/app/views/item/input/category', $data);
     }
 
 
@@ -203,7 +203,7 @@ class form
         $data['wysiwyg'] = $params['wysiwyg'];
         $data['preview'] = $params['preview'];
 
-        return cx::render('system/app/views/item/input/upload_image', $data);
+        return _render('system/app/views/item/input/upload_image', $data);
     }
 
 
@@ -214,7 +214,7 @@ class form
         $data['value'] = $value;
         $data['type']  = $type;
 
-        return cx::render('system/app/views/item/input/wysiwyg', $data);
+        return _render('system/app/views/item/input/wysiwyg', $data);
     }
 
 

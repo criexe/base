@@ -136,16 +136,16 @@ class sys
      *
      * @return bool|mixed
      */
-    public static function get_config($config_file = null)
-    {
-        if($config_file == null) return false;
-
-        $file_path = CONFIG_PATH . DS . $config_file . '.config.php';
-        if(!file_exists($file_path)) return false;
-
-        $config = include $file_path;
-        return $config;
-    }
+//    public static function get_config($config_file = null)
+//    {
+//        if($config_file == null) return false;
+//
+//        $file_path = CONFIG_PATH . DS . $config_file . '.config.php';
+//        if(!file_exists($file_path)) return false;
+//
+//        $config = include $file_path;
+//        return $config;
+//    }
 
 
 
@@ -291,7 +291,9 @@ class sys
 
     public static function find_view($name = null)
     {
-        $all_views = cx::$files['view'];
+        global $files;
+
+        $all_views = $files['view'];
         $found     = preg_grep("%" . $name . "\.view(?:\.php)?$%si", $all_views); // example.view.php
         $found     = array_values($found);
 
@@ -304,7 +306,9 @@ class sys
 
     public static function find_layout($name = null)
     {
-        $all   = cx::$files['layout'];
+        global $files;
+
+        $all   = $files['layout'];
         $found = preg_grep("/" . $name . "\.layout(?:\.php)?$/si", $all);
         $found = array_values($found);
 
@@ -321,7 +325,9 @@ class sys
 
     public static function find_type($name = null)
     {
-        $all_types = cx::$files['type'];
+        global $files;
+
+        $all_types = $files['type'];
         $found     = preg_grep("%" . $name . "\.type(?:\.php)?$%si", $all_types); // example.type.php
         $found     = array_values($found);
 

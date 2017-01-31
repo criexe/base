@@ -3,7 +3,7 @@
 class emoji
 {
 
-    public static function to_image($content = null)
+    public function to_image($content = null)
     {
         if($content == null) return null;
 

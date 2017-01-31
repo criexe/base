@@ -25,7 +25,7 @@ class lang
             }
             else
             {
-                $lang = sys::get_config('language')['default'];
+                $lang = _config('language.default');
             }
         }
 
@@ -99,9 +99,11 @@ class lang
 
     public static function files($lang = null)
     {
+        global $files;
+
         if($lang == null) $lang = self::current();
 
-        $lang_files = cx::$files['lang'];
+        $lang_files = $files['lang'];
         $found      = preg_grep("%" . $lang . "\.lang(?:\.php)?$%si", $lang_files);
         return $found;
     }
@@ -109,7 +111,6 @@ class lang
 
     public static function url($lang = null)
     {
-        $lang_config  = sys::get_config('language');
         $url_language = null;
 
         if($lang != null)
@@ -123,15 +124,15 @@ class lang
             if($lang_cookie != null && self::exist($lang_cookie))
                 $ul = $lang_cookie;
             else
-                $ul = $lang_config['default'];
+                $ul = _config('language.default');
 
-            $show_lang_in_url = $lang_config['show_in_url'] && $lang_config['default'];
+            $show_lang_in_url = _config('language.url') && _config('language.default');
             $url_language     = $show_lang_in_url ? $ul : null;
         }
 
-        if( ! self::exist($url_language)) $url_language = $lang_config['default'];
+        if( ! self::exist($url_language)) $url_language = _config('language.default');
 
-        return sys::get_config('application')['url'] . '/' . $url_language;
+        return _config('app.url') . '/' . $url_language;
     }
 
 

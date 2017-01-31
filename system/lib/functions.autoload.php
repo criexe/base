@@ -9,7 +9,9 @@
 // Library Classes
 function autoload_lib($class_name = null)
 {
-    $classes = cx::$files['class']; // All Class Files
+    global $files;
+
+    $classes = $files['class']; // All Class Files
     $found   = preg_grep("/$class_name\.class(?:\.php)?$/si", $classes); // example.class.php
     $found   = array_values($found);
 

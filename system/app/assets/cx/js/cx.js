@@ -206,8 +206,8 @@ var cx = {
 
     ajax : {
 
-        get  : function($url, $func){ $.get($url, $func); },
-        post : function($url, $data, $func){ $.post($url, $data, $func); },
+        get  : function($url, $func){ return $.get($url, $func); },
+        post : function($url, $data, $func){ return $.post($url, $data, $func); },
         load : function(){},
         submit : function($sel, $obj){
 
@@ -526,7 +526,7 @@ var cx = {
 
     view : {
 
-        column_grid : function($sel, $column_data_sel){
+        column_grid : function($sel, $column_data_sel, $appended_data){
 
             var $js_path = URL + "/system/app/assets/cx/plugins/isotope.min.js";
 
@@ -534,10 +534,41 @@ var cx = {
 
                 cx.event.images_loaded($sel, function(){
 
-                    $($sel).isotope({itemSelector : $column_data_sel});
+                    if(typeof $appended_data == 'undefined')
+                    {
+                        $($sel).isotope({itemSelector : $column_data_sel});
+                    }
+                    else
+                    {
+                        $($sel).isotope({itemSelector : $column_data_sel}).isotope('appended', $appended_data);
+                    }
                 });
             });
         }
+    },
+
+    load_more : function($opt){
+
+        $(function(){
+
+            if(typeof $opt == 'undefined') $opt = {};
+
+            var $current_page = $opt.start;
+
+            $($opt.button).css({"cursor" : "pointer"});
+            cx.event.click($opt.button, function(e){
+
+                cx.ajax.get($opt.url, { p : $current_page, limit : $opt.limit }).done(function(x){
+
+                    console.log($opt);
+
+                    $($opt.container).append(x);
+                    $current_page++;
+                    if(typeof $opt.success != 'undefined') $opt.success(x);
+                });
+
+            });
+        });
     }
 
 

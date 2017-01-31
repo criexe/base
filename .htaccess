@@ -62,6 +62,7 @@ AddHandler application/x-httpd-php .php .html .htm .cx
 # Google PageSpeed Module
 <IfModule pagespeed_module>
     ModPagespeed on
+    ModPagespeedDisallow "*.amp"
     ModPagespeedEnableFilters remove_comments
     ModPagespeedEnableFilters make_google_analytics_async
     ModPagespeedEnableFilters make_show_ads_async
@@ -90,3 +91,4 @@ AddHandler application/x-httpd-php .php .html .htm .cx
 <IfModule mod_headers.c>
   Header set X-XSS-Protection "1; mode=block"
 </IfModule>
+

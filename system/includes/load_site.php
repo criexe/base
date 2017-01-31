@@ -13,7 +13,7 @@ try
     $route            = router::parse();
     $controller_name  = $route[0];
     $controller_class = 'controller_' . $controller_name;
-    $method_name      = isset($route[1]) ? $route[1] : sys::get_config('router')['defaults']['method'];
+    $method_name      = isset($route[1]) ? $route[1] : _config('router.default')['method'];
     $method_name      = trim($method_name, '_');
 
     define('CONTROLLER' , $controller_name);
@@ -31,7 +31,7 @@ try
 
 
     // Get Controller File From Software Files
-    $all_controllers   = cx::$files['controller'];
+    $all_controllers   = $files['controller'];
     $found_controllers = preg_grep("/" . $controller_name . "\.controller(?:\.php)?$/si", $all_controllers);
     $found_controllers = array_values($found_controllers);
 
@@ -49,7 +49,7 @@ try
     else
     {
         logger::add('Controller is not exist : ' . $controller_name);
-        error::show_404();
+//        error::show_404();
     }
 
     // Load Item

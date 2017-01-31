@@ -123,12 +123,14 @@ class controller_developer extends controller
 
     function index()
     {
+        global $files;
+
         cx::title('Developer');
 
         layout::set('developer');
         $this->render('developer/index', [
 
-            'files' => cx::$files
+            'files' => $files
         ]);
     }
 
@@ -223,7 +225,7 @@ class controller_developer extends controller
         $render['ext']    = 'form';
         $render['layout'] = 'developer';
 
-        echo cx::render('forms/new', null, $render);
+        echo _render('forms/new', null, $render);
     }
 
 

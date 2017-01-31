@@ -59,8 +59,13 @@ class controller_admin extends controller
 
     function latest($type = null)
     {
+        $limit = 25;
+
         $data           = [];
         $data['params'] = [];
+
+        $data['params']['db']['limit'] = $limit;
+        $data['params']['db']['page']  = 'p';
 
         if($type != null)
         {
@@ -72,8 +77,20 @@ class controller_admin extends controller
             cx::title('Latest');
         }
 
+        $datas = item::get_all($data['params']['db'], true);
+
+        $data['params']['db']['limit'] = null;
+        $count = item::count($data['params']['db']);
+
+
         layout::set('admin');
-        $this->render('admin/latest', $data);
+        $this->render('admin/latest', [
+
+            'datas'  => $datas,
+            'params' => $data['params'],
+            'count'  => $count,
+            'limit'  => $limit
+        ]);
     }
 
 
@@ -87,7 +104,7 @@ class controller_admin extends controller
         $data['type_title']   = $cx_type['title'];
         $data['data']         = false;
         $data['form_action']  = URL . '/admin/insert';
-        $form_content         = cx::render($cx_type['form'], $data, ['ext' => 'form']);
+        $form_content         = _render($cx_type['form'], $data, [ 'ext' => 'form']);
         $data['form_content'] = $form_content;
 
 
@@ -118,7 +135,7 @@ class controller_admin extends controller
             $data['type_title']   = $cx_type['title'];
             $data['data']         = $input_values;
             $data['form_action']  = URL . '/admin/update?id=' . $id;
-            $form_content         = cx::render($cx_type['form'], $data, ['ext' => 'form']);
+            $form_content         = _render($cx_type['form'], $data, [ 'ext' => 'form']);
             $data['form_content'] = $form_content;
 
             cx::title('Editing : ' . $item_data['title']);

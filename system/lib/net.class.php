@@ -4,13 +4,13 @@
 class net
 {
 
-    public static function connect($params = [])
+    public function connect($params = [])
     {
         sys::specify_params($params, ['url', 'referer', 'cookie_file']);
 
         if($params['url'] == null) return false;
 
-        $default_user_agent = sys::get_config('net')['user_agent'];
+        $default_user_agent = _config('net.user_agent');
 
         sys::array_key_default_value($params, 'user_agent', $default_user_agent);
         sys::array_key_default_value($params, 'header', false);
