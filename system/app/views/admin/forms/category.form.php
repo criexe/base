@@ -31,33 +31,38 @@
         <div class="col l3 m12 s12">
 
             <div class="card">
-                <div class="card-content center">
-                    <button class="btn green waves-effect waves-light" type="submit">Save</button>
-                    <button class="btn red darken-3 waves-effect waves-light" type="reset">Reset</button>
-                </div>
-            </div>
+                <div class="card-content grey lighten-5">
+                    <button class="btn green waves-effect" type="submit" disabled>Save</button>
 
-            <div class="card">
-                <div class="card-content clear">
-                    <div class="input-field">
-                        <?= form::status('db[status]', $data['status']) ?>
+                    <?php if($data['url']): ?><a href="<?=$data['full_url']?>" class="btn orange waves-effect" disabled>Preview</a><?php endif; ?>
+                </div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <div class="row mgb-0 mgt-0">
+                        <div class="input-field col l12">
+                            <?= form::status('db[status]', $data['status']) ?>
+                            <label>Status</label>
+                        </div>
+                        <div class="input-field col l12">
+                            <input type="text" id="id_user" value="<?= $data['user'] != null ? $data['user']['title'] : null ?>" disabled>
+                            <input type="hidden" name="db[user]" value="<?= $data['user'] != null ? $data['user']['id'] : null ?>">
+                            <label for="id_user">User</label>
+                        </div>
+                        <div class="input-field col l12">
+                            <input name="db[views]" type="number" id="id_views" value="<?= $data['views'] ?>" min="0" class="validate">
+                            <label for="id_views">Views</label>
+                        </div>
+
+                        <?= form::category(null, $data['category'], false, true) ?>
+
+                        <div class="input-field col l12">
+                            <textarea name="db[keywords]" id="id_keywords" class="materialize-textarea validate" placeholder="tag1, tag2, tag3, tag4, ..."><?= $data['keywords'] ?></textarea>
+                            <label for="id_keywords">Keywords</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-content">
-                    <div class="input-field">
-                        <select name="db[type_alias]" required>
-                            <option value="" disabled selected>Type</option>
-                            <?php foreach(cx::type() as $type) echo "<option value='{$type['alias']}'>{$type['name']}</option>"; ?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-content">
+                <div class="divider"></div>
+                <div class="card-content grey lighten-5">
                     <img id="db_image_preview" src="<?=$data['image_url']?>">
                     <?= form::image('db[image]', $data['image'], ['preview' => '#db_image_preview']) ?>
                 </div>

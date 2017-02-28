@@ -14,12 +14,117 @@ class item
 
     public static $stats_type = 'stats';
 
+
+    public static function check_field($name = null)
+    {
+        try
+        {
+            if($name == null) throw_exception('No name.');
+
+            $columns = self::columns();
+
+            if(in_array($name, $columns))
+            {
+                return true;
+            }
+            else
+            {
+                db::query("ALTER TABLE " . self::$name . " ADD $name TEXT DEFAULT NULL NULL;") or throw_exception(db::error());
+
+                return true;
+            }
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
+    }
+
+
+    public static function insert(array $data = [])
+    {
+        try
+        {
+            sys::array_key_default_value($data, 'created_at' , time());
+            sys::array_key_default_value($data, 'released_at', null);
+            sys::array_key_default_value($data, 'status'     , 'active');
+            sys::array_key_default_value($data, 'ip'         , $_SERVER['REMOTE_ADDR']);
+            sys::array_key_default_value($data, 'url'        , null);
+            sys::array_key_default_value($data, 'title'      , null);
+
+            $columns = self::columns();
+            $others  = [];
+
+            // Check Database Fields
+            foreach($data as $column => $value) self::check_field($column);
+
+            $cx_type = cx::type($data['type']);
+
+            if($data['released_at'] != null) $data['released_at'] = strtotime($data['released_at']);
+
+            // Generate URL
+            if($data['url'] != null) self::find_url($data['url']);
+            if($data['title'] != null && $data['type'] != null && $data['url'] == null) $data['url'] = self::find_url($data['title']);
+
+            if(array_key_exists('keywords', $data) && $data['keywords'] != null)
+            {
+                $_keywords = str_replace("\n", ', ',  $data['keywords']);
+            }
+            else $_keywords = null;
+
+            foreach($data as $k => $v)
+            {
+                if(is_array($v))
+                {
+                    $data[$k] = json::encode($v);
+
+                    // Remove empty json items
+                    $data[$k] = str_replace(['"",', ',""', "'',", ",''"], null, $data[$k]);
+                }
+            }
+
+//            $data['data'] = json::encode($others);
+            $item_id = db::insert(self::$name, $data) or throw_exception(db::error());
+
+            if($cx_type)
+            {
+                sys::array_key_default_value($cx_type, 'notification.insert', false);
+
+                if($cx_type['notification.insert'] === true)
+                {
+                    $mail_subject = "New {$cx_type['title']}";
+                    $mail_content = "Added New {$cx_type['title']}.";
+
+                    $mail = new mailer();
+                    $mail->send('mustafa@aydemir.im', $mail_subject, $mail_content, 'mail');
+                }
+            }
+
+            $hook_data            = [];
+            $hook_data['item_id'] = $item_id;
+            $hook_data['data']    = $data;
+
+            // Adding Tags
+            $_tags = explode(',', $_keywords);
+            foreach($_tags as $t) self::tag()->insert($item_id, $t);
+
+            hook::listen("item.insert", 'success', $hook_data);
+            return $item_id;
+        }
+        catch(Exception $e)
+        {
+            logger::add( $e->getMessage() );
+            return false;
+        }
+    }
+
+
     /**
      * @param array $data
      *
      * @return bool|int|string
      */
-    public static function insert(array $data = [])
+    public static function _insert(array $data = [])
     {
         try
         {
@@ -37,10 +142,8 @@ class item
             if($data['released_at'] != null) $data['released_at'] = strtotime($data['released_at']);
 
             // Generate URL
-            if($data['title'] != null && $data['type'] != null && $data['url'] == null)
-            {
-                $data['url'] = $data['type'] . '/' . filter::slugify($data['title']);
-            }
+            if($data['url'] != null) self::find_url($data['url']);
+            if($data['title'] != null && $data['type'] != null && $data['url'] == null) $data['url'] = self::find_url($data['title']);
 
             if(array_key_exists('keywords', $data) && $data['keywords'] != null)
             {
@@ -124,19 +227,118 @@ class item
         }
     }
 
+
+
+    public static function find_url($title = null)
+    {
+        $slug    = _slugify($title);
+        $counter = 2;
+        $finded  = false;
+
+        $exist = self::count([
+
+            'where' => "`url` = '$slug'",
+            'limit' => 1
+        ]);
+
+        if($exist > 0)
+        {
+            while(true)
+            {
+                $exist = self::count([
+
+                    'where' => "`url` = '$slug.$counter'",
+                    'limit' => 1
+                ]);
+
+                if($exist <= 0)
+                {
+                    $finded = "$slug.$counter";
+                    break;
+                }
+
+                $counter++;
+            }
+        }
+        else
+        {
+            $finded = $slug;
+        }
+
+        return $finded;
+    }
+
+
+
+    public static function update(array $data = [], $params = [])
+    {
+        try
+        {
+            // Check Database Fields
+            foreach($data as $column => $value) self::check_field($column);
+
+            // Generate URL
+            if(array_key_exists('url', $data) && $data['url'] != null) self::find_url($data['url']);
+//            if($data['title'] != null && $data['type'] != null && $data['url'] == null) $data['url'] = self::find_url($data['title']);
+
+            if(array_key_exists('keywords', $data) && $data['keywords'] != null)
+            {
+                $_keywords = str_replace("\n", ', ',  $data['keywords']);
+            }
+            else $_keywords = null;
+
+            foreach($data as $k => $v)
+            {
+                if(is_array($v))
+                {
+                    $data[$k] = json::encode($v);
+
+                    // Remove empty json items
+                    $data[$k] = str_replace(['"",', ',""', "'',", ",''"], null, $data[$k]);
+                }
+            }
+
+            //            $data['data'] = json::encode($others);
+            $_update = db::update(self::$name, $data, $params) or throw_exception(db::error());
+
+            $hook_data            = [];
+            $hook_data['data']    = $data;
+            $hook_data['params']  = $params;
+
+            // Adding Tags
+            foreach(self::get_all($params) as $row)
+            {
+                $_tags = explode(',', $_keywords);
+                foreach($_tags as $t) self::tag()->insert($row['id'], $t);
+            }
+
+            hook::listen("item.update", 'success', $hook_data);
+            return $_update;
+        }
+        catch(Exception $e)
+        {
+            logger::add( $e->getMessage() );
+            return false;
+        }
+    }
+
+
+
     /**
      * @param array $data
      * @param array $params
      *
      * @return bool
      */
-    public static function update(array $data = [], array $params = [])
+    public static function _update(array $data = [], array $params = [])
     {
         try
         {
-            sys::array_key_default_value($data, 'updated_at'    , time());
-            sys::array_key_default_value($data, 'ip'            , $_SERVER['REMOTE_ADDR']);
-            sys::array_key_default_value($data, 'disable.cache' , true);
+            sys::array_key_default_value($data, 'created_at' , time());
+            sys::array_key_default_value($data, 'released_at', null);
+            sys::array_key_default_value($data, 'status'     , 'active');
+            sys::array_key_default_value($data, 'ip'         , $_SERVER['REMOTE_ADDR']);
+            sys::array_key_default_value($data, 'url'        , null);
 
             $columns = self::columns();
             $get_all = item::get_all($params, true);
@@ -417,15 +619,18 @@ class item
         {
             $data['image_url']   = html::image_link($data['image']);
             $data['image_thumb'] = html::image_link($data['image'], 400);
+            $data['image_path']  = '/contents/images/' . $data['image'];
         }
         else
         {
             $data['image_url']   = null;
             $data['image_thumb'] = null;
+            $data['image_path']  = null;
         }
 
         if($data['url'] != null) $data['full_url'] = URL . '/' . $data['url'];
 
+        $data['category'] = str_replace('[""]', null, $data['category']);
         if(json::valid($data['category'])) $data['category'] = json::decode($data['category']);
 
         $data['content'] = htmlspecialchars_decode($data['content']);
@@ -461,27 +666,27 @@ class item
         }
 
         $columns = $data;
-
-        if(array_key_exists('data', $data) && json::valid($data['data']))
-        {
-            $extracted_data = json::decode($data['data']);
-
-            foreach($extracted_data as $k => $v)
-            {
-                $v = str_replace('&quot;', '"', $v);
-                $v = str_replace('&#039;', "'", $v);
-
-                if(is_string($v)) $v = htmlspecialchars_decode($v);
-
-                if( ! array_key_exists($k, $columns)) $columns[$k] = $v;
-            }
-
-            if($type != null)
-            {
-                $type_columns = self::columns($type);
-                sys::specify_params($columns, $type_columns);
-            }
-        }
+//
+//        if(array_key_exists('data', $data) && json::valid($data['data']))
+//        {
+//            $extracted_data = json::decode($data['data']);
+//
+//            foreach($extracted_data as $k => $v)
+//            {
+//                $v = str_replace('&quot;', '"', $v);
+//                $v = str_replace('&#039;', "'", $v);
+//
+//                if(is_string($v)) $v = htmlspecialchars_decode($v);
+//
+//                if( ! array_key_exists($k, $columns)) $columns[$k] = $v;
+//            }
+//
+//            if($type != null)
+//            {
+//                $type_columns = self::columns($type);
+//                sys::specify_params($columns, $type_columns);
+//            }
+//        }
 
 
         // User Permissions
@@ -512,10 +717,11 @@ class item
      *
      * @return string
      */
-    public static function select_string($params = [])
+    public static function select_params($params = [])
     {
         sys::array_key_default_value($params, 'where', null);
         sys::array_key_default_value($params, 'order_by', 'id DESC');
+        sys::array_key_default_value($params, 'group_by', false);
         sys::array_key_default_value($params, 'limit', false);
         sys::array_key_default_value($params, 'meta', []);
         sys::array_key_default_value($params, 'type', null);
@@ -523,61 +729,18 @@ class item
         sys::array_key_default_value($params, 'show.all', false);
         sys::array_key_default_value($params, 'page', false);
 
-        $columns       = self::columns();
         $sql_columns   = [];
         $name          = self::$name;
-        $meta          = self::$meta;
         $joins         = [];
         $where         = [];
-        $meta_column   = $params['meta'];
-        $where_matches = [];
         $time          = time();
-
-        preg_match_all('#`([A-Za-z0-9].*?)`#si', $params['where'], $where_matches);
-
-        // Meta Columns
-        foreach($where_matches[1] as $mc)
-        {
-            if( ! in_array($mc, $columns) && ! in_array($mc, $meta_column) && $mc != 'id')
-            {
-                $meta_column[] = $mc;
-            }
-        }
-
-        // Remove Item ID Column
-        unset($columns['id']);
-
-        // Set Item ID
-        $sql_columns[] = "\t`$name`.`id` AS `item_id`";
-
-        // Set Items Columns
-        foreach($columns as $i) $sql_columns[] = "\t`$name`.`$i` AS `$i`";
-
-        // Set Meta Columns
-        foreach($meta_column as $m) $sql_columns[] = "\t`$m`.`meta_value` AS `$m`";
-
-        // Implode Columns
-        $sql_columns = implode(",\n", $sql_columns);
-
-        foreach($meta_column as $m) $joins[] = "\tRIGHT JOIN `$meta` `$m` ON ( `$name`.`id` = `$m`.`item_id` ) AND ( `$m`.`meta_key` = '$m' )";
-        $joins = implode("\n", $joins);
-
-
-        foreach($where_matches[1] as $cn)
-        {
-            if( ! in_array($cn, $columns) && $cn != 'id')
-                $params['where'] = str_replace("`$cn`", "`$cn`.`meta_value`", $params['where']);
-        }
 
         $where[] = "\t( `$name`.`id` IS NOT NULL ) AND ( `$name`.`released_at` IS NULL OR `$name`.`released_at` < $time ) AND (`$name`.`status` <> 'trash')";
 
         if($params['show.all']    != true) $where[] = "\t( `$name`.`status` = 'active' )";
         if($params['type']        != null) $where[] = "\t( `$name`.`type` = '{$params['type']}' )";
         if($params['where']       != null) $where[] = "\t( {$params['where']} )";
-        $where = implode(" AND \n", $where);
-
-        // SQL String
-        $sql = "SELECT \n\n$sql_columns \n\nFROM `$name` \n\n$joins \n\nWHERE \n\n$where \n\nORDER BY {$params['order_by']}";
+        $params['where'] = implode(" AND \n", $where);
 
         $limit_start = 0;
         $limit_end   = $params['limit'];
@@ -588,95 +751,9 @@ class item
             $limit_start = $page_no * $params['limit'];
         }
 
-        if($params['limit'] != false) $sql .= "\n\nLIMIT $limit_start, $limit_end";
-
-        return $sql;
+        return $params;
     }
 
-    /**
-     * @param array $udata
-     * @param array $params
-     *
-     * @return string
-     */
-    public static function update_string($udata = [], $params = [])
-    {
-        sys::array_key_default_value($params, 'where', null);
-        sys::array_key_default_value($params, 'meta', []);
-
-        $columns         = self::columns();
-        $sql_columns     = [];
-        $name            = self::$name;
-        $meta            = self::$meta;
-        $joins           = [];
-        $where           = [];
-        $meta_column     = $params['meta'];
-        $where_matches   = [];
-        $update_data_arr = [];
-
-        preg_match_all('#`([A-Za-z0-9].*?)`#si', $params['where'], $where_matches);
-        preg_match_all('#`([A-Za-z0-9].*?)`#si', $params['where'], $where_matches);
-
-        // Meta Columns
-        foreach($where_matches[1] as $mc)
-        {
-            if( ! in_array($mc, $columns) && ! in_array($mc, $meta_column) && $mc != 'id')
-            {
-                $meta_column[] = $mc;
-            }
-        }
-
-        // Set Datas
-        foreach($udata as $k => $v)
-        {
-            if( ! in_array($k, $columns) && ! in_array($k, $meta_column) && $k != 'id')
-            {
-                $meta_column[] = $k;
-            }
-
-            if($v == null)
-            {
-                $update_data_arr[] = "\t`{$k}` = NULL";
-            }
-            else
-            {
-                $v = trim($v, "'");
-
-                if(is_int($v))
-                {
-                    $update_data_arr[] = "\t`{$k}` = {$v}";
-                }
-                else
-                {
-                    $update_data_arr[] = "\t`{$k}` = '{$v}'";
-                }
-            }
-        }
-
-        $update_data = implode(",\n", $update_data_arr);
-
-        // Remove Item ID Column
-        unset($columns['id']);
-
-        foreach($meta_column as $m) $joins[] = "\tRIGHT JOIN `$meta` `$m` ON ( `$name`.`id` = `$m`.`item_id` ) AND ( `$m`.`meta_key` = '$m' )";
-        $joins = implode("\n", $joins);
-
-        foreach($where_matches[1] as $cn)
-        {
-            if( ! in_array($cn, $columns) && $cn != 'id')
-                $params['where'] = str_replace("`$cn`", "`$cn`.`meta_value`", $params['where']);
-        }
-
-        $where[] = "\t( `$name`.`id` IS NOT NULL ) AND ( `$name`.`status` <> 'trash' )";
-        if($params['where'] != null) $where[] = "\t( {$params['where']} )";
-        $where = implode(" AND \n", $where);
-
-
-        // SQL String
-        $sql = "UPDATE `$name` \n\n$joins \n\nSET \n\n$update_data \n\nWHERE \n\n$where \n\n";
-
-        return $sql;
-    }
 
     /**
      * @param array $params
@@ -690,9 +767,9 @@ class item
 
         $params['limit'] = 1;
 
-        $sql    = self::select_string($params);
-        $query  = db::query($sql);
-        $result = db::fetch_assoc($query);
+        $params = self::select_params($params);
+
+        $result = db::get(self::$name, $params);
 
         if(count($result) <= 0) return false;
 
@@ -711,11 +788,12 @@ class item
         sys::array_key_default_value($params, 'show.all', $show_all);
         sys::array_key_default_value($params, 'cache.disable', false);
 
-        $sql    = self::select_string($params);
-        $query  = db::query($sql);
-        $result = [];
+        $params = self::select_params($params);
 
-        while($ql = db::fetch_assoc($query)) $result[] = self::prepare($ql, $params['cache.disable']);
+        $result = [];
+        $items  = db::get_all(self::$name, $params);
+
+        foreach($items as $item) $result[] = self::prepare($item, $params['cache.disable']);
 
         if(count($result) <= 0) return false;
         return $result;
@@ -850,6 +928,34 @@ class item
     public static function error()
     {
         return db::error();
+    }
+
+
+    public static function search($s = null, $limit = 20)
+    {
+        if($s == null) return false;
+        if(_config('search.allowed_types'))
+        {
+            $types = _config('search.allowed_types');
+        }
+        else
+        {
+            $types = ['user'];
+        }
+
+        $type_where = [];
+        foreach($types as $type) $type_where[] = "(`type` = '$type')";
+        $type_where = implode(' OR ', $type_where);
+
+        $ignored = ['type', 'password', 'user', 'layout', 'permissions', 'authority'];
+        $where   = db::search_where_query(self::$name, $s, $ignored);
+        $where  .= " AND (`title` IS NOT NULL) AND ($type_where)";
+
+        $params = [];
+        $params['limit'] = $limit;
+        $params['where'] = $where;
+
+        return item::latest($params);
     }
 
 }

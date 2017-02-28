@@ -1,7 +1,3 @@
-<script>
-    $(function(){ cx.settings.footer() });
-</script>
-
 <?php if(user::logged_in()): ?>
     <ul id="user-dropdown" class="dropdown-content">
         <li><a class="grey-text text-darken-3 modal-trigger" href="#user_settings_modal"><i class="fa fa-cog"></i>Settings</a></li>
@@ -23,6 +19,8 @@
     <?= user::modal('register') ?>
 <?php endif; ?>
 
+<?=_modal('search')?>
+
 <?php if(user::authority() === 'developer'): ?>
     <script>
         <?= ! timer::active() ? " cx.alert.toast('<span class=\"red-text\">The timer can be stopped.</span>');" : null ?>
@@ -34,3 +32,5 @@
 <?php if(cx::data('item.data') && (user::authority() === 'developer' || user::authority() === 'admin')): ?>
     <a href="<?=_ADMIN?>/edit/<?=cx::data('item.data')['id']?>" class="btn-floating cx-fixed btn-large waves-effect waves-light red modal-trigger"><i class="material-icons">settings</i></a>
 <?php endif; ?>
+
+<script> $(function(){ cx.settings.footer() }); </script>

@@ -43,21 +43,7 @@ class cx
 
     public static function data($alias = null, $data = null)
     {
-        if($alias == null) return false;
-
-        // GET
-        if($data == null)
-        {
-            sys::array_key_default_value(self::$datas, $alias, null);
-            return self::$datas[$alias];
-        }
-
-        // SET
-        else
-        {
-            self::$datas[$alias] = $data;
-            return $data;
-        }
+        return _data($alias, $data);
     }
 
 
@@ -72,13 +58,17 @@ class cx
         // Add New Type
         if(is_array($param))
         {
+            $curr_types = self::data('types');
+
+            // Merge
+            if(is_array($curr_types) && array_key_exists($param['alias'], $curr_types)) $param = array_merge($curr_types[$param['alias']], $param);
+
             sys::specify_params($param, ['alias', 'title', 'name', 'columns', 'layout', 'amp']);
             sys::array_key_default_value($param, 'form', 'forms/item');
 
             if($param['title'] == null && $param['name'] != null) $param['title'] = $param['name'];
             else if($param['title'] != null && $param['name'] == null) $param['name']  = $param['title'];
 
-            $curr_types                  = self::data('types');
             $curr_types[$param['alias']] = $param;
 
             self::data('types', $curr_types);
@@ -145,7 +135,7 @@ class cx
     {
         if($title == null)
         {
-            return self::data('html.title');
+            return _config('html.title.emoji') . ' ' . self::data('html.title');
         }
         else
         {

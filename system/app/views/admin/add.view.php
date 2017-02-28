@@ -14,3 +14,13 @@
 <script>
     cx.util.convert_to_url("<?=$item_type?>/");
 </script>
+
+<script>
+    // Ready
+    $(function(){
+        $("#id_user").val(USER_NAME);
+        $('[name="db[user]"]').val(USER_ID);
+
+        $("button, .btn").removeAttr("disabled");
+    });
+</script>

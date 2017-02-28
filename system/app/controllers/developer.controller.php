@@ -90,12 +90,13 @@ class controller_developer extends controller
             ');
 
             // Create System Folders
-            sys::write(['file' => SYSDATA_PATH . DS . 'backups' . DS . 'index.html']);
-            sys::write(['file' => SYSDATA_PATH . DS . 'cache'   . DS . 'index.html']);
-            sys::write(['file' => SYSDATA_PATH . DS . 'logs'    . DS . 'index.html']);
-            sys::write(['file' => SYSDATA_PATH . DS . 'timer'   . DS . 'index.html']);
-            sys::write(['file' => SYSDATA_PATH . DS . 'timer'   . DS . 'counter.cx']);
-            sys::write(['file' => SYSDATA_PATH . DS . 'timer'   . DS . 'data.cx']);
+            sys::write(['file' => SYSDATA_PATH . DS . 'sessions' . DS . 'index.html']);
+            sys::write(['file' => SYSDATA_PATH . DS . 'backups'  . DS . 'index.html']);
+            sys::write(['file' => SYSDATA_PATH . DS . 'cache'    . DS . 'index.html']);
+            sys::write(['file' => SYSDATA_PATH . DS . 'logs'     . DS . 'index.html']);
+            sys::write(['file' => SYSDATA_PATH . DS . 'timer'    . DS . 'index.html']);
+            sys::write(['file' => SYSDATA_PATH . DS . 'timer'    . DS . 'counter.cx']);
+            sys::write(['file' => SYSDATA_PATH . DS . 'timer'    . DS . 'data.cx']);
 
             $user = [];
             $user['title'] = 'Super Admin';
@@ -325,6 +326,43 @@ class controller_developer extends controller
                 $update_items = item::update($udata, $uparams);
 
                 print_r($udata);
+            }
+        }
+        catch(Exception $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+
+
+    function image_cdn_to_local()
+    {
+        try
+        {
+            $items = item::get_all(['limit' => 10000000]);
+
+            foreach($items as $item)
+            {
+                $v = $item['content'];
+
+                if(is_string($v) && preg_match_all("#<img.*?src=[\"'](https://res.cloudinary.com/criexe/image/upload/v.*?/(.*?))[\"'].*?>#si", $v, $m))
+                {
+                    echo "\n\n<br><br>";
+//                        print_r($m[1]);
+                    $xi = 0;
+                    foreach($m[2] as $image)
+                    {
+//                        copy($m[1][$xi], CONTENTS_PATH . "/images/$image");
+                        echo "$image : {$m[1][$xi]} : " . _config('image.url') . "/$image <br>";
+                        $xi ++;
+
+                    }
+                }
+
+                $udata['content'] = preg_replace("#[\"']https://res.cloudinary.com/criexe/image/upload/v.*?/(.*?)[\"']#si", "\"https://kizlar.online/contents/images/$1\"", $v);
+                item::update($udata, ["where" => "`id` = {$item['id']}"]);
+
             }
         }
         catch(Exception $e)

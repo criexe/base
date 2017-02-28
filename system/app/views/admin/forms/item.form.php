@@ -36,8 +36,9 @@
 
             <div class="card">
                 <div class="card-content grey lighten-5">
-                    <button class="btn green waves-effect" type="submit">Save</button>
-                    <a href="<?=$data['full_url']?>" class="btn orange waves-effect">Preview</a>
+                    <button class="btn green waves-effect" type="submit" disabled>Save</button>
+
+                    <?php if($data['url']): ?><a href="<?=$data['full_url']?>" class="btn orange waves-effect" disabled>Preview</a><?php endif; ?>
                 </div>
                 <div class="divider"></div>
                 <div class="card-content">
@@ -47,8 +48,8 @@
                             <label>Status</label>
                         </div>
                         <div class="input-field col l12">
-                            <input type="text" id="id_user" value="<?= array_key_exists('name', $data['user']) ? $data['user']['name'] : 'Unknown' ?>" disabled>
-                            <input type="hidden" name="db[user]" value="<?= array_key_exists('id', $data['user']) ? $data['user']['id'] : null ?>">
+                            <input type="text" id="id_user" value="<?= $data['user'] != null ? $data['user']['title'] : null ?>" disabled>
+                            <input type="hidden" name="db[user]" value="<?= $data['user'] != null ? $data['user']['id'] : null ?>">
                             <label for="id_user">User</label>
                         </div>
                         <div class="input-field col l12">
@@ -56,7 +57,7 @@
                             <label for="id_views">Views</label>
                         </div>
 
-                        <?= form::category($item_type, $data['category']) ?>
+                        <?= form::category(null, $data['category']) ?>
 
                         <div class="input-field col l12">
                             <textarea name="db[keywords]" id="id_keywords" class="materialize-textarea validate" placeholder="tag1, tag2, tag3, tag4, ..."><?= $data['keywords'] ?></textarea>

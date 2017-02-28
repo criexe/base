@@ -1,4 +1,4 @@
-<div class="cx-image-upload-button" id="cont_<?=$tag_id?>">
+<div class="cx-image-upload-button" id="cont_<?=$tag_id?>" style="display:inline-block">
     <button data-target="#<?=$form_id?>" type="button" data-input="#<?=$tag_id?>" class="btn waves-effect orange darken-4"><i class="material-icons left">add_a_photo</i> Image</button>
     <input type="hidden" id="<?=$tag_id?>" name="<?=$name?>" value="<?=$value?>">
 </div>

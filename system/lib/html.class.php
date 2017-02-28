@@ -119,26 +119,29 @@ class html
         }
         else
         {
-            if( ! extension_loaded('imagick'))
-            {
-                return '<img src="' . _config('image.url') . '/' . $path . '"' . self::create_params($params) . '>';
-            }
 
-            $resized_img = image::scale($path, $width, $height, $resize_larger);
-
-            $img_path = $resized_img;
-
-            $param_width  = $width > 0 ? $width : null;
-            $param_height = $height > 0 ? $height : null;
+//            if( ! extension_loaded('imagick'))
+//            {
+//                return '<img src="' . _config('image.url') . '/' . $path . '"' . self::create_params($params) . '>';
+//            }
+//
+//            $resized_img = image::scale($path, $width, $height, $resize_larger);
+//
+//            $img_path = $resized_img;
+//
+//            $param_width  = $width > 0 ? $width : null;
+//            $param_height = $height > 0 ? $height : null;
 
             if($link == true)
             {
-                return CONTENTS . '/' . $img_path;
+                return _config('image.url') . '/' . $path;
             }
             else
             {
+                return '<img src="' . _config('image.url') . '/' . $path . '"' . self::create_params($params) . '>';
+
                 // return "<img src='$img_path' width='$param_width' height='$param_height' alt='$img_path' " . self::create_params($params) . ">";
-                return '<img src="' . CONTENTS . '/' . $img_path . '"' . self::create_params($params) . '>';
+//                return '<img src="' . _config('image.url') . '/' . $img_path . '"' . self::create_params($params) . '>';
             }
         }
     }

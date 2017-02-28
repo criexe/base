@@ -2,5 +2,12 @@
 
 timer::task(_DAY, function(){
 
-    db::export();
+    $_db   = _config('database');
+    $_user = $_db['user'];
+    $_pass = $_db['pass'];
+    $_name = $_db['name'];
+
+    $_file = BACKUPS_PATH . DS . date('d-m-Y_H-i-s') . '.sql';
+
+    sys::exec("mysqldump --user='$_user' --password='$_pass' $_name > $_file");
 }); 

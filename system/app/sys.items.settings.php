@@ -30,4 +30,19 @@ cx::type([
     'sitemap' => true
 ]);
 
-?>
+
+cx::type([
+
+    'alias'   => 'comment',
+    'title'   => 'Comment',
+    'columns' => ['for'],
+    'notification.insert' => true
+]);
+
+
+cx::type([
+
+    'alias'   => 'redirect',
+    'title'   => 'Redirect',
+    'form'    => 'redirect'
+]);

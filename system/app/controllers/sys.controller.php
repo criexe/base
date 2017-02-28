@@ -234,4 +234,71 @@ class controller_sys extends controller
         }
     }
 
+
+    function release()
+    {
+        try
+        {
+            $secret  = _config('app.release.secret');
+            $headers = getallheaders();
+
+            if( ! array_key_exists('X-Hub-Signature', $headers)) exit;
+
+            $signature = $headers['X-Hub-Signature'];
+
+            list($algo, $hash) = explode('=', $signature, 2);
+
+            $payload      = file_get_contents('php://input');
+            $payload_hash = hash_hmac($algo, $payload, $secret);
+
+
+            if($hash !== $payload_hash)
+            {
+                echo 'Hacking Attack !';
+            }
+            else
+            {
+                sys::write([
+
+                    'file' => SYSDATA_PATH . DS . 'release.cx',
+                    'data' => $secret,
+                    'mode' => 'w'
+
+                ]) or throw_exception('File error.');
+
+                echo "Success";
+            }
+        }
+        catch(Exception $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+
+    function ajax_search()
+    {
+        try
+        {
+            $s       = input::post('s') or throw_exception('No posted data.');
+            $columns = item::columns();
+            $results = item::search($s);
+            $res     = cx::render('system/app/views/sys/search/search.ajax_results', ['results' => $results]);
+
+            echo response::ajax([
+
+                'status' => true,
+                'html'   => $res
+            ]);
+        }
+        catch(Exception $e)
+        {
+            echo response::ajax([
+
+                'status'  => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
 }

@@ -58,6 +58,20 @@
                             </div>
                         </div>
 
+                        <div id="static-codes-settings" class="section scrollspy">
+                            <h4 class="header light orange-text text-darken-4">Static Codes</h4>
+                            <div class="row section">
+
+                                <div class="input-field col l12">
+                                    <textarea name="option[static_code.head]" class="materialize-textarea validate"><?=cx::option('static_code.head')?></textarea>
+                                    <label>Head Code</label>
+                                </div>
+                                <div class="input-field col l12">
+                                    <button type="submit" class="btn green waves-effect">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div id="mail-settings" class="section scrollspy">
                             <h4 class="header light orange-text text-darken-4">Mail Settings</h4>
                             <div class="row section">
@@ -166,6 +180,7 @@
                         <ul class="section table-of-contents">
                             <li><a href="#general-settings">General</a></li>
                             <li><a href="#tracking-settings">Tracking</a></li>
+                            <li><a href="#static-codes-settings">Static Codes</a></li>
                             <li><a href="#mail-settings">Mail</a></li>
                             <li><a href="#facebook-settings">Facebook</a></li>
                             <li><a href="#twitter-settings">Twitter</a></li>

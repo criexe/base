@@ -4,7 +4,7 @@ set_time_limit(0);
 ini_set('memory_limit', '-1');
 
 // Default Domain
-$_SERVER['HTTP_HOST']   = 'timer.dev';
+$_SERVER['HTTP_HOST']   = 'localhost';
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
 

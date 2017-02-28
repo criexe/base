@@ -64,6 +64,8 @@ try
     // Load Controller
     else
     {
+        if(!class_exists($controller_class)) _404();
+
         $load = new $controller_class();
 
         // $load->$method_name();
@@ -76,7 +78,7 @@ try
         }
         else
         {
-            error::show_404();
+            _404();
         }
     }
 
@@ -102,5 +104,5 @@ try
 }
 catch(Exception $e)
 {
-    error::show_404();
+    _404();
 }

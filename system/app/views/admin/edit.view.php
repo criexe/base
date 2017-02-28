@@ -10,3 +10,10 @@
     </div>
 
 </div>
+
+<script>
+    // Ready
+    $(function(){
+        $("button, .btn").removeAttr("disabled");
+    });
+</script>

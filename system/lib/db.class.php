@@ -161,8 +161,7 @@ class db
 
         $sql_query = implode(' ', $sql);
 
-        $query = self::query($sql_query);
-
+        $query  = self::query($sql_query);
         $result = self::fetch_assoc($query);
 
         return $result;
@@ -567,16 +566,20 @@ class db
     }
 
 
-    public static function search_where_query($table_name = null, $string = null)
+    public static function search_where_query($table_name = null, $string = null, $ignored_columns = [])
     {
         if($string == null) return null;
 
         $columns      = self::get_columns(_config('database.prefix') . $table_name);
         $where_column = [];
 
-        foreach($columns as $column) $where_column[] = "`$column` LIKE '%$string%'";
+        foreach($columns as $column)
+        {
+            if(in_array($column, $ignored_columns)) continue;
+            $where_column[] = "`$column` LIKE '%$string%'";
+        }
 
-        return implode(' OR ', $where_column);
+        return "(" . implode(' OR ', $where_column) . ")\n";
     }
 
 

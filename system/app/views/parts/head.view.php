@@ -14,29 +14,30 @@
     <meta property="og:url"         content="<?=cx::data('item.data')['full_url']?>" />
     <meta property="og:title"       content="<?=cx::data('item.data')['title']?>" />
     <meta property="og:description" content="<?=cx::data('item.data')['description']?>" />
-    <meta property="og:image"       content="<?=html::image_link(cx::data('item.data')['image_url'], 880)?>" />
+    <meta property="og:image"       content="<?=cx::data('item.data')['image_url']?>" />
     <meta property="fb:app_id"      content="<?=cx::option('facebook.app_id')?>" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@<?=cx::option('twitter.username')?>" />
     <meta name="twitter:title" content="<?=cx::data('item.data')['title']?>" />
     <meta name="twitter:description" content="<?=cx::data('item.data')['description']?>" />
-    <meta name="twitter:image" content="<?=html::image_link(cx::data('item.data')['image_url'], 880)?>" />
+    <meta name="twitter:image" content="<?=cx::data('item.data')['image_url']?>" />
     <?php endif; ?>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <script src="<?= SYS_ASSETS ?>/cx/plugins/jquery.js"></script>
-    <script src="<?= SYS_ASSETS ?>/cx/plugins/jquery.form.js"></script>
-    <script src="<?= SYS_ASSETS ?>/cx/plugins/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/imagesloaded.js"></script>
-    <script type="text/javascript" src="<?= SYS_ASSETS ?>/cx/plugins/isotope.min.js"></script>
-
-    <script src="<?= SYS_ASSETS ?>/cx/js/cx.js?v6"></script>
+    <?= _js(SYS_ASSETS . '/cx/plugins/jquery.js') ?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/jquery.form.js') ?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/materialize/js/materialize.min.js') ?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/ckeditor4.6/ckeditor.js') ?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/imagesloaded.js') ?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/isotope.min.js') ?>
+    <?= _js(SYS_ASSETS . '/cx/js/cx.js') ?>
 
     <script>
-        var URL      = "<?= URL ?>";
-        var CONTENTS = "<?= CONTENTS ?>";
+        var URL       = "<?= URL ?>";
+        var CONTENTS  = "<?= CONTENTS ?>";
+        var USER_NAME = "<?= user::name() ?>";
+        var USER_ID   =  <?= user::id() == null ? 'false' : user::id() ?>;
     </script>

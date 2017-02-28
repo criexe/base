@@ -107,7 +107,10 @@ class controller_admin extends controller
         $form_content         = _render($cx_type['form'], $data, [ 'ext' => 'form']);
         $data['form_content'] = $form_content;
 
+        _data('admin.item.insert.user.name', user::name());
+        _data('admin.item.insert.user.id',   user::id());
 
+        cx::title('New ' . utils::ucwords($type));
         layout::set('admin');
         $this->render('admin/add', $data);
     }

@@ -163,17 +163,18 @@ class form
      * @param      $type
      * @param bool $multiple
      */
-    public static function category($type = null, $categories_data = [], $multiple = true)
+    public static function category($type = null, $categories_data = [], $multiple = true, $top_category = false)
     {
         $item_params          = [];
         $item_params['type']  = 'category';
-        $item_params['where'] = "`type_alias` = '$type'";
+        if($type != null) $item_params['where'] = "`type_alias` = '$type'";
         $type_categories      = item::get_all($item_params);
 
         $data               = [];
         $data['multiple']   = $multiple == true ? 'multiple' : null;
         $data['categories'] = $type_categories;
         $data['data']       = $categories_data;
+        $data['top']        = $top_category;
 
         return _render('system/app/views/item/input/category', $data);
     }
@@ -207,12 +208,15 @@ class form
     }
 
 
-    public static function wysiwyg($name = null, $value = null, $type = 'basic')
+    public static function wysiwyg($name = null, $value = null, $type = 'basic', $params = [])
     {
-        $data          = [];
-        $data['name']  = $name;
-        $data['value'] = $value;
-        $data['type']  = $type;
+        sys::specify_params($params, ['button.left', 'button.right']);
+
+        $data           = [];
+        $data['name']   = $name;
+        $data['value']  = $value;
+        $data['type']   = $type;
+        $data['params'] = $params;
 
         return _render('system/app/views/item/input/wysiwyg', $data);
     }

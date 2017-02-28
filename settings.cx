@@ -11,6 +11,7 @@ $config = [];
 $router = [];
 $hooks  = [];
 $files  = [];
+$datas  = [];
 
 // Dırectory Seperator
 define('DS', DIRECTORY_SEPARATOR);
@@ -86,23 +87,34 @@ try
     require_once SYSTEM_LIB_PATH . DS . 'session.class.php';
 
 
-
-    // Autoload Functions
-    require SYSTEM_LIB_PATH . DS . 'functions.autoload.php';
-
-
-    // Includes
-    require SYSTEM_LIB_PATH . DS . 'functions.system.php';
-    require SYSTEM_INCLUDES_PATH . DS . 'functions.cx';
+    // Session Start
+    session::start();
 
 
     // Set All Files
     $files = sys::get_software_files();
 
+    require SYSTEM_INCLUDES_PATH . DS . 'functions.cx';
+
+
+    // Language
+    lang::start();
+    define('CURRENT_LANGUAGE', lang::current());
+
 
     // Config
     foreach($files['config'] as $cFile) include ROOT_PATH . "/$cFile";
 
+
+    // URL - Links
+    define('URL'           , _config('app.url'));
+    define('ADMIN_URL'     , URL . _ADMIN);
+    define('SYS_URL'       , URL . '/sys');
+    define('DEVELOPER_URL' , URL . '/developer');
+    define('CONTENTS'      , URL . '/contents');
+    define('ASSETS'        , URL . '/assets');
+    define('ASSETS_SYS'    , URL . '/assets/sys');
+    define('SYS_ASSETS'    , URL . '/system/app/assets');
 
     // Display Errors
     if(_config('error') == true)
@@ -115,29 +127,6 @@ try
         ini_set('display_errors', 'off');
         error_reporting(0);
     }
-
-
-    // Session Start
-    session::start();
-
-
-    // Router Start
-    router::start();
-
-
-    // Language
-    lang::start();
-    define('CURRENT_LANGUAGE', lang::current());
-
-    // URL - Links
-    define('URL'           , _config('app.url'));
-    define('ADMIN_URL'     , URL . _ADMIN);
-    define('SYS_URL'       , URL . '/sys');
-    define('DEVELOPER_URL' , URL . '/developer');
-    define('CONTENTS'      , _config('app.url') . '/contents');
-    define('ASSETS'        , _config('app.url') . '/assets');
-    define('ASSETS_SYS'    , _config('app.url') . '/assets/sys');
-    define('SYS_ASSETS'    , _config('app.url') . '/system/app/assets');
 
 
     // Database Connection
@@ -168,11 +157,8 @@ try
     cx::data('item_columns', item::columns());
 
 
-    // Browser Caching
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-    header('Cache-Control: no-store, no-cache, must-revalidate');
-    header('Cache-Control: post-check=0, pre-check=0', false);
-    header('Pragma: no-cache');
+    // Router Start
+    router::start();
 
 
     // Include Settings
@@ -207,6 +193,7 @@ try
         }
     }
     unset($user_cookie, $user);
+
 }
 catch(Exception $e)
 {

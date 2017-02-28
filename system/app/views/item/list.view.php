@@ -62,7 +62,7 @@
                                         }
                                         else
                                         {
-                                            echo json::encode($v, ['pretty' => true]);
+                                            echo filter::request(json::encode($v, ['pretty' => true]));
                                         }
                                         ?>
                                     </article>
@@ -80,8 +80,8 @@
             </td>
             <!-- Title -->
 
-            <td><a class="grey-text text-darken-1" href="<?=$data['full_url']?>" target="_blank"><?=$data['url']?></a></td>
-            
+            <td><a class="grey-text text-darken-1" href="<?=array_key_exists('full_url', $data) ? $data['full_url'] : null ?>" target="_blank"><?=$data['url']?></a></td>
+
             <td>
                 <select name="status" data-id="<?=$data['id']?>" data-change-post-status>
                     <option value="active" <?= $data['status'] == 'active'  ? 'selected' : null ?>>Active</option>

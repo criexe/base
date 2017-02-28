@@ -1,0 +1,42 @@
+<?php
+
+class comment
+{
+
+    public static function insert($data = [])
+    {
+        sys::array_key_default_value($data, 'user', user::id());
+        sys::array_key_default_value($data, 'content', null);
+        sys::array_key_default_value($data, 'parent', false);
+//        sys::array_key_default_value($data, 'for', null);
+
+        if($data['parent'] == false) return false;
+
+        $data['type'] = 'comment';
+
+        $insert = item::insert($data);
+        return $insert;
+    }
+
+    public static function get($parent = null, $limit = null, $group = false, $order_by = 'id DESC')
+    {
+        $params             = [];
+        $params['type']     = 'comment';
+        $params['order_by'] = $order_by;
+
+        if($parent != null) $params['where']    = "`parent` = '$parent'";
+        if($limit  != null) $params['limit']    = $limit;
+//        if($group  == true) $params['group_by'] = 'parent';
+
+        $comments = item::get_all($params);
+
+        $ret             = [];
+        $ret['comments'] = $comments ? $comments : [];
+        $ret['count']    = count($comments);
+
+        return $ret;
+    }
+
+}
+
+?>

@@ -7,7 +7,7 @@ class controller_helper
     {
         try
         {
-            $path  = 'images' . DS . date('m-Y') . DS . date('d');
+            $path  = date('m-Y') . DS . date('d');
             $path  = trim($path, '/ \\');
             $image = false;
 
@@ -16,17 +16,19 @@ class controller_helper
             if(!$file)
             {
                 throw_exception('No file.');
+                $image_name = null;
             }
             else
             {
-                sys::create_folder(CONTENTS_PATH . DS . $path);
+                sys::create_folder(CONTENTS_PATH . DS . 'images' . DS . $path);
                 $image_name = $path . DS . image::create_name($file['name']) . '.' . image::image_ext($file['tmp_name']);
 
-                if(move_uploaded_file($file['tmp_name'], CONTENTS_PATH . DS . $image_name))
+                if(move_uploaded_file($file['tmp_name'], CONTENTS_PATH . DS . 'images' . DS . $image_name))
                 {
                     $image = [
 
-                        'url' => CONTENTS_PATH . DS . $image_name,
+                        'url'        => CONTENTS . "/images/$image_name",
+                        'secure_url' => CONTENTS . "/images/$image_name",
                     ];
                 }
             }
@@ -45,7 +47,7 @@ class controller_helper
                     'image'      => $image,
                     'url'        => $image['url'],
                     'secure_url' => $image['secure_url'],
-                    'filename'   => $image['public_id'] . '.' . $image['format']
+                    'filename'   => $image_name
                 ]);
             }
             else

@@ -121,8 +121,29 @@ var cx = {
 
             });
 
+
             // Scrollbar
             $("[data-cx-scrollbar], [data-scrollbar], [cx-scrollbar]").perfectScrollbar();
+
+
+            // Search
+            cx.event.keyup("#search_modal .search-input", function(e){
+
+                var $s        = $(this).val();
+                var $ajax_url = URL + "/sys/ajax_search";
+                var $data     = {s : $s};
+
+                cx.ajax.post($ajax_url, $data, function(data){
+
+                    data = cx.json.decode(data);
+
+                    if(data.status == true)
+                    {
+
+                        $("#search_modal .search-results").slideDown("normal").html(data.html);
+                    }
+                });
+            });
         }
     },
 
@@ -237,8 +258,8 @@ var cx = {
 
             $type = typeof $type !== 'undefined' ?  $type : 'basic';
 
-            var $basic_config = URL + "/system/app/assets/cx/plugins/ckeditor/config.js";
-            var $full_config  = URL + "/system/app/assets/cx/plugins/ckeditor/full_config.js";
+            var $basic_config = URL + "/system/app/assets/cx/plugins/ckeditor4.6/config.js";
+            var $full_config  = URL + "/system/app/assets/cx/plugins/ckeditor4.6/full_config.js";
             var $css_file     = URL + "/system/app/assets/cx/css/wysiwyg.content.css";
 
             var $config;
@@ -499,8 +520,6 @@ var cx = {
 
             return opt.lowercase ? s.toLowerCase() : s;
         }
-
-
     },
 
 

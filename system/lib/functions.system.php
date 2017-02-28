@@ -15,7 +15,7 @@
  */
 function throw_exception($message = null, $code = null)
 {
-    logger::add($message);
+//    logger::add($message);
     throw new Exception($message, $code);
 }
 

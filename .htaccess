@@ -21,6 +21,8 @@ ErrorDocument 403 /pages/403.php
 ErrorDocument 404 /pages/404.php
 ErrorDocument 500 /pages/500.php
 
+ErrorDocument 404 /system/app/views/error/404.view
+
 #<FilesMatch "\.css$">
 #  SetHandler application/x-httpd-php
 #  Header set Content-type "text/css"
@@ -73,8 +75,11 @@ AddHandler application/x-httpd-php .php .html .htm .cx
     ModPagespeedEnableFilters extend_cache
     ModPagespeedEnableFilters extend_cache_pdfs
 #    ModPagespeedEnableFilters remove_quotes
-    ModPagespeedEnableFilters responsive_images,resize_images
+
+    ModPagespeedEnableFilters resize_images
+    ModPagespeedEnableFilters responsive_images
     ModPagespeedEnableFilters responsive_images_zoom
+    ModPagespeedImageRecompressionQuality 100
     ModPagespeedEnableFilters local_storage_cache
     ModPagespeedEnableFilters convert_meta_tags
     ModPagespeedEnableFilters combine_heads

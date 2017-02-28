@@ -1,0 +1,30 @@
+<?php
+
+class controller_comment
+{
+
+    function add()
+    {
+        $data = [];
+        $data['content']  = input::post('content');
+        $data['parent']   = input::post('id');
+//        $data['for']      = input::post('for');
+        $data['status']   = 'active';
+
+        $res = [];
+
+        if(comment::insert($data))
+        {
+            $res['status'] = true;
+        }
+        else
+        {
+            $res['status'] = false;
+        }
+
+        echo response::ajax($res);
+    }
+
+}
+
+?>
