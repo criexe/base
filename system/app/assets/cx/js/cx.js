@@ -99,8 +99,13 @@ var cx = {
 
                 if ($social == "twitter")
                 {
-                    var $via = $this.attr("data-via");
-                    window.open("https://twitter.com/share?url=" + $url + "&text=&via=" + $via, "Twitter", 'width=600,height=500,scrollbars=no');
+                    var $via  = $this.attr("data-via");
+                    var $text = $this.attr("data-text");
+
+                    if($text == undefined || $text == "" || typeof $text == "undefined") $text = "";
+
+                    window.open("https://twitter.com/share?url=" + $url + "&text=@" + $via + " " + $text, "Twitter", 'width=600,height=500,scrollbars=no');
+                    //window.open("https://twitter.com/share?url=" + $url + "&text=" + $text + "&via=" + $via, "Twitter", 'width=600,height=500,scrollbars=no');
                 }
                 else if ($social == "facebook")
                 {

@@ -54,6 +54,36 @@ function _config($alias = null, $value = null, $host = null)
 }
 
 
+function _lang($alias = null, $value = null)
+{
+    global $lang;
+    
+    $current_lang = 'en-us';
+    
+    if(!array_key_exists($current_lang, $lang)) return false;
+    
+    if($alias == null && $value == null)
+    {
+        return $lang[$current_lang];
+    }
+    else if($alias != null && $value == null)
+    {
+        if(array_key_exists($alias, $lang[$current_lang]))
+        {
+            return $lang[$current_lang][$alias];
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if($alias != null && $value != null)
+    {
+        $lang[$current_lang][$alias] = $value;
+    }
+}
+
+
 /**
  * @param null  $name
  * @param null  $datas
@@ -121,7 +151,6 @@ function _render($name = null, $datas = null, array $params = [])
                 if($params['emoji'] === true)
                 {
                     $content = $emoji->to_image($content);
-                    $content = preg_replace('#<title>(.*?)</title>#si', '<title>' . cx::title() . '</title>', $content);
                 }
 
                 // Image - Add Alt Tags
@@ -411,6 +440,24 @@ function _404()
     {
         exit;
     }
+}
+
+
+function _301($url = false)
+{
+    if($url == false || $url == null) return false;
+
+    ob_start();
+    header("HTTP/1.1 301 Moved Permanently");
+    sys::location($url);
+    exit;
+}
+
+
+function _category($id = null)
+{
+    if($id == null) return false;
+    return item::get(['where' => "`id` = $id"]);
 }
 
 

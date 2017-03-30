@@ -371,4 +371,16 @@ class controller_developer extends controller
         }
     }
 
+
+    function generate_sitemap()
+    {
+        sitemap::generate();
+    }
+
+
+    function info()
+    {
+        echo phpinfo();
+    }
+
 }

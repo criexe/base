@@ -14,11 +14,6 @@
                             <label for="id_title">Title / Name</label>
                         </div>
                         <div class="input-field col l12">
-                            <i class="material-icons prefix orange-text text-darken-4">http</i>
-                            <input name="db[url]" id="id_url" type="text" class="validate" length="255" value="<?= $data['url'] ?>" placeholder="<?= "$item_type/..." ?>" required>
-                            <label for="id_url">URL</label>
-                        </div>
-                        <div class="input-field col l12">
                             <i class="material-icons prefix orange-text text-darken-4">description</i>
                             <textarea name="db[description]" id="id_description" length="155" class="materialize-textarea validate"><?= $data['description'] ?></textarea>
                             <label for="id_description">Description</label>
@@ -51,6 +46,21 @@
                         <div class="input-field col l12">
                             <input name="db[views]" type="number" id="id_views" value="<?= $data['views'] ?>" min="0" class="validate">
                             <label for="id_views">Views</label>
+                        </div>
+
+                        <div class="input-field col l12">
+                            <select name="db[post_type]">
+                                <option value="" disabled selected>Post Type</option>
+                                <?php
+                                foreach(cx::type() as $type)
+                                {
+                                    $_selected = null;
+                                    if($type['alias'] == $data['post_type']) $_selected = 'selected';
+                                    echo '<option value="' . $type['alias'] . '" ' . $_selected . '>' . $type['title'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <label>Post Type</label>
                         </div>
 
                         <?= form::category(null, $data['category'], false, true) ?>

@@ -10,12 +10,16 @@ class amp
 
     public static function content_filter($content)
     {
+        $content = preg_replace("#<img(.*?)src.*?=.*?['\"]" . _config('app.url') . "(.*?)['\"](.*?)>#si", "<img$1src=\"$2\"$3>", $content);
+
         $content = utils::images_add_alt_tags($content);
         $content = self::images_add_width_tags($content);
         $content = self::images_add_height_tags($content);
 
         $content = preg_replace('/<img(.*?)\/>/si', '<img$1>', $content);
         $content = preg_replace('/<img(.*?)>/si', '<amp-img$1 layout="responsive"></amp-img>', $content);
+        $content = preg_replace('/<img(.*?)style.*?=.*?["\'].*?["\'](.*?)>/si', '<img $1 $2>', $content);
+        $content = preg_replace('/<amp-img(.*?)style.*?=.*?["\'].*?["\'](.*?)>/si', '<amp-img $1 $2>', $content);
 
         return $content;
     }
@@ -34,7 +38,7 @@ class amp
                     if(preg_match('/src=["\'](.*?)["\']/si', $images[0][$index], $matches))
                     {
                         $src = $matches[1];
-                        list($img_width, $img_height) = getimagesize($src);
+                        list($img_width, $img_height) = getimagesize(ROOT_PATH . $src);
                     }
 
                     $new_img = str_replace('<img', '<img height="' . $img_height . '"', $images[0][$index]);
@@ -59,7 +63,7 @@ class amp
                     if(preg_match('/src=["\'](.*?)["\']/si', $images[0][$index], $matches))
                     {
                         $src = $matches[1];
-                        list($img_width, $img_height) = getimagesize($src);
+                        list($img_width, $img_height) = getimagesize(ROOT_PATH . $src);
                     }
 
                     $new_img = str_replace('<img', '<img width="' . $img_width . '"', $images[0][$index]);

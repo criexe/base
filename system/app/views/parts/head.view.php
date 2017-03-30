@@ -17,8 +17,9 @@
     <meta property="og:image"       content="<?=cx::data('item.data')['image_url']?>" />
     <meta property="fb:app_id"      content="<?=cx::option('facebook.app_id')?>" />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@<?=cx::option('twitter.username')?>" />
+    <meta name="twitter:creator" content="@<?=cx::option('twitter.username')?>" />
     <meta name="twitter:title" content="<?=cx::data('item.data')['title']?>" />
     <meta name="twitter:description" content="<?=cx::data('item.data')['description']?>" />
     <meta name="twitter:image" content="<?=cx::data('item.data')['image_url']?>" />
