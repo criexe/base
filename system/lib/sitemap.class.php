@@ -1,10 +1,9 @@
 <?php
 
-
 class sitemap
 {
 
-    public static function generate()
+    public function generate()
     {
         try
         {
@@ -82,8 +81,9 @@ class sitemap
                 'data' => $index_data,
                 'mode' => 'w'
             ]);
+            
+            $this->send();
 
-            self::send();
         }
         catch(Exception $e)
         {
@@ -93,15 +93,14 @@ class sitemap
     }
 
 
-    public static function send()
+    public function send()
     {
         $url = 'http://google.com/ping?sitemap=' . URL . '/sysdata/sitemaps/index.xml';
 
         $net  = new net();
-        $send = $net->connect([
-
-            'url' => $url
-        ]);
+        $send = $net->connect(['url' => $url]);
+        
+        if($send['httpcode'] == 200) logger::add('Sitemap Sended !');
     }
 
 

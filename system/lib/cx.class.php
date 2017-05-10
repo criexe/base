@@ -151,7 +151,9 @@ class cx
         {
             $result = self::data('html.description');
             if($result == null) $result = cx::option('app.description');
-
+            
+            $result = _limit_text($result, 155);
+            
             return $result;
         }
         else

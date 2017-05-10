@@ -52,7 +52,7 @@
                     <div class="card grey darken-3">
                         <div class="card-content">
                             <div class="card-title light orange-text" style="margin-bottom:10px">Files</div>
-                            <?php foreach($files as $file) echo "<span class='chip yellow darken-2'>$file</span>"; ?>
+                            <?php foreach($timer_files as $file) echo "<span class='chip yellow darken-2'>$file</span>"; ?>
                         </div>
                     </div>
                 </section>

@@ -84,6 +84,7 @@ function _lang($alias = null, $value = null)
 }
 
 
+
 /**
  * @param null  $name
  * @param null  $datas
@@ -236,7 +237,67 @@ function _data($alias = null, $data = null)
 
 
 
+function _slack($params = [])
+{
+    // https://api.slack.com/apps/A523M6DJS/incoming-webhooks
+    
+    sys::specify_params($params, ['type']);
+    
+    $slack_name = _config('slack.name');
+    
+    switch($params['type'])
+    {
+        case 'new.comment':
+            
+            sys::specify_params($params, ['text', 'user', 'time', 'link', 'post.title']);
+            
+            $params['text'] = html_entity_decode(strip_tags(_content_decode($params['text'])));
+            if($params['user'] == null) $params['user'] = 'Anonymous';
+            
+            $data = '{"attachments":[{"color":"#36a64f","pretext":"New Comment","title":"' . $params['user'] . '","title_link":"' . $params['link'] . '","text":"' . $params['text'] . '","footer":"' . $params['post.title'] . '","ts":' . time() . '}]}';
+            break;
+            
+        case 'new':
+            
+            sys::specify_params($params, ['item.type', 'text', 'user.name', 'user.link', 'time', 'link', 'title']);
+            
+            $params['text'] = html_entity_decode(strip_tags(_content_decode($params['text'])));
+            if($params['user'] == null) $params['user'] = 'Anonymous';
+            
+            $data = '{"attachments":[{"color":"#36a64f","author_name":"' . $params['user.name'] . '","author_link":"' . $params['user.link'] . '","title":"' . $params['title'] . '","title_link":"' . $params['link'] . '","text":"' . $params['text'] . '","footer":"New ' . $params['item.type'] . '","ts":' . time() . '}]}';
+            break;
+            
+        case 'log':
+            
+            sys::specify_params($params, ['text', 'time']);
+            sys::array_key_default_value($params, 'log.type', 'general');
+            sys::array_key_default_value($params, 'user.name', user::name());
+            
+            $params['text'] = html_entity_decode(strip_tags(_content_decode($params['text'])));
+            if($params['user'] == null) $params['user'] = 'Anonymous';
+            
+            $data = '{"attachments":[{"color":"#e0e0e0","author_name":"' . $params['user.name'] . '","title":"' . $params['title'] . '","text":"' . $params['text'] . '","footer":"' . $params['log.type'] . '","ts":' . time() . '}]}';
+            break;
+    }
+
+    $net     = new net();
+    $connect = $net->connect([
+        
+        'url'    => _config('slack.url'),
+        'post'   => true,
+        'data'   => $data,
+        'header' => ['Content-Type: application/json']
+    ]);
+}
+
+
 function _log($data = null, $file = null, $options = [])
+{
+    _queue('_logger', $data, $file, $options);
+}
+
+
+function _logger($data = null, $file = null, $options = [])
 {
     sys::array_key_default_value($options, 'date', true);
     sys::array_key_default_value($options, 'ext', '.log');
@@ -263,7 +324,82 @@ function _log($data = null, $file = null, $options = [])
 
     cx::counter("log.$file", 1);
 
+    // Slack
+    _slack([
+        'type'     => 'log',
+        'text'     => $data,
+        'time'     => time(),
+        'log.type' => $file
+    ]);
+    
     return $insert_data . "\n";
+}
+
+
+
+function _queue()
+{
+    try
+    {
+        $args      = func_get_args();
+        $func_name = $args[0];
+        array_shift($args);
+
+        $file      = $func_name . '.' . str_replace(' ', '_', microtime()) . '.' . md5(rand(1, 99999999999999)) . '.queue';
+        $file_data = json::encode(['function_name' => $func_name, 'params' => $args]);
+
+        sys::write([
+
+            'file' => SYSDATA_PATH . DS . 'queue' . DS . $file,
+            'data' => $file_data,
+            'mode' => 'w'
+        ]);
+    }
+    catch(Exception $e){}
+}
+
+
+function _admin($alias = null, $info = null)
+{
+    $current_data = _data('admin');
+    
+    if($current_data == null) $current_data = [];
+    
+    if($alias != null && $info == null)
+    {
+        if(array_key_exists($alias, $current_data))
+        {
+            return $current_data[$alias];
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if($alias == null && $info == null)
+    {
+        return $current_data;
+    }
+    else if($alias != null && $info != null)
+    {
+        if( ! array_key_exists($alias, $current_data))
+        {
+            $current_data[$alias]   = [];
+            $current_data[$alias][] = $info;
+        }
+        else
+        {
+            if(is_array($current_data[$alias])) $current_data[$alias][] = $info;
+            else
+            {
+                $current_data[$alias]   = [];
+                $current_data[$alias][] = $info;
+            }
+        }
+    }
+    
+    _data('admin', $current_data);
+    return $current_data;
 }
 
 
@@ -377,6 +513,16 @@ function _content_encode($content = null)
 }
 
 
+function _content_decode($content = null)
+{
+    $content = htmlspecialchars_decode($content);
+//     $content = str_replace('&quot;', '"', $content);
+//     $content = str_replace('&#039;', "'", $content);
+    
+    return $content;
+}
+
+
 function _content($content = null)
 {
     $content = htmlspecialchars_decode($content);
@@ -459,6 +605,39 @@ function _category($id = null)
     if($id == null) return false;
     return item::get(['where' => "`id` = $id"]);
 }
+
+
+function _limit_text($str = null, $len = 100, $last_str = '...')
+{
+    $org_str = $str;
+    
+    $str = substr($str, 0, $len);
+    $str = trim($str, ' .,!?');
+    $str = trim($str);
+    
+    if(strlen($org_str) > $len) $str .= $last_str;
+    
+    return $str;
+}
+
+
+function _limit_words($str = null, $count = 10)
+{
+    $words = explode(' ', $str);
+
+    if(count($words) > $count)
+    {
+        array_splice($words, $count);
+        return "<span data-title='$str'>" . implode(' ', $words) . '...</span>';
+    }
+    else
+    {
+        return $str;
+    }
+}
+
+
+
 
 
 function autoload_lib($class_name = null)

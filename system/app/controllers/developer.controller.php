@@ -25,6 +25,7 @@ class controller_developer extends controller
         }
     }
 
+    
     function install()
     {
         try
@@ -249,14 +250,21 @@ class controller_developer extends controller
 
     function timer()
     {
-        $data = [];
-        $data['files']        = timer::files();
-        $data['last_runtime'] = timer::data('last_runtime');
-        $data['counter_data'] = sys::read(SYSDATA_PATH . DS . 'timer' . DS . 'counter.cx');
-
-        cx::title('Timer');
-        layout::set('developer');
-        $this->render('developer/timer', $data);
+        try
+        {
+            $data = [];
+            $data['timer_files']  = timer::files();
+            $data['last_runtime'] = timer::data('last_runtime');
+            $data['counter_data'] = sys::read(SYSDATA_PATH . DS . 'timer' . DS . 'counter.cx');
+            
+            cx::title('Timer');
+            layout::set('developer');
+            $this->render('developer/timer', $data);
+        }
+        catch(Exception $e)
+        {
+            echo logger::add($e->getMessage());
+        }
     }
 
 
@@ -276,7 +284,7 @@ class controller_developer extends controller
 
     // Actions ===============
 
-    function image_local_to_cdn()
+    function _image_local_to_cdn()
     {
         try
         {
@@ -336,7 +344,7 @@ class controller_developer extends controller
 
 
 
-    function image_cdn_to_local()
+    function _image_cdn_to_local()
     {
         try
         {
@@ -374,7 +382,8 @@ class controller_developer extends controller
 
     function generate_sitemap()
     {
-        sitemap::generate();
+        $sitemap = new sitemap();
+        $sitemap->generate();
     }
 
 

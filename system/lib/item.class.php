@@ -63,7 +63,7 @@ class item
             if($data['released_at'] != null) $data['released_at'] = strtotime($data['released_at']);
 
             // Generate URL
-            if($data['url'] != null) self::find_url($data['url']);
+            if($data['url'] != null) $data['url'] = self::find_url($data['url']);
             if($data['title'] != null && $data['type'] != null && $data['url'] == null) $data['url'] = self::find_url($data['title']);
 
             if(array_key_exists('keywords', $data) && $data['keywords'] != null)
@@ -92,11 +92,18 @@ class item
 
                 if($cx_type['notification.insert'] === true)
                 {
-                    $mail_subject = "New {$cx_type['title']}";
-                    $mail_content = "Added New {$cx_type['title']}.";
-
-                    $mail = new mailer();
-                    $mail->send('mustafa@aydemir.im', $mail_subject, $mail_content, 'mail');
+                    $get_item = item::get(['where' => "id=$item_id"]);
+                    $owner    = user::get();
+                    _queue('_slack', [
+                
+                        'type'       => 'new',
+                        'item.type'  => $cx_type['title'],
+                        'user.name'  => $owner['title'],
+                        'user.link'  => $owner['full_url'],
+                        'text'       => $get_item['description'],
+                        'link'       => $get_item['full_url'],
+                        'title'      => $get_item['title']
+                    ]);
                 }
             }
 
@@ -617,9 +624,12 @@ class item
 
         if($data['image'] != null)
         {
+            $_image_path = '/contents/images/' . $data['image'];
+            if(_config('item.prepare.image.path')) $_image_path = trim(_config('item.prepare.image.path'), '/') . '/' . $data['image'];
+            
             $data['image_url']   = html::image_link($data['image']);
             $data['image_thumb'] = html::image_link($data['image'], 400);
-            $data['image_path']  = '/contents/images/' . $data['image'];
+            $data['image_path']  = $_image_path;
         }
         else
         {

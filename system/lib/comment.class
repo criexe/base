@@ -15,6 +15,20 @@ class comment
         $data['type'] = 'comment';
 
         $insert = item::insert($data);
+        
+        if($insert)
+        {
+            $parent_data = item::get(['where' => "id={$data['parent']}"]);
+            _queue('_slack', [
+                
+                'type'       => 'new.comment',
+                'user'       => user::name(),
+                'text'       => $data['content'],
+                'link'       => $parent_data['full_url'],
+                'post.title' => $parent_data['title']
+            ]);
+        }
+        
         return $insert;
     }
 
@@ -26,7 +40,7 @@ class comment
 
         if($parent != null) $params['where']    = "`parent` = '$parent'";
         if($limit  != null) $params['limit']    = $limit;
-//        if($group  == true) $params['group_by'] = 'parent';
+//         if($group  == true) $params['group_by'] = 'parent';
 
         $comments = item::get_all($params);
 

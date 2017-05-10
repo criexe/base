@@ -36,7 +36,7 @@ cx::type([
     'alias'   => 'comment',
     'title'   => 'Comment',
     'columns' => ['for'],
-    'notification.insert' => true
+    'notification.insert' => false
 ]);
 
 
@@ -45,4 +45,11 @@ cx::type([
     'alias'   => 'redirect',
     'title'   => 'Redirect',
     'form'    => 'redirect'
+]);
+
+
+cx::type([
+    
+    'alias' => 'page',
+    'title' => 'Page'
 ]);

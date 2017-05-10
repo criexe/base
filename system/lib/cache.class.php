@@ -42,7 +42,7 @@ class cache
             ]);
 
             // Add Log
-            logger::add('Cache is stored : ' . $file_name, 'cache');
+//             logger::add('Cache is stored : ' . $file_name, 'cache');
         }
         catch(Exception $e)
         {

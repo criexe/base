@@ -1,7 +1,13 @@
 <?php
+timer::task(_DAY, function(){
 
-timer::task(_HOUR, function(){
-
-    sitemap::generate();
-    timer::log('Sitemap Created !');
+    try
+    {
+        $sitemap = new sitemap();
+        $sitemap->generate();
+    }
+    catch(Exception $e)
+    {
+        echo $e->getMessage();
+    } 
 });

@@ -22,61 +22,7 @@
 
             <!-- Title -->
             <td>
-                <a class="modal-trigger red-text text-darken-4" href="#item-detail-modal-<?=$data['id']?>"><strong><?=$data['title']?></strong></a>
-                <div class="modal grey lighten-3" id="item-detail-modal-<?=$data['id']?>">
-
-                    <div class="orange darken-4 white-text">
-                        <div class="modal-content center">
-                            <h5><?=$data['title']?></h5>
-                        </div>
-                    </div>
-                    <ul class="tabs">
-                        <li class="tab"><a class="active orange-text text-darken-4" href="#item-tab-content-<?=$data['id']?>">Content</a></li>
-                        <li class="tab"><a class="orange-text text-darken-4" href="#item-tab-details-<?=$data['id']?>">Details</a></li>
-                        <li class="tab"><a class="orange-text text-darken-4" href="#item-tab-stats-<?=$data['id']?>">Stats</a></li>
-                    </ul>
-                    <div class="divider"></div>
-                    <div id="item-tab-content-<?=$data['id']?>">
-                        <div class="modal-content">
-                            <section class="section">
-                                <h5 class="header light red-text text-darken-4">Description</h5>
-                                <article><?=$data['description']?></article>
-                            </section>
-                            <div class="divider"></div>
-                            <section class="section">
-                                <h5 class="header light red-text text-darken-4">Content</h5>
-                                <article><?=$data['content']?></article>
-                            </section>
-                        </div>
-                    </div>
-                    <div id="item-tab-details-<?=$data['id']?>">
-                        <div class="modal-content">
-                            <?php foreach($data as $k => $v): ?>
-                                <section class="section">
-                                    <h5 class="header light red-text text-darken-4"><?=$k?></h5>
-                                    <article>
-                                        <?php
-                                        if(is_string($v))
-                                        {
-                                            echo $v;
-                                        }
-                                        else
-                                        {
-                                            echo filter::request(json::encode($v, ['pretty' => true]));
-                                        }
-                                        ?>
-                                    </article>
-                                </section>
-                                <div class="divider"></div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                    <div id="item-tab-stats-<?=$data['id']?>">
-                        <div class="modal-content center">
-                            This section is under construction.
-                        </div>
-                    </div>
-                </div>
+                <a class="red-text text-darken-4" href="<?=ADMIN_URL . "/edit/{$data['id']}"?>"><strong><?=$data['title']?></strong></a>
             </td>
             <!-- Title -->
 

@@ -1,0 +1,25 @@
+<?php
+
+timer::task(_SECOND, function(){
+
+    $folder = SYSDATA_PATH . DS . 'queue';
+    $files  = scandir($folder);
+
+    foreach($files as $file)
+    {
+        if($file == '..' || $file == '...' || $file == '.') continue;
+        $file_data = sys::read($folder . DS . $file);
+
+        if(json::valid($file_data))
+        {
+            $arr = json::decode($file_data);
+
+            $func_name = $arr['function_name'];
+            $params    = $arr['params'];
+
+            call_user_func_array($func_name, $params);
+            unlink($folder . DS . $file);
+            break;
+        }
+    }
+});

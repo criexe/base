@@ -6,26 +6,13 @@ class utils
 
     public static function limit_text($str = null, $len = 100)
     {
-        $str = substr($str, 0, $len);
-
-        return $str;
+        return _limit_text($str, $len);
     }
 
 
     public static function limit_words($str = null, $count = 10)
     {
-        $words = explode(' ', $str);
-
-        if(count($words) > $count)
-        {
-            array_splice($words, $count);
-
-            return "<span data-title='$str'>" . implode(' ', $words) . '...</span>';
-        }
-        else
-        {
-            return $str;
-        }
+        _limit_words($str, $count);
     }
 
 

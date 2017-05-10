@@ -566,20 +566,16 @@ class db
     }
 
 
-    public static function search_where_query($table_name = null, $string = null, $ignored_columns = [])
+    public static function search_where_query($table_name = null, $string = null)
     {
         if($string == null) return null;
 
         $columns      = self::get_columns(_config('database.prefix') . $table_name);
         $where_column = [];
 
-        foreach($columns as $column)
-        {
-            if(in_array($column, $ignored_columns)) continue;
-            $where_column[] = "`$column` LIKE '%$string%'";
-        }
+        foreach($columns as $column) $where_column[] = "`$column` LIKE '%$string%'";
 
-        return "(" . implode(' OR ', $where_column) . ")\n";
+        return implode(' OR ', $where_column);
     }
 
 

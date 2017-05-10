@@ -1,6 +1,8 @@
 <?php
 
-timer::task(_WEEK, function(){
+timer::task(_DAY, function(){
 
+//     $zipname = SYSDATA_PATH . DS . 'backups' . DS . 'logs' . DS . date('d-m-Y_H-i-s') . '.zip'
+//     echo sys::exec("zip -r $zipname " . LOGS_PATH);
     sys::delete(LOGS_PATH . DS . 'timer.log');
 });

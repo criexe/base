@@ -3,6 +3,6 @@
 timer::task(_MINUTE * 5, function(){
 
     $deleted_caches = cache::clear();
-    timer::log( count($deleted_caches) . ' cache deleted.' );
+//     timer::log( count($deleted_caches) . ' cache deleted.' );
 
 });

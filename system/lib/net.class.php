@@ -24,7 +24,7 @@ class net
         sys::array_key_default_value($params, 'post', 0);
         sys::array_key_default_value($params, 'data', []);
 
-        if($params['post'] == true)    $params['post'] = 1;
+        if($params['post'] == true) $params['post'] = 1;
 
         $ch = curl_init();
 

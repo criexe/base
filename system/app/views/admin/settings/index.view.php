@@ -132,48 +132,6 @@
                             </div>
                         </div>
 
-                        <div id="facebook-settings" class="section scrollspy">
-                            <h4 class="header light orange-text text-darken-4">CDN Settings</h4>
-                            <div class="section">
-                                <div class="row">
-                                    <div class="input-field col l12">
-                                        <select name="option[cdn.status]">
-                                            <option value="passive" <?= cdn::active() !== true ? 'selected' : null ?>>Passive</option>
-                                            <option value="active"  <?= cdn::active() ? 'selected' : null ?>>Active</option>
-                                        </select>
-                                        <label>Status</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="section">
-                                <h5>Cloudinary</h5>
-                                <div class="row">
-                                    <div class="input-field col l12">
-                                        <input type="text" name="option[cdn.base_url]" value="<?=cx::option('cdn.base_url')?>" class="validate">
-                                        <label>Base URL</label>
-                                    </div>
-                                    <div class="input-field col l12">
-                                        <input type="text" name="option[cdn.secure_url]" value="<?=cx::option('cdn.secure_url')?>" class="validate">
-                                        <label>Secure URL</label>
-                                    </div>
-                                    <div class="input-field col l12">
-                                        <input type="text" name="option[cdn.cloud_name]" value="<?=cx::option('cdn.cloud_name')?>" class="validate">
-                                        <label>Cloud Name</label>
-                                    </div>
-                                    <div class="input-field col l12">
-                                        <input type="text" name="option[cdn.api_key]" value="<?=cx::option('cdn.api_key')?>" class="validate">
-                                        <label>API Key</label>
-                                    </div>
-                                    <div class="input-field col l12">
-                                        <input type="password" name="option[cdn.api_secret]" value="<?=cx::option('cdn.api_secret')?>" class="validate">
-                                        <label>API Secret</label>
-                                    </div>
-                                    <div class="input-field col l12">
-                                        <button type="submit" class="btn green waves-effect">Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col hide-on-small-only m3 l2">
@@ -184,7 +142,6 @@
                             <li><a href="#mail-settings">Mail</a></li>
                             <li><a href="#facebook-settings">Facebook</a></li>
                             <li><a href="#twitter-settings">Twitter</a></li>
-                            <li><a href="#facebook-settings">CDN</a></li>
                         </ul>
                     </div>
 
