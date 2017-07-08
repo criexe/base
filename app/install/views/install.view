@@ -1,0 +1,168 @@
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper grey lighten-4">
+            <div class="container">
+                <a href="<?=URL?>/install" class="brand-logo red-text text-darken-2">Install</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="section">
+
+        <?php if( ! timer::active()): ?>
+            <div class="section">
+                <div class="fsz-h4 header light red-text text-darken-2">
+                    Timer
+                </div>
+                <div class="card-panel grey lighten-5">
+                    <div class="section">
+                        <code>cd <?= ROOT_PATH ?></code>
+                    </div>
+                    <div class="divider grey darken-1"></div>
+                    <div class="section">
+                        <code><?= timer::cmd_string() ?></code>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if(_config('app.name')): ?>
+            <div class="section">
+                <div class="card-panel green white-text">
+                    App is configured !
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="section">
+                <div class="fsz-h4 header light red-text text-darken-2">
+                    Informations
+                </div>
+                <div>
+                    <form action="<?=URL?>/install/save_info" method="post" id="info-form">
+                        <div class="row section">
+                            <div class="input-field col l6">
+                                <input type="text" name="info-name" class="validate" placeholder="Criexe">
+                                <label>Site Name</label>
+                            </div>
+                            <div class="input-field col l6">
+                                <input type="text" name="info-title" class="validate" placeholder="Criexe">
+                                <label>Home Title</label>
+                            </div>
+                            <div class="input-field col l12">
+                                <input type="text" name="info-url" class="validate" placeholder="http://...">
+                                <label>Site URL</label>
+                            </div>
+                            <div class="input-field col l6">
+                                <textarea name="info-description" class="materialize-textarea validate" length="155"></textarea>
+                                <label>Site Description</label>
+                            </div>
+                            <div class="input-field col l6">
+                                <textarea name="info-keywords" class="materialize-textarea validate" placeholder="criexe, framework, ..."></textarea>
+                                <label>Site Keywords</label>
+                            </div>
+                            <div class="input-field col l12">
+                                <button type="submit" class="btn green waves-effect">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if(_config('database')): ?>
+            <div class="section">
+                <div class="card-panel green white-text">
+                    Database is configured !
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="section">
+                <div class="fsz-h4 header light red-text text-darken-2">
+                    Database
+                </div>
+                <div>
+                    <form action="<?=URL?>/install/save_database" method="post" id="db-form">
+                        <div class="input-field">
+                            <input type="text" name="db-host">
+                            <label>Host</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" name="db-name">
+                            <label>Name</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" name="db-user">
+                            <label>User</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" name="db-pass">
+                            <label>Password</label>
+                        </div>
+                        <button type="submit" class="btn green waves-effect">Save</button>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if($admin_exists): ?>
+            <div class="section">
+                <div class="card-panel green white-text">
+                    Admin is exists !
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="section">
+                <div class="fsz-h4 header light red-text text-darken-2">
+                    Add Admin
+                </div>
+                <div>
+                    <form action="<?=URL?>/install/add_admin" method="post" id="admin-form">
+                        <div class="input-field">
+                            <input type="text" name="user-name">
+                            <label>Name Surname</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" name="user-username">
+                            <label>Username</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="email" name="user-email">
+                            <label>Email</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" name="user-pass">
+                            <label>Password</label>
+                        </div>
+                        <button type="submit" class="btn green waves-effect">Add</button>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+
+    </div>
+</div>
+
+<script>
+    $(function(){
+
+        cx.ajax.submit("#admin-form, #info-form, #db-form", {
+
+            success : function(data){
+
+                data = cx.json.decode(data);
+
+                if(data.status == true)
+                {
+                    cx.alert.toast("<span class='green-text'>" + data.message + "</span>");
+                }
+                else
+                {
+                    cx.alert.toast("<span class='red-text'>" + data.message + "</span>");
+                }
+            }
+        });
+
+    });
+</script>

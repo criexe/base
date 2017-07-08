@@ -1,0 +1,229 @@
+<?php
+
+class controller_install extends controller
+{
+
+    function __construct()
+    {
+        if(!file_exists(APP_PATH . DS . 'app.controller'))
+        {
+            $controller_data  = "";
+            $controller_data .= "<?php\n\n";
+            $controller_data .= "class controller_app extends controller\n{\n\n";
+            $controller_data .= "\tfunction index(){echo 'Hello World!';}\n\n";
+            $controller_data .= "}";
+
+            sys::write([
+
+                'file' => APP_PATH . DS . 'app.controller',
+                'data' => $controller_data,
+                'mode' => 'a'
+
+            ]);
+        }
+    }
+
+    function index()
+    {
+        try
+        {
+            $data = [];
+            $data['installed']    = $this->_installed();
+            $data['admin_exists'] = $this->_admin_exists();
+
+            cx::title('Install');
+            layout::set('blank');
+            $this->render('install/views/install', $data);
+        }
+        catch(Exception $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    function add_admin()
+    {
+        $r = [];
+
+        try
+        {
+            if($this->_admin_exists()) throw_exception('Admin is exists !');
+
+            $name     = input::post('user-name')     or throw_exception('No name.');
+            $username = input::post('user-username') or throw_exception('No username.');
+            $password = input::post('user-pass')     or throw_exception('No password.');
+            $email    = input::post('user-email')    or throw_exception('No email.');
+
+            $user['title']     = $name;
+            $user['username']  = $username;
+            $user['password']  = $password;
+            $user['email']     = $email;
+            $user['authority'] = 'developer';
+
+            if(user::register($user)['status'] == true)
+            {
+                $r['status']  = true;
+                $r['message'] = 'User added !';
+            }
+            else
+            {
+                $r['status']  = false;
+                $r['message'] = 'Error !';
+            }
+        }
+        catch(Exception $e)
+        {
+            $r['status']  = false;
+            $r['message'] = $e->getMessage();
+        }
+        finally
+        {
+            echo response::ajax($r);
+        }
+    }
+
+
+    function save_info()
+    {
+        $r = [];
+
+        try
+        {
+            if(cx::option('app.name')) throw_exception('Informations is configured !');
+
+           $name     = input::post('info-name')        or throw_exception('No name.');
+           $title    = input::post('info-title')       or throw_exception('No title.');
+           $url      = input::post('info-url')         or throw_exception('No url.');
+           $desc     = input::post('info-description') or throw_exception('No description.');
+           $keywords = input::post('info-keywords')    or throw_exception('No keywords.');
+
+           cx::option('app.name', $name);
+           cx::option('app.home_title', $title);
+           cx::option('app.url', $url);
+           cx::option('app.desc', $desc);
+           cx::option('app.keywords', $keywords);
+
+           $config_data  = "";
+           $config_data .= "_config('errors', true);\n";
+           $config_data .= "_config('cache' , false);\n";
+           $config_data .= "_config('cache.version' , 1);\n\n";
+           $config_data .= "_config('app.name', '$name');\n";
+           $config_data .= "_config('app.url' , '$url');\n";
+
+           $this->_append_config($config_data) or throw_exception('Appending error !');
+
+           $r['status']  = true;
+           $r['message'] = 'Success';
+        }
+        catch(Exception $e)
+        {
+            $r['status']  = false;
+            $r['message'] = $e->getMessage();
+        }
+        finally
+        {
+            echo response::ajax($r);
+        }
+    }
+
+    function save_database()
+    {
+        $r = [];
+
+        try
+        {
+            if(_config('database')) throw_exception('Informations is configured !');
+
+            $host = input::post('db-host') or throw_exception('No host.');
+            $user = input::post('db-user') or throw_exception('No user.');
+            $pass = input::post('db-pass') or throw_exception('No pass.');
+            $name = input::post('db-name') or throw_exception('No name.');
+
+            $config_data  = "";
+            $config_data .= "_config('database', [\n";
+            $config_data .= "\t'host' => '$host',\n";
+            $config_data .= "\t'name' => '$name',\n";
+            $config_data .= "\t'user' => '$user',\n";
+            $config_data .= "\t'pass' => '$pass'\n";
+            $config_data .= "]);";
+
+            $this->_append_config($config_data) or throw_exception('Appending error !');
+            $this->_append_config('db::connect();', 'settings') or throw_exception('Appending error !');
+
+
+            $r['status']  = true;
+            $r['message'] = 'Success';
+        }
+        catch(Exception $e)
+        {
+            $r['status']  = false;
+            $r['message'] = $e->getMessage();
+        }
+        finally
+        {
+            echo response::ajax($r);
+        }
+    }
+
+
+
+
+    function _config_exists     (){ return file_exists(APP_PATH . DS . 'app.config');     }
+    function _settings_exists   (){ return file_exists(APP_PATH . DS . 'app.settings');   }
+    function _controller_exists (){ return file_exists(APP_PATH . DS . 'app.controller'); }
+
+    function _installed(){ return ($this->_config_exists() && $this->_controller_exists() && $this->_settings_exists()); }
+
+    function _admin_exists()
+    {
+        try
+        {
+            if(!$this->_installed()) return false;
+            if(!db::connected())     return false;
+
+            $admin = item::get([
+
+                'by.type'      => 'user',
+                'by.authority' => 'developer'
+            ]);
+
+            if(!$admin) return false; else return true;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
+    }
+
+    function _append_config($data = null, $ext = 'config')
+    {
+        try
+        {
+            if( ($ext == 'config' && !$this->_config_exists()) || ($ext == 'settings' && !$this->_settings_exists()) )
+            {
+                sys::write([
+
+                    'file' => APP_PATH . DS . 'app.' . $ext,
+                    'data' => "<?php\n",
+                    'mode' => 'w'
+
+                ]) or throw_exception('Writing file error.');
+            }
+
+            sys::write([
+
+                'file' => APP_PATH . DS . 'app.' . $ext,
+                'data' => "\n\n$data",
+                'mode' => 'a'
+
+            ]) or throw_exception('Writing file error.');
+
+            return true;
+        }
+        catch(Exception $e)
+        {
+            return false;
+            _log($e->getMessage());
+        }
+    }
+}

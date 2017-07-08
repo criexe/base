@@ -51,6 +51,7 @@ class user
             }
             else
             {
+                echo item::error();
                 throw_exception('Error. Please try later.');
             }
         }

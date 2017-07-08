@@ -52,6 +52,12 @@ class db
     }
 
 
+    public static function connected()
+    {
+        if(self::$conn) return true; else return false;
+    }
+
+
     public static function close()
     {
         mysqli_close(self::$conn);

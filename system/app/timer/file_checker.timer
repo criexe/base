@@ -1,0 +1,18 @@
+<?php
+
+timer::task(_MINUTE, function(){
+
+    // Create System Folders
+    sys::write(['file' => ROOT_PATH . DS . 'contents' . DS . 'index.html']);
+    sys::write(['file' => ROOT_PATH . DS . 'contents' . DS . 'images' . DS . 'index.html']);
+
+    sys::write(['file' => SYSDATA_PATH . DS . 'sessions' . DS . 'index.html']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'backups'  . DS . 'index.html']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'cache'    . DS . 'index.html']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'logs'     . DS . 'index.html']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'sitemaps' . DS . 'index.html']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'queue'    . DS . 'index.html']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'timer'    . DS . 'index.html']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'timer'    . DS . 'counter.cx']);
+    sys::write(['file' => SYSDATA_PATH . DS . 'timer'    . DS . 'data.cx']);
+});
