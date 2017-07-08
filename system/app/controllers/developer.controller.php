@@ -65,28 +65,6 @@ class controller_developer extends controller
               `image` varchar(255) DEFAULT NULL,
               `video` varchar(255) DEFAULT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-            
-            CREATE TABLE `item_meta` (
-              `id` int(11) NOT NULL,
-              `item_id` bigint(20) NOT NULL,
-              `meta_key` varchar(255) NOT NULL,
-              `meta_value` longtext NOT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-            
-            ALTER TABLE `items`
-              ADD PRIMARY KEY (`id`);
-            
-            ALTER TABLE `item_meta`
-              ADD PRIMARY KEY (`id`);
-            
-            ALTER TABLE `items`
-              MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
-            
-            ALTER TABLE `item_meta`
-              MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=576;
-            /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-            /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-            /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
             ');
 
