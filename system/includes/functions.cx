@@ -187,6 +187,27 @@ function _render($name = null, $datas = null, array $params = [])
 }
 
 
+function _model($name = null)
+{
+    if($name == null) return false;
+    global $files;
+
+    $all_timer = $files['model'];
+    $found     = preg_grep("%" . $name . ".model(?:\.php)?$%si", $all_timer);
+    $found     = array_values($found);
+
+    $class_name = "model_$name";
+
+    if(!class_exists($class_name))
+    {
+        if(count($found) > 0) include ROOT_PATH . DS . $found[0];
+        if(!class_exists($class_name)) return false;
+    }
+
+    return new $class_name();
+}
+
+
 function _date($format = null, $time = null)
 {
     $lang = strtolower(lang::current());

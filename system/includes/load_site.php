@@ -48,7 +48,7 @@ try
     }
     else
     {
-        logger::add('Controller is not exist : ' . $controller_name);
+        _log('Controller is not exist : ' . $controller_name . "\n" . url::get());
 //        error::show_404();
     }
 

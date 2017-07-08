@@ -12,6 +12,7 @@ $router = [];
 $hooks  = [];
 $files  = [];
 $datas  = [];
+$lang   = [];
 
 // Dırectory Seperator
 define('DS', DIRECTORY_SEPARATOR);
@@ -98,7 +99,8 @@ try
 
 
     // Language
-    lang::start();
+    // TODO : Lang
+    // lang::start(); 
     define('CURRENT_LANGUAGE', lang::current());
 
 

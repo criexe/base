@@ -50,7 +50,6 @@ class tag
                 $insert_data['type']    = 'tag';
                 $insert_data['parents'] = [$parent_id];
                 $insert_data['title']   = $tag;
-                $insert_data['url']     = 'tag/' . filter::slugify($tag);
 
                 item::insert($insert_data) or throw_exception('Error.');
                 return true;

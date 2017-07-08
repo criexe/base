@@ -175,3 +175,28 @@ img{
         text-align:center;
     }
 }
+
+.cx-table-row{
+    
+    display:table;
+    width:100%;
+
+    .cx-table-cell{
+    
+        display:table-cell;
+    
+        &.w0percent{width:0%;}
+        &.w10percent{width:10%;}
+        &.w20percent{width:20%;}
+        &.w30percent{width:30%;}
+        &.w40percent{width:40%;}
+        &.w50percent{width:50%;}
+        &.w60percent{width:60%;}
+        &.w70percent{width:70%;}
+        &.w80percent{width:80%;}
+        &.w90percent{width:90%;}
+        &.w100percent{width:100%;}
+        
+        &.cx-vertical-middle{vertical-align:middle}
+    }
+}

@@ -83,7 +83,7 @@ class item
                 }
             }
 
-//            $data['data'] = json::encode($others);
+            //            $data['data'] = json::encode($others);
             $item_id = db::insert(self::$name, $data) or throw_exception(db::error());
 
             if($cx_type)
@@ -95,7 +95,7 @@ class item
                     $get_item = item::get(['where' => "id=$item_id"]);
                     $owner    = user::get();
                     _queue('_slack', [
-                
+
                         'type'       => 'new',
                         'item.type'  => $cx_type['title'],
                         'user.name'  => $owner['title'],
@@ -286,7 +286,7 @@ class item
 
             // Generate URL
             if(array_key_exists('url', $data) && $data['url'] != null) self::find_url($data['url']);
-//            if($data['title'] != null && $data['type'] != null && $data['url'] == null) $data['url'] = self::find_url($data['title']);
+            //            if($data['title'] != null && $data['type'] != null && $data['url'] == null) $data['url'] = self::find_url($data['title']);
 
             if(array_key_exists('keywords', $data) && $data['keywords'] != null)
             {
@@ -587,7 +587,7 @@ class item
         $cache_id      = "item.$id.prepare";
         $cache_content = cache::get($cache_id);
 
-//        if($cache_content && $disable_cache === false) return $cache_content;
+        //        if($cache_content && $disable_cache === false) return $cache_content;
 
         $data['created_at'] = [
 
@@ -626,7 +626,7 @@ class item
         {
             $_image_path = '/contents/images/' . $data['image'];
             if(_config('item.prepare.image.path')) $_image_path = trim(_config('item.prepare.image.path'), '/') . '/' . $data['image'];
-            
+
             $data['image_url']   = html::image_link($data['image']);
             $data['image_thumb'] = html::image_link($data['image'], 400);
             $data['image_path']  = $_image_path;
@@ -676,27 +676,27 @@ class item
         }
 
         $columns = $data;
-//
-//        if(array_key_exists('data', $data) && json::valid($data['data']))
-//        {
-//            $extracted_data = json::decode($data['data']);
-//
-//            foreach($extracted_data as $k => $v)
-//            {
-//                $v = str_replace('&quot;', '"', $v);
-//                $v = str_replace('&#039;', "'", $v);
-//
-//                if(is_string($v)) $v = htmlspecialchars_decode($v);
-//
-//                if( ! array_key_exists($k, $columns)) $columns[$k] = $v;
-//            }
-//
-//            if($type != null)
-//            {
-//                $type_columns = self::columns($type);
-//                sys::specify_params($columns, $type_columns);
-//            }
-//        }
+        //
+        //        if(array_key_exists('data', $data) && json::valid($data['data']))
+        //        {
+        //            $extracted_data = json::decode($data['data']);
+        //
+        //            foreach($extracted_data as $k => $v)
+        //            {
+        //                $v = str_replace('&quot;', '"', $v);
+        //                $v = str_replace('&#039;', "'", $v);
+        //
+        //                if(is_string($v)) $v = htmlspecialchars_decode($v);
+        //
+        //                if( ! array_key_exists($k, $columns)) $columns[$k] = $v;
+        //            }
+        //
+        //            if($type != null)
+        //            {
+        //                $type_columns = self::columns($type);
+        //                sys::specify_params($columns, $type_columns);
+        //            }
+        //        }
 
 
         // User Permissions
@@ -718,7 +718,7 @@ class item
         if( ! array_key_exists('name', $data)) $data['name'] = $data['title'];
 
         unset($columns['data']);
-//        cache::create($cache_id, $columns);
+        //        cache::create($cache_id, $columns);
         return $columns;
     }
 
@@ -749,6 +749,16 @@ class item
 
         if($params['show.all']    != true) $where[] = "\t( `$name`.`status` = 'active' )";
         if($params['type']        != null) $where[] = "\t( `$name`.`type` = '{$params['type']}' )";
+
+        foreach($params as $k => $v)
+        {
+            if(preg_match("%^by\.(.*?)$%si", $k, $by_matches))
+            {
+                if(array_key_exists('by.' . $by_matches[1], $params)) $where[] = "\t( `$name`.`{$by_matches[1]}` = '{$params['by.' . $by_matches[1]]}' )";
+                unset($params['by.' . $by_matches[1]]);
+            }
+        }
+
         if($params['where']       != null) $where[] = "\t( {$params['where']} )";
         $params['where'] = implode(" AND \n", $where);
 

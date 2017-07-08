@@ -1,5 +1,7 @@
 <?php
 
+$params = [];
+
 set_time_limit(0);
 ini_set('memory_limit', '-1');
 
@@ -13,31 +15,72 @@ ini_set('display_errors', 'on');
 error_reporting(E_ALL);
 
 
-
 // Settings
 require_once 'settings.cx';
-if(!defined('cx')) die('Load Settings...');
+if(!defined('cx')) die('Load Settings...'); 
 
+
+// Parse Params
+foreach($argv as $a)
+{
+    if($a[0] == '-' && $a[1] == '-')
+    {
+        $a = trim($a);
+        $a = trim($a, '-');
+        $a = trim($a);
+        
+        if(strpos($a, '=') !== false)
+        {
+            $a = explode('=', $a);
+            $params[] = [
+                
+                'alias' => $a[0],
+                'value' => $a[1]
+            ];
+        }
+        else
+        {
+            $params[] = [
+                
+                'alias' => $a,
+                'value' => true
+            ];
+        }
+    }
+}
 
 
 // Get All Timer Files
-$files = timer::files();
-foreach($files as $file) require_once ROOT_PATH . DS . $file;
+$timer_files = timer::files();
+foreach($timer_files as $file) require_once ROOT_PATH . DS . $file;
 
 
 
 $tasks = timer::tasks();
 
+echo "Timer Started !\n";
 
 
-echo 'Timer Started !';
-
-
-
-//while(true)
-//{
-//    echo time() . "\n";
-
+if(count($params) > 0)
+{
+    foreach($params as $param)
+    {
+        switch($param['alias'])
+        {
+            case 'all':
+                
+                echo "Executing all tasks...\n";
+                
+                foreach($tasks as $time => $funcs)
+                {
+                    foreach($funcs as $func) $func();
+                }
+                break;
+        }
+    }
+}
+else
+{
     // Update Last Runtime Data
     timer::data('last_runtime', time());
 
@@ -60,9 +103,4 @@ echo 'Timer Started !';
             timer::counter($time, 1);
         }
     }
-
-//    sleep(1);
-
-//    cx::counter('timer', 1);
-//    cx::save();
-//}
+}

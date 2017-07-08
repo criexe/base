@@ -10,6 +10,6 @@ echo 'Timer Started !';
 do
 {
     shell_exec("php timer.cx");
-    echo "\n" . time();
+//     echo "\n" . time(); 
 }
 while(true);
