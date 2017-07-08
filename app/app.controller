@@ -5,25 +5,7 @@ class controller_app extends controller
 
     function index()
     {
-        echo lang::get('language');
-
-        print_r(lang::get_data());
-    }
-
-
-    function modal()
-    {
-        layout::set('blank');
-        cx::title('Login');
-
-        $this->render('app', null);
-    }
-
-    function cdn()
-    {
-        print_r(
-            html::image_link('xsif4kvsnlgzsu4f8eqg.jpg')
-        );
+        echo 'Hello World !';
     }
 
 }
