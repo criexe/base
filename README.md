@@ -10,15 +10,15 @@
 | /contents/*   | 777        |
 
 ### Set Permissions
-`cd /path/to/project`
+`cd /path/to/project` <br>
 `chmod -R 755 *; chmod -R 777 sysdata; chmod -R 777 contents`
 
 ---
 
-[Controller](#)
-[View](#)
-[Config](#)
-[Database](#)
-[Queue](#)
-[Timer](#)
-[Release](#)
+[Controller](#) <br>
+[View](#) <br>
+[Config](#) <br>
+[Database](#) <br>
+[Queue](#) <br>
+[Timer](#) <br>
+[Release](#) <br>
