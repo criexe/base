@@ -55,10 +55,8 @@ class db
     }
 
 
-    public static function is_connected()
-    {
-        return self::$connected;
-    }
+    public static function is_connected (){ return self::$connected; }
+    public static function connected    (){ return self::$connected; }
 
     public static function close()
     {

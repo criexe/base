@@ -569,7 +569,8 @@ function _content($content = null)
 }
 
 
-function _r($array, $return = null){return print_r($array, $return);}
+function _r    ($array, $return = null) {return print_r($array, $return);}
+function _dump ($data)                  {return var_dump($data);}
 
 
 

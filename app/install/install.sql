@@ -6,7 +6,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE TABLE `items` (
+CREATE TABLE IF NOT EXISTS `items` (
   `id` bigint(11) NOT NULL,
   `created_at` bigint(11) DEFAULT NULL,
   `released_at` bigint(20) DEFAULT NULL,

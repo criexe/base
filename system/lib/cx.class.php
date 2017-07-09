@@ -139,6 +139,7 @@ class cx
         }
         else
         {
+            if(!cx::option('app.name')) $app_name = false;
             if($app_name == true) $title = $title . ' - ' . cx::option('app.name');
             return self::data('html.title', $title);
         }

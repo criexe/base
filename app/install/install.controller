@@ -105,7 +105,7 @@ class controller_install extends controller
 
            $config_data  = "";
            $config_data .= "_config('errors', true);\n";
-           $config_data .= "_config('cache' , false);\n";
+           $config_data .= "_config('cache' , true);\n";
            $config_data .= "_config('cache.version' , 1);\n\n";
            $config_data .= "_config('app.name', '$name');\n";
            $config_data .= "_config('app.url' , '$url');\n";
@@ -132,7 +132,7 @@ class controller_install extends controller
 
         try
         {
-            if(_config('database')) throw_exception('Informations is configured !');
+            if(_config('database')) throw_exception('Database is configured !');
 
             $host = input::post('db-host') or throw_exception('No host.');
             $user = input::post('db-user') or throw_exception('No user.');
@@ -147,39 +147,31 @@ class controller_install extends controller
                 'pass' => $pass,
             ]);
 
-            try
-            {
-                db::$user = $user;
-                db::$pass = $pass;
-                db::$name = $name;
-                db::$host = $host;
 
-                db::connect();
+            $db_config = _config('database');
 
-                if(!db::connected()) throw_exception('Connection Error !');
-            }
-            catch(Exception $dberr)
-            {
-                _log($dberr->getMessage());
+            sys::array_key_default_value($db_config, 'port',     null);
+            sys::array_key_default_value($db_config, 'charset', 'UTF8');
+            sys::array_key_default_value($db_config, 'prefix',  'cx_');
 
-                $r['status']  = false;
-                $r['message'] = $dberr->getMessage();
-            }
+            // Check Database
+            db::$user    = $db_config['user'];
+            db::$pass    = $db_config['pass'];
+            db::$name    = $db_config['name'];
+            db::$host    = $db_config['host'];
+            db::$port    = $db_config['port'];
+            db::$charset = $db_config['charset'];
+            db::$prefix  = $db_config['prefix'];
 
-            try
-            {
-                if(!file_exists(APP_PATH . DS . 'install' . DS . 'install.sql')) throw_exception('SQL file is not exists !');
+            db::connect();
+            if(!db::is_connected()) throw_exception('Connection Error !');
 
-                $sql_data = sys::read(APP_PATH . DS . 'install' . DS . 'install.sql');
-                db::
-            }
-            catch(Exception $sqlerr)
-            {
-                $r['status']  = false;
-                $r['message'] = $sqlerr->getMessage();
 
-                _log($sqlerr->getMessage());
-            }
+            // SQL Import
+            if(!file_exists(APP_PATH . DS . 'install' . DS . 'install.sql')) throw_exception('SQL file is not exists !');
+
+            $sql_data = sys::read(APP_PATH . DS . 'install' . DS . 'install.sql');
+            db::multi_query($sql_data) or throw_exception('SQL Import Error !');
 
             $config_data  = "";
             $config_data .= "_config('database', [\n";
@@ -221,7 +213,7 @@ class controller_install extends controller
         try
         {
             if(!$this->_installed()) return false;
-            if(!db::connected())     return false;
+            if(!db::is_connected())     return false;
 
             $admin = item::get([
 
