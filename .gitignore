@@ -2,7 +2,6 @@
 *.trash
 *.cache
 .idea
-assets/sys
 sysdata/*
 contents/*
 nohup.out
