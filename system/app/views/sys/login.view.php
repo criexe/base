@@ -5,8 +5,8 @@
             <div class="section">
 
                 <div class="row">
-                    <div class="col l2 offset-l5">
-                        <div class="card red white-text">
+                    <div class="col s4 m4 l2 offset-s4 offset-m4 offset-l5">
+                        <div class="card grey lighten-5 grey-text text-darken-4">
                             <div class="card-content">
                                 <div class="row">
                                     <div class="input-field col l12">
@@ -21,8 +21,8 @@
                                 </div>
                             </div>
                             <div class="divider"></div>
-                            <div class="grey lighten-4">
-                                <button type="submit">Login</button>
+                            <div>
+                                <button type="submit" class="green white-text">Login</button>
                             </div>
                         </div>
                     </div>
