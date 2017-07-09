@@ -100,7 +100,7 @@ class controller_install extends controller
            cx::option('app.name', $name);
            cx::option('app.home_title', $title);
            cx::option('app.url', $url);
-           cx::option('app.desc', $desc);
+           cx::option('app.description', $desc);
            cx::option('app.keywords', $keywords);
 
            $config_data  = "";
@@ -138,6 +138,48 @@ class controller_install extends controller
             $user = input::post('db-user') or throw_exception('No user.');
             $pass = input::post('db-pass') or throw_exception('No pass.');
             $name = input::post('db-name') or throw_exception('No name.');
+
+            _config('database', [
+
+                'host' => $host,
+                'name' => $name,
+                'user' => $user,
+                'pass' => $pass,
+            ]);
+
+            try
+            {
+                db::$user = $user;
+                db::$pass = $pass;
+                db::$name = $name;
+                db::$host = $host;
+
+                db::connect();
+
+                if(!db::connected()) throw_exception('Connection Error !');
+            }
+            catch(Exception $dberr)
+            {
+                _log($dberr->getMessage());
+
+                $r['status']  = false;
+                $r['message'] = $dberr->getMessage();
+            }
+
+            try
+            {
+                if(!file_exists(APP_PATH . DS . 'install' . DS . 'install.sql')) throw_exception('SQL file is not exists !');
+
+                $sql_data = sys::read(APP_PATH . DS . 'install' . DS . 'install.sql');
+                db::
+            }
+            catch(Exception $sqlerr)
+            {
+                $r['status']  = false;
+                $r['message'] = $sqlerr->getMessage();
+
+                _log($sqlerr->getMessage());
+            }
 
             $config_data  = "";
             $config_data .= "_config('database', [\n";

@@ -28,49 +28,6 @@
             </div>
         <?php endif; ?>
 
-        <?php if(_config('app.name')): ?>
-            <div class="section">
-                <div class="card-panel green white-text">
-                    App is configured !
-                </div>
-            </div>
-        <?php else: ?>
-            <div class="section">
-                <div class="fsz-h4 header light red-text text-darken-2">
-                    Informations
-                </div>
-                <div>
-                    <form action="<?=URL?>/install/save_info" method="post" id="info-form">
-                        <div class="row section">
-                            <div class="input-field col l6">
-                                <input type="text" name="info-name" class="validate" placeholder="Criexe">
-                                <label>Site Name</label>
-                            </div>
-                            <div class="input-field col l6">
-                                <input type="text" name="info-title" class="validate" placeholder="Criexe">
-                                <label>Home Title</label>
-                            </div>
-                            <div class="input-field col l12">
-                                <input type="text" name="info-url" class="validate" placeholder="http://...">
-                                <label>Site URL</label>
-                            </div>
-                            <div class="input-field col l6">
-                                <textarea name="info-description" class="materialize-textarea validate" length="155"></textarea>
-                                <label>Site Description</label>
-                            </div>
-                            <div class="input-field col l6">
-                                <textarea name="info-keywords" class="materialize-textarea validate" placeholder="criexe, framework, ..."></textarea>
-                                <label>Site Keywords</label>
-                            </div>
-                            <div class="input-field col l12">
-                                <button type="submit" class="btn green waves-effect">Save</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        <?php endif; ?>
-
         <?php if(_config('database')): ?>
             <div class="section">
                 <div class="card-panel green white-text">
@@ -136,6 +93,49 @@
                             <label>Password</label>
                         </div>
                         <button type="submit" class="btn green waves-effect">Add</button>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if(_config('app.name')): ?>
+            <div class="section">
+                <div class="card-panel green white-text">
+                    App is configured !
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="section">
+                <div class="fsz-h4 header light red-text text-darken-2">
+                    Informations
+                </div>
+                <div>
+                    <form action="<?=URL?>/install/save_info" method="post" id="info-form">
+                        <div class="row section">
+                            <div class="input-field col l6">
+                                <input type="text" name="info-name" class="validate" placeholder="Criexe">
+                                <label>Site Name</label>
+                            </div>
+                            <div class="input-field col l6">
+                                <input type="text" name="info-title" class="validate" placeholder="Criexe">
+                                <label>Home Title</label>
+                            </div>
+                            <div class="input-field col l12">
+                                <input type="text" name="info-url" class="validate" placeholder="http://...">
+                                <label>Site URL</label>
+                            </div>
+                            <div class="input-field col l6">
+                                <textarea name="info-description" class="materialize-textarea validate" length="155"></textarea>
+                                <label>Site Description</label>
+                            </div>
+                            <div class="input-field col l6">
+                                <textarea name="info-keywords" class="materialize-textarea validate" placeholder="criexe, framework, ..."></textarea>
+                                <label>Site Keywords</label>
+                            </div>
+                            <div class="input-field col l12">
+                                <button type="submit" class="btn green waves-effect">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

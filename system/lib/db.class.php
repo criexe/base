@@ -10,15 +10,16 @@
 class db
 {
 
-    public static $user    = null;
-    public static $pass    = null;
-    public static $name    = null;
-    public static $host    = null;
-    public static $port    = null;
-    public static $charset = null;
-    public static $prefix  = null;
+    public static $user      = null;
+    public static $pass      = null;
+    public static $name      = null;
+    public static $host      = null;
+    public static $port      = null;
+    public static $charset   = null;
+    public static $prefix    = null;
+    public static $connected = false;
 
-    public static $conn    = null;
+    public static $conn      = null;
 
 
 
@@ -48,18 +49,20 @@ class db
             mysqli_query(self::$conn, "SET character_set_connection = '" . self::$charset . "'");
             mysqli_query(self::$conn, "SET character_set_client = '" . self::$charset . "'");
             mysqli_query(self::$conn, "SET character_set_results = '" . self::$charset . "'");
+
+            self::$connected = true;
         }
     }
 
 
-    public static function connected()
+    public static function is_connected()
     {
-        if(self::$conn) return true; else return false;
+        return self::$connected;
     }
-
 
     public static function close()
     {
+        if(!self::is_connected()) return false;
         mysqli_close(self::$conn);
     }
 
@@ -79,10 +82,21 @@ class db
     public static function query($query = null)
     {
         if($query == null) return false;
+        if(!self::is_connected()) return false;
 
 //        logger::add($query, 'db');
 
         return mysqli_query(self::$conn, $query);
+    }
+
+
+
+    public static function multi_query($query = null)
+    {
+        if($query == null) return false;
+        if(!self::is_connected()) return false;
+
+        return mysqli_multi_query(self::$conn, $query);
     }
 
 
@@ -95,6 +109,7 @@ class db
     public static function fetch ($query = null)
     {
         if($query == null) return false;
+        if(!self::is_connected()) return false;
 
         return mysqli_fetch_assoc(self::query($query));
     }
@@ -108,6 +123,7 @@ class db
      */
     public static function fetch_array ($q)
     {
+        if(!self::is_connected()) return false;
         return mysqli_fetch_array($q);
     }
 
@@ -120,12 +136,14 @@ class db
      */
     public static function fetch_assoc ($q)
     {
+        if(!self::is_connected()) return false;
         return mysqli_fetch_assoc($q);
     }
 
 
     public static function insert_id()
     {
+        if(!self::is_connected()) return false;
         return mysqli_insert_id(self::$conn);
     }
 
@@ -150,6 +168,7 @@ class db
      */
     public static function get ($table_name = null, $params = [])
     {
+        if(!self::is_connected()) return false;
         if($table_name == null) return false;
 
         $params['columns']  = array_key_exists('columns', $params)  ? $params['columns'] : null;
@@ -183,6 +202,7 @@ class db
      */
     public static function get_all ($table_name = null, $params = [])
     {
+        if(!self::is_connected()) return false;
         if($table_name == null) return false;
 
         $params['columns']  = array_key_exists('columns', $params)  ? $params['columns'] : null;
@@ -233,6 +253,7 @@ class db
      */
     public static function group ($table_name = null, $params = [])
     {
+        if(!self::is_connected()) return false;
         if($table_name == null) return false;
 
         $params['columns']  = array_key_exists('columns', $params)  ? $params['columns'] : null;
@@ -276,6 +297,7 @@ class db
      */
     public static function count_rows ($table_name = null, $params = [])
     {
+        if(!self::is_connected()) return false;
         if($table_name == null) return false;
 
         $params['where']    = array_key_exists('where', $params) ? $params['where'] : null;
@@ -306,6 +328,7 @@ class db
      */
     public static function insert($table_name = null, $data = [])
     {
+        if(!self::is_connected()) return false;
         hook::listen("$table_name:db.insert", 'before', $data);
 
         if($table_name == null) return false;
@@ -362,6 +385,7 @@ class db
      */
     public static function update($table_name = null, $data = [], $params = [])
     {
+        if(!self::is_connected()) return false;
         hook::listen("$table_name:db.update", 'before', $data);
 
         if($table_name == null) return false;
@@ -427,6 +451,7 @@ class db
      */
     public static function delete ($table_name = null, $params = [])
     {
+        if(!self::is_connected()) return false;
         hook::listen("$table_name:db.delete", 'before', $params);
 
         if($table_name == null) return false;
@@ -461,6 +486,7 @@ class db
      */
     public static function get_columns($table_name = null)
     {
+        if(!self::is_connected()) return false;
         if($table_name == null) return null;
 
         $db_name = self::$name;
@@ -495,6 +521,7 @@ class db
      */
     public static function create_table($table_name = null, $columns = null)
     {
+        if(!self::is_connected()) return false;
         if($table_name == null) return false;
 
         $table_name = _config('database.prefix') . $table_name;
@@ -531,6 +558,7 @@ class db
 
     public static function rename_table($table_name = null, $new_name = null)
     {
+        if(!self::is_connected()) return false;
         $table_name = _config('database.prefix') . $table_name;
 
         return self::query("ALTER TABLE $table_name RENAME TO $new_name;");
@@ -539,6 +567,7 @@ class db
 
     public static function add_column($table_name = null, $column_name = null, $type = null)
     {
+        if(!self::is_connected()) return false;
         $table_name = _config('database.prefix') . $table_name;
 
         return self::query("ALTER TABLE $table_name ADD $column_name $type;");
@@ -547,6 +576,7 @@ class db
 
     public static function delete_column($table_name = null, $column_name = null)
     {
+        if(!self::is_connected()) return false;
         $table_name = _config('database.prefix') . $table_name;
 
         return self::query("ALTER TABLE $table_name DROP COLUMN $column_name;");
@@ -555,6 +585,7 @@ class db
 
     public static function delete_table($table_name = null)
     {
+        if(!self::is_connected()) return false;
         $table_name = _config('database.prefix') . $table_name;
 
         return self::query("DROP TABLE IF EXISTS $table_name;");
@@ -563,9 +594,10 @@ class db
 
     public static function edit_column($table_name = null, $column_name = null, $new_column_name = false, $type = 'text')
     {
+        if(!self::is_connected()) return false;
         if($column_name == $new_column_name)
 
-        $table_name = _config('database.prefix') . $table_name;
+            $table_name = _config('database.prefix') . $table_name;
 
         $new_column_name = $new_column_name ? $new_column_name : $column_name;
         return self::query("ALTER TABLE $table_name CHANGE $column_name $new_column_name $type;");
@@ -615,6 +647,7 @@ class db
 
     public static function affected_rows()
     {
+        if(!self::is_connected()) return false;
         return mysqli_affected_rows(self::$conn);
     }
 
@@ -634,4 +667,3 @@ class db
 
 
 }
-?>

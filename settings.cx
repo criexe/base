@@ -197,7 +197,7 @@ try
 }
 catch(Exception $e)
 {
-    logger::add('[ERROR] ' . $e->getMessage(), 'error');
+    _log('[ERROR] ' . $e->getMessage(), 'error');
     die($e->getMessage());
 }
 //finally
