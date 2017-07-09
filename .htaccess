@@ -63,7 +63,7 @@ AddHandler application/x-httpd-php .php .html .htm .cx
 
 # Google PageSpeed Module
 <IfModule pagespeed_module>
-    ModPagespeed on
+    ModPagespeed off
     ModPagespeedDisallow "*.amp"
     ModPagespeedEnableFilters remove_comments
     ModPagespeedEnableFilters make_google_analytics_async
