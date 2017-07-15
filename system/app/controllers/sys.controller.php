@@ -301,4 +301,10 @@ class controller_sys extends controller
         }
     }
 
+
+    function info()
+    {
+        echo phpinfo();
+    }
+
 }
