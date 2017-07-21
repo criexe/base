@@ -6,6 +6,8 @@ class user
 
     public static function login($user = null, $password = null)
     {
+        db::connect();
+
         $r      = [];
         $params = [];
 
@@ -18,6 +20,8 @@ class user
 
     public static function register($register_data = [])
     {
+        db::connect();
+
         $res            = [];
         $res['status']  = false;
         $res['message'] = 'Error.';
@@ -182,6 +186,8 @@ class user
 
     public static function name($data = null, $by = 'id')
     {
+        db::connect();
+
         if($data == null && $by == 'id') $data = self::id();
 
         return self::get($data, $by)['title'];
@@ -190,6 +196,8 @@ class user
 
     public static function get($data = null, $by = 'id')
     {
+        db::connect();
+
         if($data == null && $by == 'id') $data = self::id();
 
         $params          = [];
@@ -285,6 +293,8 @@ class user
 
     public static function allowed($type = null, $action = null, $user_data = null, $user_by = 'id')
     {
+        db::connect();
+
         if($user_data == null) $user = user::info();
         else                   $user = self::get($user_data, $user_by);
 

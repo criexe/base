@@ -30,27 +30,34 @@ class db
      */
     public static function connect($params = [])
     {
-        if(self::$user == null) throw_exception('[Database] No user.');
-        if(self::$name == null) throw_exception('[Database] No database name.');
-
-        if(self::$host == null) throw_exception('[Database] No host.');
-        if(self::$charset == null) throw_exception('[Database] No charset.');
-
-        // Connect
-        self::$conn = mysqli_connect(self::$host, self::$user, self::$pass, self::$name);
-        if(!self::$conn)
+        if(self::connected())
         {
-            throw_exception('[Database] Connection error.');
+            self::$connected = true;
         }
         else
         {
-            mysqli_set_charset(self::$conn, "UTF8");
-            mysqli_query(self::$conn, "SET NAMES '" . self::$charset . "'");
-            mysqli_query(self::$conn, "SET character_set_connection = '" . self::$charset . "'");
-            mysqli_query(self::$conn, "SET character_set_client = '" . self::$charset . "'");
-            mysqli_query(self::$conn, "SET character_set_results = '" . self::$charset . "'");
+            if(self::$user == null) throw_exception('[Database] No user.');
+            if(self::$name == null) throw_exception('[Database] No database name.');
 
-            self::$connected = true;
+            if(self::$host == null) throw_exception('[Database] No host.');
+            if(self::$charset == null) throw_exception('[Database] No charset.');
+
+            // Connect
+            self::$conn = mysqli_connect(self::$host, self::$user, self::$pass, self::$name);
+            if(!self::$conn)
+            {
+                throw_exception('[Database] Connection error.');
+            }
+            else
+            {
+                mysqli_set_charset(self::$conn, "UTF8");
+                mysqli_query(self::$conn, "SET NAMES '" . self::$charset . "'");
+                mysqli_query(self::$conn, "SET character_set_connection = '" . self::$charset . "'");
+                mysqli_query(self::$conn, "SET character_set_client = '" . self::$charset . "'");
+                mysqli_query(self::$conn, "SET character_set_results = '" . self::$charset . "'");
+
+                self::$connected = true;
+            }
         }
     }
 
