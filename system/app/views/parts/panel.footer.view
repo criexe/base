@@ -26,3 +26,20 @@
         <?= ! timer::active() ? " cx.alert.toast('<span class=\"red-text\">The timer can be stopped.</span>');" : null ?>
     </script>
 <?php endif; ?>
+
+<script>
+$(function(){
+
+    $("select")                   . material_select();
+    $(".tooltip, [data-tooltip]") . tooltip({delay : 10});
+    $('.imgboxed')                . materialbox();
+    $('.modal-trigger')           . leanModal();
+
+    $('.datepicker').pickadate({
+
+        selectMonths : true,
+        selectYears  : 15
+    });
+
+});
+</script>
