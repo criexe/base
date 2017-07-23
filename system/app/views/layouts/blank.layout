@@ -2,8 +2,11 @@
 <html lang="tr">
 <head>
     <?= cx::head() ?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/materialize/js/materialize.min.js') ?>
 </head>
 <body>
+    <?= _css(SYS_ASSETS . '/cx/plugins/materialize/css/materialize.min.css') ?>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <?=cx::body()?>
 
     <?= layout::content() ?>
