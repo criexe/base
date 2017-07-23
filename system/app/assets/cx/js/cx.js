@@ -11,10 +11,10 @@ var cx = {
 
         footer : function(){
 
-            $("select")                   . material_select();
-            $(".tooltip, [data-tooltip]") . tooltip({delay : 10});
-            $('.imgboxed')                . materialbox();
-            $('.modal-trigger')           . leanModal();
+            //$("select")                   . material_select();
+            //$(".tooltip, [data-tooltip]") . tooltip({delay : 10});
+            //$('.imgboxed')                . materialbox();
+            //$('.modal-trigger')           . leanModal();
 
             $('.datepicker').pickadate({
 
