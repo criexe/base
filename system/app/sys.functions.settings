@@ -2,5 +2,5 @@
 
 function _panel_footer()
 {
-    return SYSTEM_PATH . DS . 'app' . DS . 'views' . DS . 'parts' . DS . 'panel.footer.view';
+    include SYSTEM_PATH . DS . 'app' . DS . 'views' . DS . 'parts' . DS . 'panel.footer.view';
 }
