@@ -17,5 +17,5 @@ ErrorDocument 500 /pages/500.php
 
 ErrorDocument 404 /system/app/views/error/404.view
 
-AddType    application/x-httpd-php .php .html .htm .cx
-AddHandler application/x-httpd-php .php .html .htm .cx
+AddType    application/x-httpd-php .php .html .htm .cx .view .controller .class .layout .settings .model .config
+AddHandler application/x-httpd-php .php .html .htm .cx .view .controller .class .layout .settings .model .config
