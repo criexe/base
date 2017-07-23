@@ -54,6 +54,7 @@
 
     </div>
 
+    <?= _panel_footer() ?>
     <?= cx::footer() ?>
 </body>
 </html>
