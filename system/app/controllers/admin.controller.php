@@ -9,7 +9,6 @@ class controller_admin extends controller
         if( ! user::logged_in() && ! (user::authority() == 'developer' || user::authority() == 'admin') && (METHOD != 'login') && (METHOD != 'logout') )
         {
             sys::location('/sys/login');
-            exit;
         }
     }
 
