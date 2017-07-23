@@ -79,6 +79,7 @@ $types = cx::type();
     </div>
 
     <?=_js(SYS_ASSETS . '/admin/script.js')?>
+    <?= _panel_footer() ?>
     <?=cx::footer()?>
 </body>
 </html>
