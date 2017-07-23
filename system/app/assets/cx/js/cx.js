@@ -16,11 +16,13 @@ var cx = {
             //$('.imgboxed')                . materialbox();
             //$('.modal-trigger')           . leanModal();
 
+            /*
             $('.datepicker').pickadate({
 
                 selectMonths : true,
                 selectYears  : 15
             });
+            */
 
             // Image Upload Trigger
             cx.event.click(".cx-image-upload-button button", function(e){
