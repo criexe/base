@@ -5,9 +5,12 @@ $types = cx::type();
 <html>
 <head>
     <?=cx::head()?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/materialize/js/materialize.min.js') ?>
     <?= html::css('/system/app/assets/admin/style.css') ?>
 </head>
 <body class="grey lighten-4">
+<?= _css(SYS_ASSETS . '/cx/plugins/materialize/css/materialize.min.css') ?>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <?=cx::body()?>
 
     <div class="panel grey-text text-darken-4">

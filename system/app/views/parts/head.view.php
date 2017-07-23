@@ -30,7 +30,6 @@
 
     <?= _js(SYS_ASSETS . '/cx/plugins/jquery.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/jquery.form.js') ?>
-    <?= _js(SYS_ASSETS . '/cx/plugins/materialize/js/materialize.min.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/ckeditor4.6/ckeditor.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/imagesloaded.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/isotope.min.js') ?>
@@ -42,3 +41,5 @@
         var USER_NAME = "<?= user::name() ?>";
         var USER_ID   =  <?= user::id() == null ? 'false' : user::id() ?>;
     </script>
+
+    

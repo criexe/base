@@ -2,9 +2,12 @@
 <html>
 <head>
     <?= cx::head() ?>
+    <?= _js(SYS_ASSETS . '/cx/plugins/materialize/js/materialize.min.js') ?>
     <link rel="stylesheet" href="/system/app/assets/developer/style.css">
 </head>
 <body class="grey darken-4">
+<?= _css(SYS_ASSETS . '/cx/plugins/materialize/css/materialize.min.css') ?>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <?=cx::body()?>
 
     <div class="developer grey-text ligten-4">

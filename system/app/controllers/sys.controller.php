@@ -4,6 +4,10 @@
 class controller_sys extends controller
 {
 
+    public function __construct()
+    {
+        db::connect();
+    }
 
     function logout()
     {
