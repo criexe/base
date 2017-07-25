@@ -40,7 +40,7 @@ class category
     {
         try
         {
-            $r = item::get_all(['bt.type' => 'category', 'where' => "`category` LIKE '%\"$cat_id\"%'"]);
+            $r = item::get_all(['prepare' => false, 'bt.type' => 'category', 'where' => "`category` LIKE '%\"$cat_id\"%'"]);
         }
         catch(Exception $e)
         {
