@@ -60,7 +60,7 @@ class category
         foreach($cat_arr as $cat)
         {
             $r .= '<li>';
-            $r .= '<a>' . $cat['title'] . '</a>';
+            $r .= '<a href="' . $cat['url'] . '">' . $cat['title'] . '</a>';
             $r .= '</li>';
         }
         $r .= '<ul data-category-list>';
