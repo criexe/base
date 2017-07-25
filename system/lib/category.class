@@ -76,7 +76,7 @@ class category
                 }
                 $r .= '</li>';
             }
-            $r .= '<ul data-category-list>';
+            $r .= '</ul>';
         }
         catch(Exception $e)
         {
