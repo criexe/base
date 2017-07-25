@@ -61,6 +61,7 @@ class category
         {
             $r .= '<li>';
             $r .= '<a href="' . $cat['url'] . '" data-category-link>' . $cat['title'] . '</a>';
+            if($cat['_sub'] != false)
             $r .= '</li>';
         }
         $r .= '<ul data-category-list>';
