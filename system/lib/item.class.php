@@ -784,16 +784,16 @@ class item
     {
         sys::array_key_default_value($params, 'show.all', $show_all);
         sys::array_key_default_value($params, 'cache.disable', false);
+        sys::array_key_default_value($params, 'prepare', true);
 
         $params['limit'] = 1;
 
         $params = self::select_params($params);
-
         $result = db::get(self::$name, $params);
 
         if(count($result) <= 0) return false;
 
-        $result = self::prepare($result, $params['cache.disable']);
+        if($params['prepare'] === true) $result = self::prepare($result, $params['cache.disable']);
 
         return $result;
     }
@@ -805,18 +805,31 @@ class item
      */
     public static function get_all($params = [], $show_all = false)
     {
-        sys::array_key_default_value($params, 'show.all', $show_all);
-        sys::array_key_default_value($params, 'cache.disable', false);
+        try
+        {
+            sys::array_key_default_value($params, 'show.all', $show_all);
+            sys::array_key_default_value($params, 'cache.disable', false);
+            sys::array_key_default_value($params, 'prepare', true);
 
-        $params = self::select_params($params);
+            $params = self::select_params($params);
 
-        $result = [];
-        $items  = db::get_all(self::$name, $params);
+            $result = [];
+            $items  = db::get_all(self::$name, $params);
 
-        foreach($items as $item) $result[] = self::prepare($item, $params['cache.disable']);
+            if($items) foreach($items as $item)
+            {
 
-        if(count($result) <= 0) return false;
-        return $result;
+                if($params['prepare'] === true) $result[] = self::prepare($item, $params['cache.disable']);
+                else                            $result[] = $item;
+            }
+
+            if(count($result) <= 0) return false;
+            return $result;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
     }
 
     /**

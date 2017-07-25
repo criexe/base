@@ -1,0 +1,56 @@
+<?php
+
+class category
+{
+
+    public static function get_all($id = null)
+    {
+        try
+        {
+            $cats_arr = [];
+
+            $get_parents = item::get_all(['by.type' => 'category', 'where' => "(`category` IS NULL) OR (`category` = '[\"\"]')"]);
+            foreach($get_parents as $parent)
+            {
+                $cat_id         = $parent['id'];
+                $cat_data       = $parent;
+                $sub_categories = self::get_by_category_id($cat_id);
+
+                _r($sub_categories);
+
+                $cats_arr[$cat_id] = $cat_data;
+                $cats_arr[$cat_id]['_sub'] = $sub_categories;
+            }
+            $r = $cats_arr;
+
+            unset($get_parents, $cats_arr, $sub_categories, $cat_id, $cat_data);
+        }
+        catch(Exception $e)
+        {
+            $r = false;
+            _log($e->getMessage());
+        }
+        finally
+        {
+            return $r;
+        }
+    }
+
+    public static function get_by_category_id($cat_id = null)
+    {
+        try
+        {
+            $r = item::get_all(['bt.type' => 'category', 'where' => "`category` LIKE '%\"$cat_id\"%'"]);
+        }
+        catch(Exception $e)
+        {
+            $r = false;
+            _log($e->getMessage());
+        }
+        finally
+        {
+            return $r;
+        }
+    }
+
+}
