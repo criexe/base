@@ -53,28 +53,40 @@ class category
 
     public static function print_list($cat_arr = null)
     {
-        if($cat_arr == null) $cat_arr = self::get_all();
-
-        $r = null;
-        $r .= '<ul data-category-list>';
-        foreach($cat_arr as $cat)
+        try
         {
-            $r .= '<li>';
-            $r .= '<a href="' . URL . '/' . $cat['url'] . '" data-category-link>' . $cat['title'] . '</a>';
-            if($cat['_sub'] != false)
+            if($cat_arr == null) $cat_arr = self::get_all();
+
+            $r = null;
+            $r .= '<ul data-category-list>';
+            foreach($cat_arr as $cat)
             {
-                $r .= '<ul data-sub-categories>';
-                foreach($cat['_sub'] as $sub)
+                $r .= '<li>';
+                $r .= '<a href="' . URL . '/' . $cat['url'] . '" data-category-link>' . $cat['title'] . '</a>';
+                if($cat['_sub'] != false)
                 {
-                    $r .= '<li>';
-                    $r .= '<a href="' . URL . '/' . $sub['url'] . '">' . $sub['title'] . '</a>';
-                    $r .= '</li>';
+                    $r .= '<ul data-sub-categories>';
+                    foreach($cat['_sub'] as $sub)
+                    {
+                        $r .= '<li>';
+                        $r .= '<a href="' . URL . '/' . $sub['url'] . '">' . $sub['title'] . '</a>';
+                        $r .= '</li>';
+                    }
+                    $r .= '</ul>';
                 }
-                $r .= '</ul>';
+                $r .= '</li>';
             }
-            $r .= '</li>';
+            $r .= '<ul data-category-list>';
         }
-        $r .= '<ul data-category-list>';
+        catch(Exception $e)
+        {
+            $r = false;
+            _log($e->getMessage());
+        }
+        finally
+        {
+            return $r;
+        }
     }
 
 }
