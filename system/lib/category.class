@@ -9,7 +9,7 @@ class category
         {
             $cats_arr = [];
 
-            $get_parents = item::get_all(['prepare' => false, by.type' => 'category', 'where' => "(`category` IS NULL) OR (`category` = '[\"\"]')"]);
+            $get_parents = item::get_all(['prepare' => false, 'by.type' => 'category', 'where' => "(`category` IS NULL) OR (`category` = '[\"\"]')"]);
             foreach($get_parents as $parent)
             {
                 $cat_id         = $parent['id'];
