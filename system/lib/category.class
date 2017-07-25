@@ -53,7 +53,9 @@ class category
 
     public static function print_list($cat_arr = null)
     {
+        if($cat_arr == null) $cat_arr = self::get_all();
 
+        
     }
 
 }
