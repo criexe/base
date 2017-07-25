@@ -60,14 +60,14 @@ class category
         foreach($cat_arr as $cat)
         {
             $r .= '<li>';
-            $r .= '<a href="' . URL . $cat['url'] . '" data-category-link>' . $cat['title'] . '</a>';
+            $r .= '<a href="' . URL . '/' . $cat['url'] . '" data-category-link>' . $cat['title'] . '</a>';
             if($cat['_sub'] != false)
             {
                 $r .= '<ul data-sub-categories>';
                 foreach($cat['_sub'] as $sub)
                 {
                     $r .= '<li>';
-                    $r .= '<a href="' . URL . $sub['url'] . '">' . $sub['title'] . '</a>';
+                    $r .= '<a href="' . URL . '/' . $sub['url'] . '">' . $sub['title'] . '</a>';
                     $r .= '</li>';
                 }
                 $r .= '</ul>';
