@@ -51,7 +51,7 @@ class category
         }
     }
 
-    public static function print_list(Type $var = null)
+    public static function print_list($cat_arr)
     {
         # code...
     }
