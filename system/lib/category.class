@@ -67,7 +67,7 @@ class category
                 foreach($cat['_sub'] as $sub)
                 {
                     $r .= '<li>';
-                    $r .= '<a href="' . $sub['fullurl'] . '">' . $sub['title'] . '</a>';
+                    $r .= '<a href="' . $sub['url'] . '">' . $sub['title'] . '</a>';
                     $r .= '</li>';
                 }
                 $r .= '</ul>';
