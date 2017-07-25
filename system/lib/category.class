@@ -16,8 +16,6 @@ class category
                 $cat_data       = $parent;
                 $sub_categories = self::get_by_category_id($cat_id);
 
-                _r($sub_categories);
-
                 $cats_arr[$cat_id] = $cat_data;
                 $cats_arr[$cat_id]['_sub'] = $sub_categories;
             }
