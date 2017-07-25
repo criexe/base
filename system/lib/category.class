@@ -56,10 +56,14 @@ class category
         if($cat_arr == null) $cat_arr = self::get_all();
 
         $r = null;
+        $r .= '<ul data-category-list>';
         foreach($cat_arr as $cat)
         {
-            $r .= '<ul data-category-list>';
+            $r .= '<li>';
+            $r .= '<a>' . $cat['title'] . '</a>';
+            $r .= '</li>';
         }
+        $r .= '<ul data-category-list>';
     }
 
 }
