@@ -51,9 +51,9 @@ class category
         }
     }
 
-    public static function print_list($cat_arr)
+    public static function print_list($cat_arr = null)
     {
-        
+
     }
 
 }
