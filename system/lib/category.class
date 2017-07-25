@@ -58,7 +58,7 @@ class category
         $r = null;
         foreach($cat_arr as $cat)
         {
-            $r .= '<ul data-category>';
+            $r .= '<ul data-category-list>';
         }
     }
 
