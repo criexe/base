@@ -51,4 +51,9 @@ class category
         }
     }
 
+    public static function print_list(Type $var = null)
+    {
+        # code...
+    }
+
 }
