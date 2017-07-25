@@ -64,6 +64,10 @@ class category
             if($cat['_sub'] != false)
             {
                 $r .= '<ul data-sub-categories>';
+                foreach($cat['_sub'] as $sub)
+                {
+
+                }
                 $r .= '</ul>';
             }
             $r .= '</li>';
