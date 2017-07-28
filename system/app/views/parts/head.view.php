@@ -38,10 +38,10 @@
     <?php endif; ?>
 
     <script>
-        var URL       = "<?= URL ?>";
-        var CONTENTS  = "<?= CONTENTS ?>";
-        var USER_NAME = "<?= user::name() ?>";
-        var USER_ID   =  <?= user::id() == null ? 'false' : user::id() ?>;
+        var _URL       = "<?= URL ?>";
+        var _CONTENTS  = "<?= CONTENTS ?>";
+        var _USER_NAME = "<?= user::name() ?>";
+        var _USER_ID   =  <?= user::id() == null ? 'false' : user::id() ?>;
     </script>
 
     
