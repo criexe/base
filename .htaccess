@@ -32,7 +32,7 @@ AddHandler application/x-httpd-php .php .html .htm .cx .view .controller .class 
     ModPagespeedEnableFilters sprite_images
     ModPagespeedEnableFilters extend_cache
     ModPagespeedEnableFilters extend_cache_pdfs
-#    ModPagespeedEnableFilters remove_quotes
+  # ModPagespeedEnableFilters remove_quotes
     ModPagespeedEnableFilters resize_images
     ModPagespeedEnableFilters responsive_images
     ModPagespeedEnableFilters responsive_images_zoom
