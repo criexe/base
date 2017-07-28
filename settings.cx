@@ -74,6 +74,10 @@ define( '_MONTH'  , _WEEK   * 30 );
 define( '_YEAR'   , _MONTH  * 12 );
 
 
+define('ON' , 'ON');
+define('OFF', 'OFF');
+
+
 date_default_timezone_set('Europe/Istanbul');
 
 
