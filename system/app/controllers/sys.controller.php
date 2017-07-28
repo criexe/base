@@ -38,7 +38,7 @@ class controller_sys extends controller
                 $res['location'] = URL . urldecode($ref);
 
                 $cookie_key = user::create_cookie_key($login['id']);
-                cookie::set('user', $cookie_key);
+                cookie::set('user', $cookie_key);∑∑∑
             }
             else
             {
