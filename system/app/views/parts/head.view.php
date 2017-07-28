@@ -28,7 +28,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <?php if(_config('layout.' . layout::get() . '.preloaded_assets') === true): ?>
+    <?php if(_config('layout.' . layout::name() . '.preloaded_assets') === true): ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/jquery.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/jquery.form.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/ckeditor4.6/ckeditor.js') ?>

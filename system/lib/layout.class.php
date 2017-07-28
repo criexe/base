@@ -21,7 +21,7 @@ class layout
     }
 
 
-    public static function get()
+    public static function name()
     {
         return cx::data('layout');
     }
