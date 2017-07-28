@@ -28,12 +28,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+    <?php if(_config('layout.' . layout::get() . '.preloaded_assets') === true): ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/jquery.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/jquery.form.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/ckeditor4.6/ckeditor.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/imagesloaded.js') ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/isotope.min.js') ?>
     <?= _js(SYS_ASSETS . '/cx/js/cx.js') ?>
+    <?php endif; ?>
 
     <script>
         var URL       = "<?= URL ?>";
