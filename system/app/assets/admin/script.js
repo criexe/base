@@ -114,7 +114,7 @@ cx.event.on("change blur", "[name='db[url]']", function(e){
 
     $url_input = $(this);
 
-    cx.ajax.post(URL + "/helper/check_url", {url : $url_input.val()}, function(data){
+    cx.ajax.post(_URL + "/helper/check_url", {url : $url_input.val()}, function(data){
 
         if(data == "true")
         {
