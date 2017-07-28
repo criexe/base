@@ -137,7 +137,7 @@ var cx = {
             cx.event.keyup("#search_modal .search-input", function(e){
 
                 var $s        = $(this).val();
-                var $ajax_url = URL + "/sys/ajax_search";
+                var $ajax_url = _URL + "/sys/ajax_search";
                 var $data     = {s : $s};
 
                 cx.ajax.post($ajax_url, $data, function(data){
@@ -221,7 +221,7 @@ var cx = {
 
         images_loaded : function($sel, $func){
 
-            var $js_path = URL + "/system/app/assets/cx/plugins/imagesloaded.js";
+            var $js_path = _URL + "/system/app/assets/cx/plugins/imagesloaded.js";
 
             cx.include.js($js_path, function(){
 
