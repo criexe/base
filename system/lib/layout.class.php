@@ -20,4 +20,10 @@ class layout
         return cx::data('layout');
     }
 
+
+    public static function get()
+    {
+        return cx::data('layout');
+    }
+
 }
