@@ -306,7 +306,7 @@ var cx = {
     code_editor : function($id, $lang, $theme){
 
         // Include ACE Editor
-        cx.include.js(URL + "/system/app/assets/cx/plugins/ace-editor/ace.js");
+        cx.include.js(_URL + "/system/app/assets/cx/plugins/ace-editor/ace.js");
 
         if($lang  == undefined) $lang  = "php";
         if($theme == undefined) $theme = "monokai";
