@@ -69,7 +69,7 @@ cx.event.click("[data-delete-item-button]", function(e){
 
 cx.event.change("[data-change-post-status]", function(e){
 
-    var $url  = URL + "/admin/change_post_status";
+    var $url  = _URL + "/admin/change_post_status";
     var $id   = $(this).attr("data-id");
     var $val  = $(this).val();
 
