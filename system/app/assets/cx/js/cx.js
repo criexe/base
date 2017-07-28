@@ -265,9 +265,9 @@ var cx = {
 
             $type = typeof $type !== 'undefined' ?  $type : 'basic';
 
-            var $basic_config = URL + "/system/app/assets/cx/plugins/ckeditor4.6/config.js";
-            var $full_config  = URL + "/system/app/assets/cx/plugins/ckeditor4.6/full_config.js";
-            var $css_file     = URL + "/system/app/assets/cx/css/wysiwyg.content.css";
+            var $basic_config = _URL + "/system/app/assets/cx/plugins/ckeditor4.6/config.js";
+            var $full_config  = _URL + "/system/app/assets/cx/plugins/ckeditor4.6/full_config.js";
+            var $css_file     = _URL + "/system/app/assets/cx/css/wysiwyg.content.css";
 
             var $config;
 
