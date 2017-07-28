@@ -554,7 +554,7 @@ var cx = {
 
         column_grid : function($sel, $column_data_sel, $appended_data){
 
-            var $js_path = URL + "/system/app/assets/cx/plugins/isotope.min.js";
+            var $js_path = _URL + "/system/app/assets/cx/plugins/isotope.min.js";
 
             cx.include.js($js_path, function(){
 
