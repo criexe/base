@@ -18,8 +18,8 @@
 <script>
     // Ready
     $(function(){
-        $("#id_user").val(USER_NAME);
-        $('[name="db[user]"]').val(USER_ID);
+        $("#id_user").val(_USER_NAME);
+        $('[name="db[user]"]').val(_USER_ID);
 
         $("button, .btn").removeAttr("disabled");
     });
