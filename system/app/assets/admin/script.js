@@ -6,7 +6,7 @@ cx.ajax.submit("#admin_login_form", {
 
         cx.alert.toast($data.message, 2000, function(){
 
-            if($data.status == true) cx.location("<?=URL?>/admin");
+            if($data.status == true) cx.location(_URL + "/admin");
         });
     }
 });
