@@ -50,7 +50,6 @@ class controller_item extends controller
 
             if((int)$views <= 0) $new_views = 1;
             else $new_views = $views + 1;
-//            cx::counter("item.views.{$data['id']}", 1);
 
             item::update(['views' => $new_views], ['where' => "`id` = {$data['id']}"]) or throw_exception('Err');
         }
