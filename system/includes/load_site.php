@@ -20,7 +20,7 @@ try
     define('METHOD'     , $method_name);
 
     // Get Item
-    $item_url = url::path()
+    $item_url = url::path();
     $_item = url::path() != null ? item::get(['where' => "`url` = '" . url::path() . "'"]) : false;
 
     if($_item)
