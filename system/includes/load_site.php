@@ -59,7 +59,7 @@ try
         cx::data('item.data', $_item);
 
         echo url::path();
-        _data('soda', 'mustafa');
+        _data('item.url.parameters', );
 
         $item_controller = new controller_item();
         $item_controller->load(url::path(), $_item);
