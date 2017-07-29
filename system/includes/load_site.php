@@ -21,7 +21,7 @@ try
 
     // Get Item
     $item_url = explode('/', url::path());
-    $_item = url::path() != null ? item::get(['where' => "`url` = '" . url::path() . "'"]) : false;
+    $_item = url::path() != null ? item::get(['where' => "`url` = '" . $item_url[0] . "'"]) : false;
 
     if($_item)
     {
