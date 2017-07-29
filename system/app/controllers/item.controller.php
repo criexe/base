@@ -42,7 +42,7 @@ class controller_item extends controller
             $type_file = $data['type'];
             $view_file = $type_file ? $type_file : 'item/index';
 
-            echo _render($view_file, ['data' => $data], $render);
+            echo _render($view_file, ['data' => $data, 'parameters'], $render);
 
             // Views
             $views     = (int)$data['views'];
