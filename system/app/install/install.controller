@@ -168,9 +168,9 @@ class controller_install extends controller
 
 
             // SQL Import
-            if(!file_exists(SYSDATA_PATH . DS . 'app' . DS . 'install' . DS . 'install.sql')) throw_exception('SQL file is not exists !');
+            if(!file_exists(SYS_PATH . DS . 'app' . DS . 'install' . DS . 'install.sql')) throw_exception('SQL file is not exists !');
 
-            $sql_data = sys::read(SYSDATA_PATH . DS . 'app' . DS . 'install' . DS . 'install.sql');
+            $sql_data = sys::read(SYS_PATH . DS . 'app' . DS . 'install' . DS . 'install.sql');
             db::multi_query($sql_data) or throw_exception('SQL Import Error !');
 
             $config_data  = "";
