@@ -20,8 +20,8 @@ try
     define('METHOD'     , $method_name);
 
     // Get Item
-    $item_url = explode('/', url::path());
-    $_item = url::path() != null ? item::get(['where' => "`url` = '" . $item_url[0] . "'"]) : false;
+    $_item_url = explode('/', url::path());
+    $_item = url::path() != null ? item::get(['where' => "`url` = '" . $_item_url[0] . "'"]) : false;
 
     if($_item)
     {
