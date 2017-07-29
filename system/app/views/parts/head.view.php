@@ -27,6 +27,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="<?=URL?>" target="_blank">
 
     <?php if(_config('layout.' . layout::name() . '.preloaded_assets') === true): ?>
     <?= _js(SYS_ASSETS . '/cx/plugins/jquery.js') ?>
