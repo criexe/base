@@ -902,7 +902,7 @@ class item
         $options = self::get_all($params);
         $rdata   = [];
 
-        foreach($options as $option) $rdata[$option['title']] = $option['content'];
+        if($options) foreach($options as $option) $rdata[$option['title']] = $option['content'];
 
         cache::create($cache_id, $rdata);
 
