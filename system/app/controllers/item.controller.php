@@ -33,9 +33,9 @@ class controller_item extends controller
 
             $render = [];
 
-            if      ($data['layout'] != null) $render['layout'] = $data['layout'];
-            else if ($cx_layout      != null) $render['layout'] = $cx_layout;
-            else                              $render['layout'] = 'item';
+            if      (array_key_exists('layout', $data) && $data['layout'] != null) $render['layout'] = $data['layout'];
+            else if ($cx_layout != null) $render['layout'] = $cx_layout;
+            else                         $render['layout'] = 'item';
 
             $render['ext'] = $data['type'] != null ? 'type' : 'view';
 
