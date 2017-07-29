@@ -56,7 +56,6 @@ try
     if($_item)
     {
         cx::data('item.data', $_item);
-        
 
         $item_controller = new controller_item();
         $item_controller->load(url::path(), $_item);
