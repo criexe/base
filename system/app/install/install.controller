@@ -104,7 +104,7 @@ class controller_install extends controller
            cx::option('app.keywords', $keywords);
 
            $config_data  = "";
-           $config_data .= "_config('errors', true);\n";
+           $config_data .= "_config('error' , true);\n";
            $config_data .= "_config('cache' , true);\n";
            $config_data .= "_config('cache.version' , 1);\n\n";
            $config_data .= "_config('app.name', '$name');\n";
