@@ -57,7 +57,7 @@ try
     {
         cx::data('item.data', $_item);
 
-        _data('item.url.parameters', $);
+        _data('item.url.parameters', $_item_url);
 
         $item_controller = new controller_item();
         $item_controller->load(url::path(), $_item);
