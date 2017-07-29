@@ -20,8 +20,7 @@ try
     define('METHOD'     , $method_name);
 
     // Get Item
-    $_item_url = explode('/', url::path());
-    $_item = url::path() != null ? item::get(['where' => "`url` = '" . $_item_url[0] . "'"]) : false;
+    $_item = url::path() != null ? item::get(['where' => "`url` = '" . url::path() . "'"]) : false;
 
     if($_item)
     {
@@ -29,6 +28,7 @@ try
         $controller_class = 'controller_item';
         $method_name      = 'load';
     }
+
 
     // Get Controller File From Software Files
     $all_controllers   = $files['controller'];
@@ -56,8 +56,7 @@ try
     if($_item)
     {
         cx::data('item.data', $_item);
-
-        _data('item.url.parameters', $_item_url);
+        
 
         $item_controller = new controller_item();
         $item_controller->load(url::path(), $_item);
