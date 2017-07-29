@@ -30,7 +30,6 @@ try
         $method_name      = 'load';
     }
 
-
     // Get Controller File From Software Files
     $all_controllers   = $files['controller'];
     $found_controllers = preg_grep("/" . $controller_name . "\.controller(?:\.php)?$/si", $all_controllers);
