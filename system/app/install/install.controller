@@ -91,29 +91,29 @@ class controller_install extends controller
         {
             if(cx::option('app.name')) throw_exception('Informations is configured !');
 
-           $name     = input::post('info-name')        or throw_exception('No name.');
-           $title    = input::post('info-title')       or throw_exception('No title.');
-           $url      = input::post('info-url')         or throw_exception('No url.');
-           $desc     = input::post('info-description') or throw_exception('No description.');
-           $keywords = input::post('info-keywords')    or throw_exception('No keywords.');
+            $name     = input::post('info-name')        or throw_exception('No name.');
+            $title    = input::post('info-title')       or throw_exception('No title.');
+            $url      = input::post('info-url')         or throw_exception('No url.');
+            $desc     = input::post('info-description') or throw_exception('No description.');
+            $keywords = input::post('info-keywords')    or throw_exception('No keywords.');
 
-           cx::option('app.name', $name);
-           cx::option('app.home_title', $title);
-           cx::option('app.url', $url);
-           cx::option('app.description', $desc);
-           cx::option('app.keywords', $keywords);
+            cx::option('app.name', $name);
+            cx::option('app.home_title', $title);
+            cx::option('app.url', $url);
+            cx::option('app.description', $desc);
+            cx::option('app.keywords', $keywords);
 
-           $config_data  = "";
-           $config_data .= "_config('error' , true);\n";
-           $config_data .= "_config('cache' , true);\n";
-           $config_data .= "_config('cache.version' , 1);\n\n";
-           $config_data .= "_config('app.name', '$name');\n";
-           $config_data .= "_config('app.url' , '$url');\n";
+            $config_data  = "";
+            $config_data .= "_config('error' , true);\n";
+            $config_data .= "_config('cache' , true);\n";
+            $config_data .= "_config('cache.version' , 1);\n\n";
+            $config_data .= "_config('app.name', '$name');\n";
+            $config_data .= "_config('app.url' , '$url');\n";
 
-           $this->_append_config($config_data) or throw_exception('Appending error !');
+            $this->_append_config($config_data) or throw_exception('Appending error !');
 
-           $r['status']  = true;
-           $r['message'] = 'Success';
+            $r['status']  = true;
+            $r['message'] = 'Success';
         }
         catch(Exception $e)
         {
@@ -168,7 +168,7 @@ class controller_install extends controller
 
 
             // SQL Import
-            if(!file_exists(APP_PATH . DS . 'install' . DS . 'install.sql')) throw_exception('SQL file is not exists !');
+            if(!file_exists(SYSDATA_PATH . DS . 'app' . DS . 'install' . DS . 'install.sql')) throw_exception('SQL file is not exists !');
 
             $sql_data = sys::read(SYSDATA_PATH . DS . 'app' . DS . 'install' . DS . 'install.sql');
             db::multi_query($sql_data) or throw_exception('SQL Import Error !');
