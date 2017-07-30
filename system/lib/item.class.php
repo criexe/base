@@ -655,7 +655,7 @@ class item
         }
 
         // JSON to Array
-        if(json::valid($data['parents']))
+        if(array_key_exists('parents', $data) && json::valid($data['parents']))
         {
             $new_parents     = [];
             $data['parents'] = json::decode($data['parents']);
