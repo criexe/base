@@ -313,7 +313,8 @@ class item
             $hook_data['params']  = $params;
 
             // Adding Tags
-            foreach(self::get_all($params) as $row)
+            $_tags_get_all   = self::get_all($params);
+            if($_tags_get_all) foreach($_tags_get_all as $row)
             {
                 $_tags = explode(',', $_keywords);
                 foreach($_tags as $t) self::tag()->insert($row['id'], $t);
